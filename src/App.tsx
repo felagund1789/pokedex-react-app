@@ -1,5 +1,6 @@
 import "./App.css";
 import pokemon from "./assets/data/pokemon.json";
+import PokemonCard from "./components/PokemonCard";
 
 function App() {
   return (
@@ -8,11 +9,9 @@ function App() {
         <h1>Pokedex</h1>
       </header>
       <main>
-        <ul>
-          {pokemon.results.map((pokemon, index) => (
-            <li key={index}>{pokemon.name}</li>
-          ))}
-        </ul>
+        {pokemon.results.map((pokemon, index) => (
+          <PokemonCard key={index} pokedexNo={index + 1} pokemon={pokemon} />
+        ))}
       </main>
     </>
   );

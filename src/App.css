@@ -4,3 +4,14 @@
   padding: 2rem;
   text-align: center;
 }
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+main div {
+  width: 15rem;
+}
