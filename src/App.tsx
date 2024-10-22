@@ -20,7 +20,7 @@ function App() {
       </header>
       <main>
         {pokemon.map((pokemon, index) => (
-          <PokemonCard key={index} pokedexNo={index + 1} pokemon={pokemon} />
+          <PokemonCard key={index} pokemon={pokemon} />
         ))}
       </main>
     </>

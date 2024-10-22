@@ -11,7 +11,7 @@ const usePokemon = () => {
 
   useEffect(() => {
     apiClient
-      .getAll()
+      .getAll({ params: { limit: 251 } })
       .then((response) => {
         setData(response.results);
       })
