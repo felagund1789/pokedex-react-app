@@ -1,4 +1,6 @@
 import usePokemonData from "../hooks/usePokemonData";
+import PokemonNumber from "./PokemonNumber";
+import PokemonType from "./PokemonType";
 
 interface PokemonCardProps {
   pokedexNo: number;
@@ -10,7 +12,6 @@ interface PokemonCardProps {
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
-const formatNumber = (number: number) => number.toString().padStart(3, "0");
 const capitalize = (string: string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -19,7 +20,7 @@ const PokemonCard = ({ pokedexNo, pokemon }: PokemonCardProps) => {
 
   return (
     <div>
-      <h3>#{formatNumber(pokemonData?.id ?? 0)}</h3>
+      <PokemonNumber>{pokemonData?.id}</PokemonNumber>
       <img
         src={`${artworkBaseURL}${pokedexNo}.png`}
         alt={capitalize(pokemon.name)}
@@ -28,7 +29,7 @@ const PokemonCard = ({ pokedexNo, pokemon }: PokemonCardProps) => {
       />
       <h2>{capitalize(pokemon.name)}</h2>
       {pokemonData?.types.map((pokemonType) => {
-        return <p>{pokemonType.type.name}</p>;
+        return <PokemonType>{pokemonType.type.name}</PokemonType>;
       })}
     </div>
   );
