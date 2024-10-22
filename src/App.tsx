@@ -1,15 +1,25 @@
 import "./App.css";
-import pokemon from "./assets/data/pokemon.json";
 import PokemonCard from "./components/PokemonCard";
+import usePokemon from "./hooks/usePokemon";
 
 function App() {
+  const { data: pokemon, isLoading, error } = usePokemon();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <>
       <header>
         <h1>Pokedex</h1>
       </header>
       <main>
-        {pokemon.results.map((pokemon, index) => (
+        {pokemon.map((pokemon, index) => (
           <PokemonCard key={index} pokedexNo={index + 1} pokemon={pokemon} />
         ))}
       </main>
