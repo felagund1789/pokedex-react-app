@@ -44,6 +44,7 @@
   --header-color: #ff4949;
   --bg-color: #ffffff;
   --text-color: #213547;
+  --pokemon-number-color: #adaeaf;
   --card-border-radius: 0.5rem;
 
   color-scheme: light dark;
@@ -177,13 +178,13 @@ header {
 .pokemon-image-background .pokemon-number {
   position: relative;
   font-size: 2.5rem;
-  color: #adaeaf;
+  color: var(--pokemon-number-color);
   z-index: 5;
 }
 
 .pokemon-card h2 {
   margin-top: 0.25rem;
-  color: #efefef;
+  color: var(--bg-color);
 }
 
 .pokemon-type {
