@@ -79,7 +79,7 @@ header {
   top: 0;
 }
 
-main {
+.pokemon-list {
   display: flex;
   flex-direction: row;
   justify-content: center;
