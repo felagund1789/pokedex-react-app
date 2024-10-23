@@ -8,6 +8,7 @@ const usePokemon = () => {
   return useQuery<FetchResponse<Pokemon>, Error>({
     queryKey: ["pokemon"],
     queryFn: () => apiClient.getAll(),
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };
 

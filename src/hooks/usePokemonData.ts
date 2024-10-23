@@ -12,6 +12,7 @@ const usePokemonData = ({ name }: Props) => {
   return useQuery<PokemonData, Error>({
     queryKey: ["pokemon", name],
     queryFn: () => apiClient.get(name),
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };
 
