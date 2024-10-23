@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import ApiClient from "../services/apiClient";
 import { PokemonData } from "../types";
 
