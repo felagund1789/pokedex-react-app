@@ -13,14 +13,16 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const { data: pokemonData } = usePokemonData({ name: pokemon.name });
 
   return (
-    <div className="pokemon-card">
-      <PokemonNumber>{pokemonData?.id}</PokemonNumber>
-      <img
-        src={`${artworkBaseURL}${pokemonData?.id}.png`}
-        alt={pokemon.name}
-        height={95}
-        width={95}
-      />
+    <div className={`pokemon-card ${pokemonData?.types[0].type.name}`}>
+      <div className="pokemon-image-background">
+        <PokemonNumber>{pokemonData?.id}</PokemonNumber>
+        <img
+          src={`${artworkBaseURL}${pokemonData?.id}.png`}
+          alt={pokemon.name}
+          height={150}
+          width={150}
+        />
+      </div>
       <div>
         {pokemonData?.types.map((pokemonType, index) => {
           return <PokemonType key={index}>{pokemonType.type.name}</PokemonType>;
