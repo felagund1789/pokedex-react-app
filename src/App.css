@@ -41,6 +41,7 @@
   --type-steel: #417d9a;
   --type-water: #4a90da;
 
+  --header-color: #ff4949;
   --bg-color: #ffffff;
   --text-color: #213547;
   --card-border-radius: 0.5rem;
@@ -66,8 +67,16 @@ body {
 #root {
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+}
+
+header {
+  position: sticky;
+  background-color: var(--header-color);
+  margin-bottom: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  top: 0;
 }
 
 main {

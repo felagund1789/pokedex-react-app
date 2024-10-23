@@ -1,6 +1,7 @@
 import "./App.css";
 import PokemonCard from "./components/PokemonCard";
 import usePokemon from "./hooks/usePokemon";
+import pokemonLogo from "./assets/logo.png";
 
 function App() {
   const { data: pokemon, isLoading, error } = usePokemon();
@@ -16,7 +17,7 @@ function App() {
   return (
     <>
       <header>
-        <h1>Pokedex</h1>
+        <img src={pokemonLogo} alt="Pokedex" height={128} />
       </header>
       <main>
         {pokemon?.results.map((pokemon, index) => (
