@@ -19,7 +19,7 @@ function App() {
         <h1>Pokedex</h1>
       </header>
       <main>
-        {pokemon.map((pokemon, index) => (
+        {pokemon?.results.map((pokemon, index) => (
           <PokemonCard key={index} pokemon={pokemon} />
         ))}
       </main>
