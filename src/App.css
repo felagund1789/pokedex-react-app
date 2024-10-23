@@ -3,25 +3,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  --bg-bug: #8cb2309f;
-  --bg-dark: #58575f9f;
-  --bg-dragon: #0f6ac09f;
-  --bg-electric: #eed5359f;
-  --bg-fairy: #ed6ec79f;
-  --bg-fighting: #d041649f;
-  --bg-fire: #fd7d249f;
-  --bg-flying: #748fc99f;
-  --bg-ghost: #556aae9f;
-  --bg-grass: #62b9579f;
-  --bg-ground: #dd77489f;
-  --bg-ice: #61cec09f;
-  --bg-normal: #9da0aa9f;
-  --bg-poison: #a552cc9f;
-  --bg-psychic: #ea5d609f;
-  --bg-rock: #baab829f;
-  --bg-steel: #417d9a9f;
-  --bg-water: #4a90da9f;
-
   --type-bug: #8cb230;
   --type-dark: #58575f;
   --type-dragon: #0f6ac0;
@@ -101,60 +82,6 @@ header {
   transform: scale(1.05);
   transition: all 0.3s;
 }
-.pokemon-card.bug {
-  background-color: var(--bg-bug);
-}
-.pokemon-card.dark {
-  background-color: var(--bg-dark);
-}
-.pokemon-card.dragon {
-  background-color: var(--bg-dragon);
-}
-.pokemon-card.electric {
-  background-color: var(--bg-electric);
-}
-.pokemon-card.fairy {
-  background-color: var(--bg-fairy);
-}
-.pokemon-card.fighting {
-  background-color: var(--bg-fighting);
-}
-.pokemon-card.fire {
-  background-color: var(--bg-fire);
-}
-.pokemon-card.flying {
-  background-color: var(--bg-flying);
-}
-.pokemon-card.ghost {
-  background-color: var(--bg-ghost);
-}
-.pokemon-card.grass {
-  background-color: var(--bg-grass);
-}
-.pokemon-card.ground {
-  background-color: var(--bg-ground);
-}
-.pokemon-card.ice {
-  background-color: var(--bg-ice);
-}
-.pokemon-card.normal {
-  background-color: var(--bg-normal);
-}
-.pokemon-card.poison {
-  background-color: var(--bg-poison);
-}
-.pokemon-card.psychic {
-  background-color: var(--bg-psychic);
-}
-.pokemon-card.rock {
-  background-color: var(--bg-rock);
-}
-.pokemon-card.steel {
-  background-color: var(--bg-steel);
-}
-.pokemon-card.water {
-  background-color: var(--bg-water);
-}
 
 .pokemon-image-background {
   position: relative;
@@ -167,7 +94,7 @@ header {
   border-top-right-radius: var(--card-border-radius);
   border-bottom-left-radius: 10rem;
   border-bottom-right-radius: 10rem;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .pokemon-image-background img {
