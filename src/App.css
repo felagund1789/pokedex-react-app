@@ -25,7 +25,7 @@
   --header-color: #ff4949;
   --bg-color: #ffffff;
   --text-color: #213547;
-  --pokemon-number-color: #adaeaf;
+  --pokemon-number-color: rgba(0, 0, 0, 0.175);
   --card-border-radius: 0.5rem;
 
   color-scheme: light dark;
@@ -39,6 +39,11 @@
 
   ::-webkit-scrollbar {
     width: 0;
+  }
+}
+@media (max-width: 34rem) {
+  :root {
+    font-size: 0.675rem;
   }
 }
 
@@ -145,6 +150,7 @@ header.collapsed img {
   padding: 0.5rem 0.75rem;
   margin: 0.5rem;
   gap: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: var(--card-border-radius);
   color: white;
   text-transform: capitalize;
