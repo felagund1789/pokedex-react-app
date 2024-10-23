@@ -36,6 +36,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  ::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 body {
@@ -53,11 +57,29 @@ body {
 }
 
 header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: sticky;
   background-color: var(--header-color);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
   z-index: 100;
   top: 0;
+  transition: all 0.5s;
+}
+
+header.collapsed {
+  justify-content: start;
+}
+
+header img {
+  height: 128px;
+  transition: all 0.5s;
+}
+
+header.collapsed img {
+  height: 48px;
 }
 
 .pokemon-list {
