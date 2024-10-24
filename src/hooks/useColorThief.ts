@@ -20,13 +20,17 @@ const useColorThief = (imgUrl: string) => {
     img.style.display = "none";
     img.src = imgUrl;
     img.addEventListener("load", () => {
-      let c = colorthief.getColor(img);
-      const palette = colorthief.getPalette(img);
-      if (!c || (colorBrightness(c) < 50 || colorBrightness(c) > 200) && palette && palette.length > 0) {
-        c = palette![0];
-      }
-      setColor(c ? rgbToHex(...c, 1) : null);
-      setPalette(palette ? palette.map(([r, g, b]) => rgbToHex(r, g, b, 1)) : []);
+      let dominantColor = colorthief.getColor(img);
+      const palette = colorthief.getPalette(img)
+        .filter(c => colorBrightness(c) > 64 && colorBrightness(c) < 192);
+
+      dominantColor = 
+        (colorBrightness(dominantColor) > 64 && colorBrightness(dominantColor) < 192)
+        ? dominantColor
+        : palette[0];
+
+      setColor(rgbToHex(...dominantColor, 1));
+      setPalette(palette.map(([r, g, b]) => rgbToHex(r, g, b, 1)));
       img.remove();
     });
   }, [imgUrl]);
