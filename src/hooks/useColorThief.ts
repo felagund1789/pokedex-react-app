@@ -18,10 +18,9 @@ const useColorThief = (imgUrl: string) => {
     img.style.display = "none";
     img.src = imgUrl;
     img.addEventListener("load", () => {
+      const c = colorthief.getColor(img);
       const palette = colorthief.getPalette(img);
-      setColor(palette && palette.length > 0 
-        ? palette.slice(0, 1).map(([r, g, b]) => rgbToHex(r, g, b, 1))[0] 
-        : null);
+      setColor(c ? rgbToHex(...c, 1) : null);
       setPalette(palette ? palette.map(([r, g, b]) => rgbToHex(r, g, b, 1)) : []);
       img.remove();
     });
