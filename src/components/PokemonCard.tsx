@@ -8,11 +8,12 @@ import PokemonType from "./PokemonType";
 
 interface PokemonCardProps {
   slug: string;
+  onClick?: () => void;
 }
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
-const PokemonCard = ({ slug }: PokemonCardProps) => {
+const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   const { data: pokemon } = usePokemon({ slug });
   const pokedexNumber = usePokedexNumber({ slug });
   const pokemonName = usePokemonName({ slug });
@@ -26,7 +27,7 @@ const PokemonCard = ({ slug }: PokemonCardProps) => {
   }
 
   return (
-    <div className="pokemon-card" ref={cardRef}>
+    <div className="pokemon-card" ref={cardRef} onClick={onClick}>
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
         <img

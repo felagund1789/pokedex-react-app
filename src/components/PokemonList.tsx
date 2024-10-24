@@ -3,8 +3,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import usePokemonList from "../hooks/usePokemonList";
 import PokemonCard from "./PokemonCard";
 import PokemonCardSkeleton from "./PokemonCardSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const PokemonList = () => {
+  const navigate = useNavigate();
   const { data, isLoading, error, hasNextPage, fetchNextPage } = usePokemonList();
 
   if (error) {
@@ -29,7 +31,10 @@ const PokemonList = () => {
       {data?.pages?.map((page, index) => (
         <React.Fragment key={index}>
           {page.results.map((pokemon) => (
-            <PokemonCard key={pokemon.name} slug={pokemon.name} />
+            <PokemonCard
+              slug={pokemon.name}
+              onClick={() => navigate(`/pokemon/${pokemon.name}`)}
+            />
           ))}
         </React.Fragment>
       ))}

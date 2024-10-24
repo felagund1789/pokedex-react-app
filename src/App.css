@@ -98,7 +98,7 @@ header.collapsed img {
 }
 
 .pokemon-card {
-  min-width: 16rem;
+  width: 16rem;
   text-transform: capitalize;
   border-radius: var(--card-border-radius);
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
@@ -155,6 +155,16 @@ header.collapsed img {
   color: white;
   text-transform: capitalize;
 }
+.pokemon-type img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+@media (max-width: 34rem) {
+  .pokemon-type {
+    padding: 0.25rem 0.5rem;
+  }
+}
+
 .pokemon-type.bug {
   background-color: var(--type-bug);
 }
@@ -208,4 +218,8 @@ header.collapsed img {
 }
 .pokemon-type.water {
   background-color: var(--type-water);
+}
+
+.pokemon-details {
+  height: calc(100vh - 8rem);
 }
