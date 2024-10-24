@@ -22,10 +22,10 @@ const useColorThief = (imgUrl: string) => {
     img.addEventListener("load", () => {
       let dominantColor = colorthief.getColor(img);
       const palette = colorthief.getPalette(img)
-        .filter(c => colorBrightness(c) > 64 && colorBrightness(c) < 192);
+        .filter(c => colorBrightness(c) > 63 && colorBrightness(c) < 208);
 
       dominantColor = 
-        (colorBrightness(dominantColor) > 64 && colorBrightness(dominantColor) < 192)
+        (colorBrightness(dominantColor) > 63 && colorBrightness(dominantColor) < 208)
         ? dominantColor
         : palette[0];
 
