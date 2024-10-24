@@ -4,12 +4,12 @@ declare module "colorthief" {
     getColor: (
       img: HTMLImageElement | null,
       quality: number = 10
-    ) => RGBColor | null;
+    ) => RGBColor;
 
     getPalette: (
       img: HTMLImageElement | null,
       colorCount: number = 10,
       quality: number = 10
-    ) => RGBColor[] | null;
+    ) => RGBColor[];
   }
 }
