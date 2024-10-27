@@ -1,11 +1,11 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import usePokemon from "../hooks/usePokemon";
+import usePokemonList from "../hooks/usePokemonList";
 import PokemonCard from "./PokemonCard";
 import PokemonCardSkeleton from "./PokemonCardSkeleton";
 
 const PokemonList = () => {
-  const { data, isLoading, error, hasNextPage, fetchNextPage } = usePokemon();
+  const { data, isLoading, error, hasNextPage, fetchNextPage } = usePokemonList();
 
   if (error) {
     return <div>Error: {error.message}</div>;

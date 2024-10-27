@@ -1,18 +1,18 @@
 import { useRef } from "react";
-import usePokemonData from "../hooks/usePokemonData";
-import { Pokemon } from "../types";
+import usePokemon from "../hooks/usePokemon";
+import { APIResource } from "../types";
 import PokemonNumber from "./PokemonNumber";
 import PokemonType from "./PokemonType";
 import useColorThief from "../hooks/useColorThief";
 
 interface PokemonCardProps {
-  pokemon: Pokemon;
+  pokemon: APIResource;
 }
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
-  const { data: pokemonData } = usePokemonData({ name: pokemon.name });
+  const { data: pokemonData } = usePokemon({ name: pokemon.name });
   const cardRef = useRef<HTMLDivElement>(null);
   const imgUrl = `${artworkBaseURL}${pokemonData?.id}.png`;
   const { color } = useColorThief(imgUrl);

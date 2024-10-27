@@ -1,20 +1,17 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import ApiClient, { FetchResponse } from "../services/apiClient";
+import { useQuery } from "@tanstack/react-query";
+import ApiClient from "../services/apiClient";
 import { Pokemon } from "../types";
 
 const apiClient = new ApiClient<Pokemon>("/pokemon");
 
-const usePokemon = () => {
-  return useInfiniteQuery<FetchResponse<Pokemon>, Error>({
-    queryKey: ["pokemon"],
-    queryFn: ({ pageParam }) => {
-      return apiClient.getAll({
-        params: { offset: (Number(pageParam) - 1) * 20 },
-      });
-    },
-    getNextPageParam: (lastPage, allPages) =>
-      lastPage.next ? allPages.length + 1 : undefined,
-    initialPageParam: 1,
+interface Props {
+  name: string;
+}
+
+const usePokemon = ({ name }: Props) => {
+  return useQuery<Pokemon, Error>({
+    queryKey: ["pokemon", name],
+    queryFn: () => apiClient.get(name),
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };
