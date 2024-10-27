@@ -37,6 +37,7 @@ export interface Pokemon {
   id: number;
   name: string;
   weight: number;
+  species: APIResource;
   stats: PokemonStat[];
   types: PokemonType[];
   abilities: PokemonAbility[];

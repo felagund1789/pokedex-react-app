@@ -29,7 +29,7 @@ const PokemonList = () => {
       {data?.pages?.map((page, index) => (
         <React.Fragment key={index}>
           {page.results.map((pokemon) => (
-            <PokemonCard key={pokemon.name} pokemon={pokemon} />
+            <PokemonCard key={pokemon.name} slug={pokemon.name} />
           ))}
         </React.Fragment>
       ))}

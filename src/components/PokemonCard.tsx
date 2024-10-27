@@ -1,20 +1,26 @@
 import { useRef } from "react";
+import useColorThief from "../hooks/useColorThief";
 import usePokemon from "../hooks/usePokemon";
-import { APIResource } from "../types";
+import usePokemonSpecies from "../hooks/usePokemonSpecies";
 import PokemonNumber from "./PokemonNumber";
 import PokemonType from "./PokemonType";
-import useColorThief from "../hooks/useColorThief";
 
 interface PokemonCardProps {
-  pokemon: APIResource;
+  slug: string;
 }
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
+const language = "en";
+const pokedex = "national";
 
-const PokemonCard = ({ pokemon }: PokemonCardProps) => {
-  const { data: pokemonData } = usePokemon({ name: pokemon.name });
+const PokemonCard = ({ slug }: PokemonCardProps) => {
+  const { data: pokemon } = usePokemon({ slug });
+  const { data: pokemonSpecies } = usePokemonSpecies({ slug });
+  const pokedexNumber = pokemonSpecies?.pokedex_numbers.find(number => number.pokedex.name === pokedex)?.entry_number;
+  const pokemonName = pokemonSpecies?.names.find(name => name.language.name === language)?.name;
+
   const cardRef = useRef<HTMLDivElement>(null);
-  const imgUrl = `${artworkBaseURL}${pokemonData?.id}.png`;
+  const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
   const { color } = useColorThief(imgUrl);
 
   if (cardRef.current && color) {
@@ -24,21 +30,21 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   return (
     <div className="pokemon-card" ref={cardRef}>
       <div className="pokemon-image-background">
-        <PokemonNumber>{pokemonData?.id}</PokemonNumber>
+        <PokemonNumber>{pokedexNumber}</PokemonNumber>
         <img
           crossOrigin="anonymous"
           src={imgUrl}
-          alt={pokemon.name}
+          alt={pokemonName}
           height={150}
           width={150}
         />
       </div>
       <div>
-        {pokemonData?.types.map((pokemonType, index) => {
+        {pokemon?.types.map((pokemonType, index) => {
           return <PokemonType key={index}>{pokemonType.type.name}</PokemonType>;
         })}
       </div>
-      <h2>{pokemon.name}</h2>
+      <h2>{pokemonName}</h2>
     </div>
   );
 };
