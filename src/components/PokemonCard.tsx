@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import useColorThief from "../hooks/useColorThief";
+import usePokedexNumber from "../hooks/usePokedexNumber";
 import usePokemon from "../hooks/usePokemon";
-import usePokemonSpecies from "../hooks/usePokemonSpecies";
+import usePokemonName from "../hooks/usePokemonName";
 import PokemonNumber from "./PokemonNumber";
 import PokemonType from "./PokemonType";
 
@@ -10,14 +11,11 @@ interface PokemonCardProps {
 }
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
-const language = "en";
-const pokedex = "national";
 
 const PokemonCard = ({ slug }: PokemonCardProps) => {
   const { data: pokemon } = usePokemon({ slug });
-  const { data: pokemonSpecies } = usePokemonSpecies({ slug });
-  const pokedexNumber = pokemonSpecies?.pokedex_numbers.find(number => number.pokedex.name === pokedex)?.entry_number;
-  const pokemonName = pokemonSpecies?.names.find(name => name.language.name === language)?.name;
+  const pokedexNumber = usePokedexNumber({ slug });
+  const pokemonName = usePokemonName({ slug });
 
   const cardRef = useRef<HTMLDivElement>(null);
   const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
