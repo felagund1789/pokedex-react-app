@@ -5,6 +5,7 @@ import usePokemonName from "../hooks/usePokemonName";
 import PokemonNumber from "./PokemonNumber";
 import PokemonType from "./PokemonType";
 import usePokemonGenera from "../hooks/usePokemonGenera";
+import usePokemonFormName from "../hooks/usePokemonFormName";
 
 interface Props {
   slug: string;
@@ -17,6 +18,7 @@ const PokemonHeaderCard = ({ slug, color }: Props) => {
   const { data: pokemon } = usePokemon({ slug });
   const pokedexNumber = usePokedexNumber({ slug });
   const pokemonName = usePokemonName({ slug });
+  const pokemonFormName = usePokemonFormName({ slug });
   const pokemonGenera = usePokemonGenera({ slug });
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -30,7 +32,7 @@ const PokemonHeaderCard = ({ slug, color }: Props) => {
     <div className="pokemon-card header" ref={cardRef}>
       <div className="pokemon-info">
         <div className="pokemon-title">
-          <h2>{pokemonName}</h2>
+          <h2>{pokemonFormName ?? pokemonName}</h2>
           <PokemonNumber>{pokedexNumber}</PokemonNumber>
         </div>
         <div className="pokemon-genera">
@@ -45,7 +47,7 @@ const PokemonHeaderCard = ({ slug, color }: Props) => {
         </div>
       </div>
       <div className="pokemon-image-background">
-        <img src={imgUrl} alt={pokemonName} />
+        <img src={imgUrl} alt={pokemonFormName ?? pokemonName} />
       </div>
     </div>
   );

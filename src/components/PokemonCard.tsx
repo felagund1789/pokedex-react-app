@@ -5,6 +5,7 @@ import usePokemon from "../hooks/usePokemon";
 import usePokemonName from "../hooks/usePokemonName";
 import PokemonNumber from "./PokemonNumber";
 import PokemonType from "./PokemonType";
+import usePokemonFormName from "../hooks/usePokemonFormName";
 
 interface PokemonCardProps {
   slug: string;
@@ -17,6 +18,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   const { data: pokemon } = usePokemon({ slug });
   const pokedexNumber = usePokedexNumber({ slug });
   const pokemonName = usePokemonName({ slug });
+  const pokemonFormName = usePokemonFormName({ slug });
 
   const cardRef = useRef<HTMLDivElement>(null);
   const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
@@ -43,7 +45,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
           return <PokemonType key={index}>{pokemonType.type.name}</PokemonType>;
         })}
       </div>
-      <h2>{pokemonName}</h2>
+      <h2>{pokemonFormName ?? pokemonName}</h2>
     </div>
   );
 };

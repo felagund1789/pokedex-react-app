@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const PokemonList = () => {
   const navigate = useNavigate();
-  const { data, isLoading, error, hasNextPage, fetchNextPage } = usePokemonList();
+  const { data, isLoading, error, hasNextPage, fetchNextPage } =
+    usePokemonList();
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -32,6 +33,7 @@ const PokemonList = () => {
         <React.Fragment key={index}>
           {page.results.map((pokemon) => (
             <PokemonCard
+              key={pokemon.name}
               slug={pokemon.name}
               onClick={() => navigate(`/pokemon/${pokemon.name}`)}
             />

@@ -38,6 +38,7 @@ export interface Pokemon {
   name: string;
   weight: number;
   species: APIResource;
+  forms: APIResource[];
   stats: PokemonStat[];
   types: PokemonType[];
   abilities: PokemonAbility[];
@@ -85,5 +86,17 @@ export interface PokemonSpecies {
   varieties: {
     is_default: boolean;
     pokemon: APIResource;
+  }[];
+}
+
+export interface PokemonForm {
+  form_name: string;
+  form_names: {
+    name: string;
+    language: APIResource;
+  }[];
+  names: {
+    name: string;
+    language: APIResource;
   }[];
 }

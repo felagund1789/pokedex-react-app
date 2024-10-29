@@ -330,7 +330,8 @@ header.collapsed .widget {
 @media (max-width: 34rem) {
   .pokemon-details .pokemon-card.header,
   .pokemon-details .pokemon-species,
-  .pokemon-details .pokemon-stats {
+  .pokemon-details .pokemon-stats,
+  .pokemon-details .other-forms {
     width: 100vw;
     border: 0;
     border-radius: 0;
@@ -361,7 +362,8 @@ header.collapsed .widget {
 }
 
 .pokemon-species h2,
-.pokemon-stats h2 {
+.pokemon-stats h2,
+.other-forms h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: 2rem;
@@ -432,4 +434,27 @@ header.collapsed .widget {
 }
 .stat-bar.speed p {
   background-color: var(--stat-speed);
+}
+
+.other-forms {
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  width: min(calc(100vw - 2rem), 36rem);
+  display: flex;
+  border: 2px dashed var(--dark-text-color);
+  border-radius: var(--card-border-radius);
+  flex-direction: column;
+}
+.other-forms h2.title {
+  color: var(--dark-text-color);
+}
+.other-forms-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
 }
