@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../App.css";
 import usePokemonColor from "../hooks/usePokemonColor";
@@ -12,6 +13,10 @@ function PokemonDetails() {
   const { name } = useParams();
   const { data: species } = usePokemonSpecies({ slug: name! });
   const color = usePokemonColor({ slug: name! });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="pokemon-details">
