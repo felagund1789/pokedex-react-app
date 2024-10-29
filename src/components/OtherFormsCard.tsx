@@ -12,7 +12,7 @@ const OtherFormsCard = ({ slug }: Props) => {
 
   return (
     <div className="other-forms">
-      <h2 className="title">Other Forms</h2>
+      <h2 className="title">Alternative Forms</h2>
       <div className="other-forms-list">
         {data?.varieties
           .filter((pokemonVariety) => pokemonVariety.pokemon.name !== slug)
