@@ -297,3 +297,14 @@ header.collapsed img {
 .pokemon-details .pokemon-card:hover {
   transform: none;
 }
+
+.pokemon-details .pokemon-species {
+  margin: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1.5rem;
+  width: min(calc(100vw - 2rem), 36rem);
+  display: flex;
+  border-radius: var(--card-border-radius);
+  flex-direction: column;
+}
