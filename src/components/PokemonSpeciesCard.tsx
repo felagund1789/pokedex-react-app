@@ -41,7 +41,7 @@ const PokemonSpeciesCard = ({ slug, color }: Props) => {
             <p>Hatch Counter</p>
           </div>
         )}
-        {data?.habitat && (
+        {habitat && (
           <div>
             <h4>{habitat}</h4>
             <p>Habitat</p>

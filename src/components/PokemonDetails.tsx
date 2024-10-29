@@ -4,6 +4,7 @@ import useColorThief from "../hooks/useColorThief";
 import usePokemon from "../hooks/usePokemon";
 import PokemonHeaderCard from "./PokemonHeaderCard";
 import PokemonSpeciesCard from "./PokemonSpeciesCard";
+import PokemonStatsCard from "./PokemonStatsCard";
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
@@ -17,6 +18,7 @@ function PokemonDetails() {
     <div className="pokemon-details">
       <PokemonHeaderCard slug={name!} color={color!} />
       <PokemonSpeciesCard slug={name!} color={color!} />
+      <PokemonStatsCard slug={name!} color={color!} />
     </div>
   );
 }
