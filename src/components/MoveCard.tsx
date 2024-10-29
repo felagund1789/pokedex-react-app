@@ -3,9 +3,10 @@ import useMove from "../hooks/useMove";
 
 interface Props {
   slug: string;
+  level?: number;
 }
 
-const MoveCard = ({ slug }: Props) => {
+const MoveCard = ({ slug, level }: Props) => {
   const language = "en";
   const version = null;
   const { data } = useMove({ slug });
@@ -38,7 +39,7 @@ const MoveCard = ({ slug }: Props) => {
       <div className="move-stats">
         {data?.power && (
           <div className="stat">
-            <span>Power</span>
+            <span>Pwr</span>
             <span>{data.power}</span>
           </div>
         )}
@@ -50,8 +51,14 @@ const MoveCard = ({ slug }: Props) => {
         )}
         {data?.accuracy && (
           <div className="stat">
-            <span>Accuracy</span>
+            <span>Acc.</span>
             <span>{data.accuracy}</span>
+          </div>
+        )}
+        {level && (
+          <div className="stat level">
+            <span>Lvl</span>
+            <span>{level}</span>
           </div>
         )}
       </div>
