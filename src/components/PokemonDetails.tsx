@@ -16,8 +16,10 @@ function PokemonDetails() {
 
   return (
     <div className="pokemon-details">
-      <PokemonHeaderCard slug={name!} color={color!} />
-      <PokemonSpeciesCard slug={name!} color={color!} />
+      <div className="merge">
+        <PokemonHeaderCard slug={name!} color={color!} />
+        <PokemonSpeciesCard slug={name!} color={color!} />
+      </div>
       <PokemonStatsCard slug={name!} color={color!} />
     </div>
   );

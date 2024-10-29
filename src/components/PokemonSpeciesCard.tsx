@@ -21,7 +21,6 @@ const PokemonSpeciesCard = ({ slug, color }: Props) => {
 
   return (
     <div className="pokemon-species" ref={cardRef}>
-      <h2>Pokémon Species</h2>
       <div className="pokemon-description">{pokemonDescription}</div>
       <div className="info">
         {data?.base_happiness && (

@@ -231,15 +231,20 @@ header.collapsed img {
 
 .pokemon-details {
   padding: 0;
-  height: calc(100vh - 8rem);
   display: flex;
   align-items: start;
   align-content: start;
   justify-content: start;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
+}
+@media (max-width: 34rem) {
+  .pokemon-details {
+    padding: 0;
+    gap: 0;
+  }
 }
 
 .pokemon-details .pokemon-card.header {
@@ -314,6 +319,28 @@ header.collapsed img {
   transform: none;
 }
 
+@media (max-width: 34rem) {
+  .pokemon-details .pokemon-card.header,
+  .pokemon-details .pokemon-species,
+  .pokemon-details .pokemon-stats {
+    width: 100vw;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+.merge .pokemon-card.header {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.merge .pokemon-card.header .pokemon-image-background {
+  border-bottom-right-radius: 0;
+}
+.merge .pokemon-species {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .pokemon-species,
 .pokemon-stats {
   padding: 1rem;
@@ -377,6 +404,7 @@ header.collapsed img {
 }
 .stat-bar p {
   transition: all 3s;
+  border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: var(--card-border-radius);
 }
 .stat-bar.hp p {
