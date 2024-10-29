@@ -62,6 +62,7 @@ export interface PokemonSpecies {
   gender_rate: number;
   genera: {
     genus: string;
+    language: APIResource;
   }[];
   generation: APIResource;
   growth_rate: APIResource;

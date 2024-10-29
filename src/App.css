@@ -24,7 +24,7 @@
 
   --header-color: #ff4949;
   --bg-color: #ffffff;
-  --text-color: #213547;
+  --text-color: #ffffff;
   --pokemon-number-color: rgba(0, 0, 0, 0.175);
   --card-border-radius: 0.5rem;
 
@@ -153,7 +153,7 @@ header.collapsed img {
   gap: 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: var(--card-border-radius);
-  color: white;
+  color: var(--text-color);
   text-transform: capitalize;
 }
 .pokemon-type img {
@@ -222,5 +222,78 @@ header.collapsed img {
 }
 
 .pokemon-details {
-  height: calc(100vh - 4rem);
+  padding: 0;
+}
+
+.pokemon-details .pokemon-card.header {
+  margin: 1rem;
+  font-size: 1.5rem;
+  height: 16rem;
+  width: min(calc(100vw - 2rem), 36rem);
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.pokemon-details .pokemon-card.header .pokemon-image-background {
+  height: 14rem;
+  border-top-right-radius: var(--card-border-radius);
+  border-bottom-right-radius: var(--card-border-radius);
+  border-bottom-left-radius: 20rem;
+  border-top-left-radius: 20rem;
+  display: flex;
+}
+
+.pokemon-details .pokemon-card.header .pokemon-image-background img {
+  width: 12rem;
+  height: 12rem;
+  margin: auto;
+}
+
+.pokemon-details .pokemon-card.header .pokemon-info {
+  height: 100%;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding-left: 1rem;
+}
+
+.pokemon-details .pokemon-card.header .pokemon-info .pokemon-title,
+.pokemon-details .pokemon-card.header .pokemon-info .pokemon-genera {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pokemon-details .pokemon-card.header .pokemon-info .pokemon-types {
+  display: flex;
+  place-content: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.pokemon-details .pokemon-card.header .pokemon-info h2,
+.pokemon-details .pokemon-card.header .pokemon-info h3 {
+  padding: 0;
+  padding-top: 1rem;  
+  margin: 0;  
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;  
+}
+
+.pokemon-details .pokemon-card.header .pokemon-genera {
+  color: var(--text-color);
+}
+
+.pokemon-details .pokemon-card.header .pokemon-number {
+  color: var(--text-color);
+  font-size: 1.5em;
+  margin: 0.25rem 1rem;
+}
+
+.pokemon-details .pokemon-card:hover {
+  transform: none;
 }
