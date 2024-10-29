@@ -96,6 +96,14 @@ header.collapsed img {
   height: 4rem;
 }
 
+header.collapsed .widget {
+  box-sizing: border-box;
+  padding-left: 1rem;
+  height: 24px;
+  width: 3rem;
+  cursor: pointer;
+}
+
 .pokemon-list {
   display: flex;
   flex-direction: row;
