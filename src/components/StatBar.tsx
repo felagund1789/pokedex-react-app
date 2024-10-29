@@ -11,7 +11,7 @@ const StatBar = ({ pokemonStat }: Props) => {
   return (
     <div className={`stat-bar ${pokemonStat.stat.name}`}>
       <h4>{data}</h4>
-      <p style={{ width: pokemonStat.base_stat * 2 }}>{pokemonStat.base_stat}</p>
+      <p style={{ width: `${pokemonStat.base_stat / 8}rem` }}>{pokemonStat.base_stat}</p>
     </div>
   );
 };
