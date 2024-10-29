@@ -2,6 +2,7 @@ import { useRef } from "react";
 import usePokemonSpecies from "../hooks/usePokemonSpecies";
 import usePokemonDescription from "../hooks/usePokemonDescription";
 import useResourceName from "../hooks/useResourceName";
+import StatPanel from "./StatPanel";
 
 interface Props {
   slug: string;
@@ -24,29 +25,15 @@ const PokemonSpeciesCard = ({ slug, color }: Props) => {
       <div className="pokemon-description">{pokemonDescription}</div>
       <div className="info">
         {data?.base_happiness && (
-          <div>
-            <h4>{data.base_happiness}</h4>
-            <p>Base Happiness</p>
-          </div>
+          <StatPanel title="Base Happiness">{data.base_happiness}</StatPanel>
         )}
         {data?.capture_rate && (
-          <div>
-            <h4>{data.capture_rate}</h4>
-            <p>Capture Rate</p>
-          </div>
+          <StatPanel title="Capture Rate">{data.capture_rate}</StatPanel>
         )}
         {data?.hatch_counter && (
-          <div>
-            <h4>{data.hatch_counter}</h4>
-            <p>Hatch Counter</p>
-          </div>
+          <StatPanel title="Hatch Counter">{data.hatch_counter}</StatPanel>
         )}
-        {habitat && (
-          <div>
-            <h4>{habitat}</h4>
-            <p>Habitat</p>
-          </div>
-        )}
+        {habitat && <StatPanel title="Habitat">{habitat}</StatPanel>}
       </div>
     </div>
   );

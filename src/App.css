@@ -147,7 +147,7 @@ header.collapsed img {
 
 .pokemon-card h2 {
   margin-top: 0.25rem;
-  color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .pokemon-type {
@@ -328,22 +328,30 @@ header.collapsed img {
 .pokemon-species h2,
 .pokemon-stats h2 {
   margin-top: 0;
+  margin-bottom: 0.5rem;
   font-size: 2rem;
 }
-.pokemon-species .info {
+.pokemon-species .info,
+.pokemon-stats .info {
   display: grid;
   color: var(--dark-text-color);
   grid-template-columns: 1fr 1fr;
   border-radius: var(--card-border-radius);
   background-color: rgba(255, 255, 255, 0.5);
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
-.pokemon-species .info h4 {
+.pokemon-stats .stat-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 1rem 0;
+}
+
+.stat-panel h4 {
   margin-top: 0.5rem;
   margin-bottom: 0;
   text-transform: capitalize;
 }
-.pokemon-species .info p {
+.stat-panel p {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: 1rem;
