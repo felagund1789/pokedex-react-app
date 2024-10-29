@@ -25,6 +25,7 @@
   --header-color: #ff4949;
   --bg-color: #ffffff;
   --text-color: #ffffff;
+  --dark-text-color: #6d6e6f;
   --pokemon-number-color: rgba(0, 0, 0, 0.175);
   --card-border-radius: 0.5rem;
 
@@ -307,4 +308,28 @@ header.collapsed img {
   display: flex;
   border-radius: var(--card-border-radius);
   flex-direction: column;
+}
+
+.pokemon-details .pokemon-species h2 {
+  margin-top: 0;
+  font-size: 2rem;
+}
+.pokemon-details .pokemon-species .info {
+  display: grid;
+  color: var(--dark-text-color);
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--card-border-radius);
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-top: 1rem;
+}
+.pokemon-details .pokemon-species .info h4 {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-transform: capitalize;
+}
+.pokemon-details .pokemon-species .info p {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-style: italic;
 }
