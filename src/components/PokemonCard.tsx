@@ -40,12 +40,14 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
           width={150}
         />
       </div>
-      <div>
-        {pokemon?.types.map((pokemonType, index) => {
-          return <PokemonType key={index}>{pokemonType.type.name}</PokemonType>;
-        })}
+      <div className="pokemon-title">
+        <div>
+          {pokemon?.types.map((pokemonType, index) => {
+            return <PokemonType key={index}>{pokemonType.type.name}</PokemonType>;
+          })}
+        </div>
+        <h2>{pokemonFormName ?? pokemonName}</h2>
       </div>
-      <h2>{pokemonFormName ?? pokemonName}</h2>
     </div>
   );
 };
