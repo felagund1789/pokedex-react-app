@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -403,7 +405,8 @@ header.collapsed .widget {
 
 .pokemon-species h2,
 .pokemon-stats h2,
-.other-forms h2 {
+.other-forms h2,
+.pokemon-moves h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: 2rem;
@@ -449,7 +452,7 @@ header.collapsed .widget {
   margin-right: 1rem;
 }
 .stat-bar h4 {
-  width: 12rem;
+  width: 12.5rem;
   text-align: right;
 }
 .stat-bar p {
@@ -482,9 +485,9 @@ header.collapsed .widget {
   font-size: 1rem;
   width: min(calc(100vw - 2rem), 36rem);
   display: flex;
-  border: 2px dashed var(--dark-text-color);
-  border-radius: var(--card-border-radius);
   flex-direction: column;
+  border-radius: var(--card-border-radius);
+  background-color: #edeeef;
 }
 .other-forms h2.title {
   color: var(--dark-text-color);
