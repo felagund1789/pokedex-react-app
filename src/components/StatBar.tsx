@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import useResourceName from "../hooks/useResourceName";
 import { PokemonStat } from "../types";
 
@@ -7,11 +8,16 @@ interface Props {
 
 const StatBar = ({ pokemonStat }: Props) => {
   const { data } = useResourceName(pokemonStat.stat);
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    setValue(pokemonStat.base_stat);
+  }, [pokemonStat.base_stat]);
 
   return (
     <div className={`stat-bar ${pokemonStat.stat.name}`}>
       <h4>{data}</h4>
-      <p style={{ width: `${pokemonStat.base_stat / 8}rem` }}>{pokemonStat.base_stat}</p>
+      <p style={{ width: `${value / 8}rem` }}>{value}</p>
     </div>
   );
 };
