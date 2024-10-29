@@ -1,24 +1,17 @@
-import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import usePokemonSpecies from "../hooks/usePokemonSpecies";
 import PokemonCard from "./PokemonCard";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   slug: string;
-  color?: string;
 }
 
-const OtherFormsCard = ({ slug, color }: Props) => {
+const OtherFormsCard = ({ slug }: Props) => {
   const { data } = usePokemonSpecies({ slug });
   const navigate = useNavigate();
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  if (cardRef.current && color) {
-    // cardRef.current.style.backgroundColor = color;
-  }
-
   return (
-    <div className="other-forms" ref={cardRef}>
+    <div className="other-forms">
       <h2 className="title">Other Forms</h2>
       <div className="other-forms-list">
         {data?.varieties

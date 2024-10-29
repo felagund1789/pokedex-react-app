@@ -4,6 +4,7 @@ import usePokemonColor from "../hooks/usePokemonColor";
 import usePokemonSpecies from "../hooks/usePokemonSpecies";
 import OtherFormsCard from "./OtherFormsCard";
 import PokemonHeaderCard from "./PokemonHeaderCard";
+import PokemonMovesCard from "./PokemonMovesCard";
 import PokemonSpeciesCard from "./PokemonSpeciesCard";
 import PokemonStatsCard from "./PokemonStatsCard";
 
@@ -20,8 +21,16 @@ function PokemonDetails() {
       </div>
       <PokemonStatsCard slug={name!} color={color!} />
       {species?.varieties && species?.varieties.length > 1 ? (
-        <OtherFormsCard slug={name!} color={color!} />
+        <OtherFormsCard slug={name!} />
       ) : null}
+      <PokemonMovesCard slug={name!} />
+      {/* <button
+        className="moves-button"
+        style={{ backgroundColor: color ?? "black" }}
+        onClick={() => navigate(`/pokemon/${name}/moves`)}
+      >
+        Moves
+      </button> */}
     </div>
   );
 }

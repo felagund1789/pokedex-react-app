@@ -31,6 +31,24 @@ export interface PokemonMove {
   version_group_details: VersionGroupDetails[];
 }
 
+export interface Move {
+  accuracy: number;
+  damage_class: APIResource;
+  name: string;
+  names: {
+    name: string;
+    language: APIResource;
+  }[];
+  flavor_text_entries: {
+    flavor_text: string;
+    language: APIResource;
+    version_group: APIResource;
+  }[];
+  power: number;
+  pp: number;
+  type: APIResource;
+}
+
 export interface Pokemon {
   base_experience: number;
   height: number;
