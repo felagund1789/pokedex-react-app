@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import useColorThief from "../hooks/useColorThief";
 import usePokedexNumber from "../hooks/usePokedexNumber";
 import usePokemon from "../hooks/usePokemon";
+import usePokemonColor from "../hooks/usePokemonColor";
+import usePokemonFormName from "../hooks/usePokemonFormName";
 import usePokemonName from "../hooks/usePokemonName";
 import PokemonNumber from "./PokemonNumber";
 import PokemonType from "./PokemonType";
-import usePokemonFormName from "../hooks/usePokemonFormName";
 
 interface PokemonCardProps {
   slug: string;
@@ -22,7 +22,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
 
   const cardRef = useRef<HTMLDivElement>(null);
   const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
-  const { color } = useColorThief(imgUrl);
+  const color = usePokemonColor({ slug});
 
   if (cardRef.current && color) {
     cardRef.current.style.backgroundColor = color;

@@ -1,21 +1,16 @@
 import { useParams } from "react-router-dom";
 import "../App.css";
-import useColorThief from "../hooks/useColorThief";
-import usePokemon from "../hooks/usePokemon";
+import usePokemonColor from "../hooks/usePokemonColor";
+import usePokemonSpecies from "../hooks/usePokemonSpecies";
+import OtherFormsCard from "./OtherFormsCard";
 import PokemonHeaderCard from "./PokemonHeaderCard";
 import PokemonSpeciesCard from "./PokemonSpeciesCard";
 import PokemonStatsCard from "./PokemonStatsCard";
-import OtherFormsCard from "./OtherFormsCard";
-import usePokemonSpecies from "../hooks/usePokemonSpecies";
-
-const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
 function PokemonDetails() {
   const { name } = useParams();
-  const { data: pokemon } = usePokemon({ slug: name! });
   const { data: species } = usePokemonSpecies({ slug: name! });
-  const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
-  const { color } = useColorThief(imgUrl);
+  const color = usePokemonColor({ slug: name! });
 
   return (
     <div className="pokemon-details">
