@@ -123,9 +123,9 @@ body {
 .pokemon-details {
   padding: 0;
   display: grid;
-  grid-template-areas: "info details";
+  grid-template-areas: "info buttons" "info details";
   grid-template-columns: 36rem 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 4rem 1fr;
   justify-content: start;
   height: calc(100vh - 4rem);
 }
@@ -139,7 +139,7 @@ body {
   }
 }
 .pokemon-details .pokemon-info-card {
-  grid-area: "info";
+  grid-area: info;
   border-radius: 0;
   height: auto;
 }
@@ -155,7 +155,7 @@ body {
 }
 
 .pokemon-details-outlet {
-  grid-area: "details";
+  grid-area: details;
   display: flex;
   padding: 1rem;
   box-sizing: border-box;
@@ -166,6 +166,26 @@ body {
     padding: 0;
     height: 100%;
   }
+}
+
+.pokemon-details-buttons {
+  grid-area: buttons;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+.pokemon-details-buttons a {
+  color: white;
+  background-color: #454545;
+  text-decoration: none;
+  height: 2rem;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--card-border-radius);
+  flex-grow: 1;
 }
 
 @media (max-width: 70rem) {
