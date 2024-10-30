@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import PokemonStatsCard from "../components/PokemonStatsCard";
+import PokemonMovesCard from "../components/PokemonMovesCard";
 import "../App.css";
 
-function PokemonStatsPage() {
+function PokemonMovesPage() {
   const { name } = useParams();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function PokemonStatsPage() {
     return null;
   }
 
-  return <PokemonStatsCard slug={name} />;
+  return <PokemonMovesCard slug={name} />;
 }
 
-export default PokemonStatsPage;
+export default PokemonMovesPage;
