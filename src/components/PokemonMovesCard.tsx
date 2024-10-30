@@ -24,16 +24,28 @@ const PokemonMovesCard = ({ slug }: Props) => {
     <div className="pokemon-moves">
       <h2 className="title">Moves</h2>
       <div className="filters">
-        <button className="filter" onClick={() => setFilter("level-up")}>
+        <button
+          className={`filter ${filter === "level-up" ? "active" : ""}`}
+          onClick={() => setFilter("level-up")}
+        >
           Level Up
         </button>
-        <button className="filter" onClick={() => setFilter("machine")}>
+        <button
+          className={`filter ${filter === "machine" ? "active" : ""}`}
+          onClick={() => setFilter("machine")}
+        >
           Machine
         </button>
-        <button className="filter" onClick={() => setFilter("tutor")}>
+        <button
+          className={`filter ${filter === "tutor" ? "active" : ""}`}
+          onClick={() => setFilter("tutor")}
+        >
           Tutor
         </button>
-        <button className="filter" onClick={() => setFilter("egg")}>
+        <button
+          className={`filter ${filter === "egg" ? "active" : ""}`}
+          onClick={() => setFilter("egg")}
+        >
           Egg
         </button>
       </div>

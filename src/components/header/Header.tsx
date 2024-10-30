@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import pokemonLogo from "../assets/logo.png";
-import useOffest from "../hooks/useOffset";
+import pokemonLogo from "../../assets/logo.png";
+import useOffest from "../../hooks/useOffset";
+import "./Header.css";
 
 const Header = () => {
   const offeset = useOffest();

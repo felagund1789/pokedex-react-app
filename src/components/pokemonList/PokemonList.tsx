@@ -1,9 +1,10 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
-import usePokemonList from "../hooks/usePokemonList";
-import PokemonCard from "./pokemonCard/PokemonCard";
-import PokemonCardSkeleton from "./pokemonCard/PokemonCardSkeleton";
+import usePokemonList from "../../hooks/usePokemonList";
+import PokemonCard from "../pokemonCard/PokemonCard";
+import PokemonCardSkeleton from "../pokemonCard/PokemonCardSkeleton";
+import "./PokemonList.css";
 
 const PokemonList = () => {
   const navigate = useNavigate();

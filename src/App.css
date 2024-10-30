@@ -65,50 +65,6 @@ body {
   text-align: center;
 }
 
-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-  background-color: var(--header-color);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
-  z-index: 100;
-  top: 0;
-  transition: all 0.5s;
-}
-
-header.collapsed {
-  justify-content: start;
-}
-
-header img {
-  height: 8rem;
-  transition: all 0.5s;
-}
-
-header.collapsed img {
-  height: 4rem;
-}
-
-header.collapsed .widget {
-  box-sizing: border-box;
-  padding-left: 1rem;
-  height: 24px;
-  width: 3rem;
-  cursor: pointer;
-}
-
-.pokemon-list {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: start;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding-top: 1rem;
-}
-
 .bug {
   background-color: var(--type-bug);
 }
@@ -276,10 +232,14 @@ header.collapsed .widget {
   height: 2.5rem;
   font-size: 1rem;
   border: none;
+  background-color: #4d4e4f;
   border-radius: var(--card-border-radius);
   padding: 0.25rem 1rem;
   margin: 0.25em;
   cursor: pointer;
+}
+.pokemon-moves .filters button.filter.active {
+  background-color: #6d6e6f;
 }
 .moves-list {
   display: flex;

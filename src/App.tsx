@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/Header";
-import PokemonList from "./components/PokemonList";
+import PokemonList from "./components/pokemonList/PokemonList";
 
 function App() {
   return (
