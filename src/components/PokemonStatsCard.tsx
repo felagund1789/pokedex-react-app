@@ -1,6 +1,4 @@
-import { useRef } from "react";
 import usePokemon from "../hooks/usePokemon";
-import usePokemonColor from "../hooks/usePokemonColor";
 import StatBar from "./statBar/StatBar";
 import StatPanel from "./statPanel/StatPanel";
 
@@ -18,19 +16,13 @@ const metersToFeetAndInches = (meters: number) => {
 
 const PokemonStatsCard = ({ slug }: Props) => {
   const { data } = usePokemon({ slug });
-  const color = usePokemonColor({ slug });
   const height = `${data?.height ? data?.height / 10 : 0}m`;
   const weight = `${data?.weight ? data?.weight / 10 : 0}kg`;
   const heightUS = `${data?.height ? metersToFeetAndInches(data?.height / 10) : 0}`;
   const weightUS = `${data?.weight ? kilogramsToPounds(data?.weight / 10).toFixed(1) : 0}lbs`;
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  if (cardRef.current && color) {
-    cardRef.current.style.backgroundColor = color;
-  }
-
   return (
-    <div className="pokemon-stats" ref={cardRef}>
+    <div className="pokemon-stats">
       <h2>Base Stats</h2>
       <div className="stat-info">
         {data?.height && (

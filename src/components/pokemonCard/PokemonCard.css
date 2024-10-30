@@ -2,11 +2,11 @@
   width: 16rem;
   text-transform: capitalize;
   border-radius: var(--card-border-radius);
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 .pokemon-card:hover {
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.375);
   transform: scale(1.05);
   transition: all 0.3s;
 }
