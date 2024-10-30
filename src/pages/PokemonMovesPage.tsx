@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import PokemonMovesCard from "../components/PokemonMovesCard";
+import PokemonMoves from "../components/pokemonMoves/PokemonMoves";
 import "../App.css";
 
 function PokemonMovesPage() {
@@ -14,7 +14,7 @@ function PokemonMovesPage() {
     return null;
   }
 
-  return <PokemonMovesCard slug={name} />;
+  return <PokemonMoves slug={name} />;
 }
 
 export default PokemonMovesPage;

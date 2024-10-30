@@ -1,7 +1,8 @@
 import { useState } from "react";
-import usePokemon from "../hooks/usePokemon";
-import { PokemonMove } from "../types";
-import MoveCard from "./MoveCard";
+import usePokemon from "../../hooks/usePokemon";
+import { PokemonMove } from "../../types";
+import MoveCard from "../MoveCard";
+import "./PokemonMoves.css";
 
 interface Props {
   slug: string;
@@ -16,7 +17,7 @@ const filterBy = (method: string) => {
   };
 };
 
-const PokemonMovesCard = ({ slug }: Props) => {
+const PokemonMoves = ({ slug }: Props) => {
   const { data } = usePokemon({ slug });
   const [filter, setFilter] = useState("level-up");
 
@@ -72,4 +73,4 @@ const PokemonMovesCard = ({ slug }: Props) => {
   );
 };
 
-export default PokemonMovesCard;
+export default PokemonMoves;
