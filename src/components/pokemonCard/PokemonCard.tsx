@@ -22,7 +22,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   const pokemonFormName = usePokemonFormName({ slug });
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
+  const imgUrl = pokemon?.id ? `${artworkBaseURL}${pokemon.id}.png` : "";
   const color = usePokemonColor({ slug});
 
   if (cardRef.current && color) {

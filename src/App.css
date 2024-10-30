@@ -156,13 +156,14 @@ body {
   .pokemon-details .pokemon-info-card {
     width: 100vw;
   }
-.pokemon-details .pokemon-info-card .pokemon-image-background {
-  margin-right: 0;
-  height: 12rem;
-  width: 12rem;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
+  .pokemon-details .pokemon-info-card .pokemon-image-background {
+    margin-top: 0.5rem;
+    margin-right: 0;
+    height: 12rem;
+    width: 12rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }
 
 .pokemon-details-outlet {

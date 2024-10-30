@@ -31,7 +31,7 @@ const PokemonInfoCard = ({ slug }: Props) => {
   const { data: habitat } = useResourceName(data?.habitat);
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const imgUrl = `${artworkBaseURL}${pokemon?.id}.png`;
+  const imgUrl = pokemon?.id ? `${artworkBaseURL}${pokemon.id}.png` : "";
 
   if (cardRef.current && color) {
     cardRef.current.style.backgroundColor = color;

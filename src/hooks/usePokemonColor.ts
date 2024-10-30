@@ -11,7 +11,7 @@ const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 const usePokemonColor = ({ slug }: Props) => {
   const { data } = usePokemon({ slug });
   const [pokemonColor, setPokemonColor] = useState<string | null>(null);
-  const imgUrl = `${artworkBaseURL}${data?.id}.png`;
+  const imgUrl = data?.id ? `${artworkBaseURL}${data.id}.png` : "";
 
   const { color } = useColorThief(imgUrl);
 
