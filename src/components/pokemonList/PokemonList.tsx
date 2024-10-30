@@ -36,7 +36,7 @@ const PokemonList = () => {
             <PokemonCard
               key={pokemon.name}
               slug={pokemon.name}
-              onClick={() => navigate(`/pokemon/${pokemon.name}`)}
+              onClick={() => navigate(`/pokemon/${pokemon.name}/stats`)}
             />
           ))}
         </React.Fragment>

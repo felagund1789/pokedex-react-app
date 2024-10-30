@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import usePokemon from "../hooks/usePokemon";
+import usePokemonColor from "../hooks/usePokemonColor";
 import StatBar from "./statBar/StatBar";
 import StatPanel from "./statPanel/StatPanel";
 
 interface Props {
   slug: string;
-  color?: string;
 }
 
 const kilogramsToPounds = (kilograms: number) => kilograms * 2.20462;
@@ -16,8 +16,9 @@ const metersToFeetAndInches = (meters: number) => {
   return `${feet}' ${remainingInches.toFixed(0)}"`;
 }
 
-const PokemonStatsCard = ({ slug, color }: Props) => {
+const PokemonStatsCard = ({ slug }: Props) => {
   const { data } = usePokemon({ slug });
+  const color = usePokemonColor({ slug });
   const height = `${data?.height ? data?.height / 10 : 0}m`;
   const weight = `${data?.weight ? data?.weight / 10 : 0}kg`;
   const heightUS = `${data?.height ? metersToFeetAndInches(data?.height / 10) : 0}`;
