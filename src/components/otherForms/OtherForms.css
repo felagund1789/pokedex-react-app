@@ -1,0 +1,34 @@
+.other-forms {
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--card-border-radius);
+}
+@media (max-width: 70rem) {
+  .other-forms {
+    width: 100vw;
+    border: 0;
+    border-radius: 0;
+    flex-shrink: 0;
+  }
+}
+.other-forms h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+.other-forms h2.title {
+  color: var(--text-color);
+}
+.other-forms-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
+}

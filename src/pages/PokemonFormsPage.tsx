@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import OtherFormsCard from "../components/OtherFormsCard";
+import OtherForms from "../components/otherForms/OtherForms";
 import "../App.css";
 
 function PokemonFormsPage() {
@@ -14,7 +14,7 @@ function PokemonFormsPage() {
     return null;
   }
 
-  return <OtherFormsCard slug={name} />;
+  return <OtherForms slug={name} />;
 }
 
 export default PokemonFormsPage;

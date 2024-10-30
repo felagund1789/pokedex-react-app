@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import usePokemonSpecies from "../hooks/usePokemonSpecies";
-import PokemonCard from "./pokemonCard/PokemonCard";
+import usePokemonSpecies from "../../hooks/usePokemonSpecies";
+import PokemonCard from "../pokemonCard/PokemonCard";
+import "./OtherForms.css";
 
 interface Props {
   slug: string;
 }
 
-const OtherFormsCard = ({ slug }: Props) => {
+const OtherForms = ({ slug }: Props) => {
   const { data } = usePokemonSpecies({ slug });
   const navigate = useNavigate();
 
@@ -30,4 +31,4 @@ const OtherFormsCard = ({ slug }: Props) => {
   );
 };
 
-export default OtherFormsCard;
+export default OtherForms;
