@@ -4,9 +4,8 @@ import "../App.css";
 import usePokemonColor from "../hooks/usePokemonColor";
 import usePokemonSpecies from "../hooks/usePokemonSpecies";
 import OtherFormsCard from "./OtherFormsCard";
-import PokemonHeaderCard from "./PokemonHeaderCard";
+import PokemonInfoCard from "./pokemonInfoCard/PokemonInfoCard";
 import PokemonMovesCard from "./PokemonMovesCard";
-import PokemonSpeciesCard from "./PokemonSpeciesCard";
 import PokemonStatsCard from "./PokemonStatsCard";
 
 function PokemonDetails() {
@@ -20,10 +19,7 @@ function PokemonDetails() {
 
   return (
     <div className="pokemon-details">
-      <div className="merge">
-        <PokemonHeaderCard slug={name!} color={color!} />
-        <PokemonSpeciesCard slug={name!} color={color!} />
-      </div>
+      <PokemonInfoCard slug={name!} color={color!} />
       <PokemonStatsCard slug={name!} color={color!} />
       {species?.varieties && species?.varieties.length > 1 ? (
         <OtherFormsCard slug={name!} />
