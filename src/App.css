@@ -123,21 +123,52 @@ body {
 .pokemon-details {
   padding: 0;
   display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, 36rem);
-  gap: 1rem;
-  padding: 1rem;
+  grid-template-areas: "info details";
+  grid-template-columns: 36rem 1fr;
+  grid-template-rows: 1fr;
+  justify-content: start;
+  height: calc(100vh - 4rem);
 }
-@media (max-width: 36rem) {
+@media (max-width: 70rem) {
   .pokemon-details {
     display: flex;
     flex-direction: column;
     padding: 0;
     gap: 0;
+    height: auto;
+  }
+}
+.pokemon-details .pokemon-info-card {
+  grid-area: "info";
+  border-radius: 0;
+  height: auto;
+}
+.pokemon-details .pokemon-info-card .pokemon-image-background {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+@media (max-width: 70rem) {
+  .pokemon-details .pokemon-info-card {
+    width: 100vw;
   }
 }
 
-@media (max-width: 36rem) {
+.pokemon-details-outlet {
+  grid-area: "details";
+  display: flex;
+  padding: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+@media (max-width: 70rem) {
+  .pokemon-details-outlet {
+    padding: 0;
+    height: 100%;
+  }
+}
+
+@media (max-width: 70rem) {
   .pokemon-details .pokemon-stats,
   .pokemon-details .other-forms,
   .pokemon-details .pokemon-moves {
@@ -152,7 +183,7 @@ body {
   padding: 1rem;
   box-sizing: border-box;
   font-size: 1.5rem;
-  width: min(calc(100vw - 2rem), 36rem);
+  width: 100%;
   display: flex;
   border-radius: var(--card-border-radius);
   flex-direction: column;

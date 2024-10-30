@@ -11,16 +11,17 @@ import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import StatPanel from "../statPanel/StatPanel";
 import "./PokemonInfoCard.css";
+import usePokemonColor from "../../hooks/usePokemonColor";
 
 interface Props {
   slug: string;
-  color?: string;
 }
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
-const PokemonInfoCard = ({ slug, color }: Props) => {
+const PokemonInfoCard = ({ slug }: Props) => {
   const { data: pokemon } = usePokemon({ slug });
+  const color = usePokemonColor({ slug });
   const { data } = usePokemonSpecies({ slug });
   const pokedexNumber = usePokedexNumber({ slug });
   const pokemonName = usePokemonName({ slug });
