@@ -5,7 +5,7 @@ import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonFormName from "../../hooks/usePokemonFormName";
 import usePokemonName from "../../hooks/usePokemonName";
 import PokemonNumber from "../PokemonNumber";
-import PokemonType from "../PokemonType";
+import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonCard.css";
 
 interface PokemonCardProps {

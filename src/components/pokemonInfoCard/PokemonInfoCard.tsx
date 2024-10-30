@@ -7,10 +7,10 @@ import usePokemonGenera from "../../hooks/usePokemonGenera";
 import usePokemonName from "../../hooks/usePokemonName";
 import usePokemonSpecies from "../../hooks/usePokemonSpecies";
 import useResourceName from "../../hooks/useResourceName";
-import "./PokemonInfoCard.css";
 import PokemonNumber from "../PokemonNumber";
-import PokemonType from "../PokemonType";
+import PokemonType from "../pokemonType/PokemonType";
 import StatPanel from "../StatPanel";
+import "./PokemonInfoCard.css";
 
 interface Props {
   slug: string;
