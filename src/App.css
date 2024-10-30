@@ -144,14 +144,25 @@ body {
   height: auto;
 }
 .pokemon-details .pokemon-info-card .pokemon-image-background {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  height: 12rem;
+  width: 12rem;
+  border-top-right-radius: 20rem;
+  border-bottom-right-radius: 20rem;
 }
 
 @media (max-width: 70rem) {
   .pokemon-details .pokemon-info-card {
     width: 100vw;
   }
+.pokemon-details .pokemon-info-card .pokemon-image-background {
+  margin-right: 0;
+  height: 12rem;
+  width: 12rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
 }
 
 .pokemon-details-outlet {
@@ -178,13 +189,14 @@ body {
   width: 100%;
 }
 .pokemon-details-buttons a {
-  color: white;
-  background-color: #454545;
+  color: var(--dark-text-color);
+  background-color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   height: 2rem;
   font-size: 1.25rem;
   padding: 0.5rem 1rem;
   border-radius: var(--card-border-radius);
+  font-weight: bold;
   flex-grow: 1;
 }
 

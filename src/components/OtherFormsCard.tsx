@@ -21,7 +21,7 @@ const OtherFormsCard = ({ slug }: Props) => {
               key={index}
               slug={pokemonVariety.pokemon.name}
               onClick={() =>
-                navigate(`/pokemon/${pokemonVariety.pokemon.name}`)
+                navigate(`/pokemon/${pokemonVariety.pokemon.name}/stats`)
               }
             />
           ))}
