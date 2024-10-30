@@ -24,13 +24,6 @@
   --type-steel: #417d9a;
   --type-water: #4a90da;
 
-  --stat-hp: #d53947;
-  --stat-attack: #fda827;
-  --stat-defence: #0091eb;
-  --stat-special-attack: #378d42;
-  --stat-special-defence: #4b067f;
-  --stat-speed: #8fb0c6;
-
   --header-color: #ff4949;
   --bg-color: #ffffff;
   --text-color: #ffffff;
@@ -199,7 +192,6 @@ header.collapsed .widget {
   }
 }
 
-.pokemon-species,
 .pokemon-stats {
   padding: 1rem;
   box-sizing: border-box;
@@ -210,7 +202,6 @@ header.collapsed .widget {
   flex-direction: column;
 }
 
-.pokemon-species h2,
 .pokemon-stats h2,
 .other-forms h2,
 .pokemon-moves h2 {
@@ -218,7 +209,7 @@ header.collapsed .widget {
   margin-bottom: 0.5rem;
   font-size: 2rem;
 }
-.pokemon-species .info,
+
 .pokemon-stats .info {
   display: grid;
   color: var(--dark-text-color);
@@ -231,59 +222,6 @@ header.collapsed .widget {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 1rem 0;
-}
-
-.stat-panel h4 {
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-  text-transform: capitalize;
-}
-.stat-panel p {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  font-style: italic;
-}
-
-.stat-bar {
-  margin: 0.125rem;
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: start;
-}
-
-.stat-bar h4,
-.stat-bar p {
-  margin: 0;
-  margin-right: 1rem;
-}
-.stat-bar h4 {
-  width: 12.5rem;
-  text-align: right;
-}
-.stat-bar p {
-  transition: all 3s;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: var(--card-border-radius);
-}
-.stat-bar.hp p {
-  background-color: var(--stat-hp);
-}
-.stat-bar.attack p {
-  background-color: var(--stat-attack);
-}
-.stat-bar.defense p {
-  background-color: var(--stat-defence);
-}
-.stat-bar.special-attack p {
-  background-color: var(--stat-special-attack);
-}
-.stat-bar.special-defense p {
-  background-color: var(--stat-special-defence);
-}
-.stat-bar.speed p {
-  background-color: var(--stat-speed);
 }
 
 .other-forms {

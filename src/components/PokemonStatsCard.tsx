@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import usePokemon from "../hooks/usePokemon";
-import StatBar from "./StatBar";
-import StatPanel from "./StatPanel";
+import StatBar from "./statBar/StatBar";
+import StatPanel from "./statPanel/StatPanel";
 
 interface Props {
   slug: string;

@@ -9,7 +9,7 @@ import usePokemonSpecies from "../../hooks/usePokemonSpecies";
 import useResourceName from "../../hooks/useResourceName";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
-import StatPanel from "../StatPanel";
+import StatPanel from "../statPanel/StatPanel";
 import "./PokemonInfoCard.css";
 
 interface Props {

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import "./StatPanel.css";
 
 interface Props {
   title: string;

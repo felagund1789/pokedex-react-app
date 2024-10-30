@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import useResourceName from "../hooks/useResourceName";
-import { PokemonStat } from "../types";
+import useResourceName from "../../hooks/useResourceName";
+import { PokemonStat } from "../../types";
+import "./StatBar.css";
 
 interface Props {
   pokemonStat: PokemonStat;
