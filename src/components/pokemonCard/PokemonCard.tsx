@@ -1,11 +1,12 @@
 import { useRef } from "react";
-import usePokedexNumber from "../hooks/usePokedexNumber";
-import usePokemon from "../hooks/usePokemon";
-import usePokemonColor from "../hooks/usePokemonColor";
-import usePokemonFormName from "../hooks/usePokemonFormName";
-import usePokemonName from "../hooks/usePokemonName";
-import PokemonNumber from "./PokemonNumber";
-import PokemonType from "./PokemonType";
+import usePokedexNumber from "../../hooks/usePokedexNumber";
+import usePokemon from "../../hooks/usePokemon";
+import usePokemonColor from "../../hooks/usePokemonColor";
+import usePokemonFormName from "../../hooks/usePokemonFormName";
+import usePokemonName from "../../hooks/usePokemonName";
+import PokemonNumber from "../PokemonNumber";
+import PokemonType from "../PokemonType";
+import "./PokemonCard.css";
 
 interface PokemonCardProps {
   slug: string;
@@ -41,7 +42,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
         />
       </div>
       <div className="pokemon-title">
-        <div>
+        <div className="types">
           {pokemon?.types.map((pokemonType, index) => {
             return <PokemonType key={index}>{pokemonType.type.name}</PokemonType>;
           })}

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import usePokemonSpecies from "../hooks/usePokemonSpecies";
-import PokemonCard from "./PokemonCard";
+import PokemonCard from "./pokemonCard/PokemonCard";
 
 interface Props {
   slug: string;

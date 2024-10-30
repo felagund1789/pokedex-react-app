@@ -1,4 +1,5 @@
-import PokemonNumber from "./PokemonNumber";
+import PokemonNumber from "../PokemonNumber";
+import "./PokemonCard.css";
 
 const PokemonCardSkeleton = () => {
   return (
