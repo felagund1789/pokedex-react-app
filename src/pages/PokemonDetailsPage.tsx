@@ -20,9 +20,27 @@ function PokemonDetailsPage() {
     <div className="pokemon-details" style={{ backgroundColor: `${color}` }}>
       <PokemonInfoCard slug={name} />
       <div className="pokemon-details-buttons">
-        <NavLink to={`/pokemon/${name}/stats`}>Stats</NavLink>
-        <NavLink to={`/pokemon/${name}/forms`}>Forms</NavLink>
-        <NavLink to={`/pokemon/${name}/moves`}>Moves</NavLink>
+        <NavLink
+          to={`/pokemon/${name}/stats`}
+          preventScrollReset={true}
+          replace={true}
+        >
+          Stats
+        </NavLink>
+        <NavLink
+          to={`/pokemon/${name}/forms`}
+          preventScrollReset={true}
+          replace={true}
+        >
+          Forms
+        </NavLink>
+        <NavLink
+          to={`/pokemon/${name}/moves`}
+          preventScrollReset={true}
+          replace={true}
+        >
+          Moves
+        </NavLink>
       </div>
       <div className="pokemon-details-outlet">
         <Outlet />
