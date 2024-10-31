@@ -8,8 +8,7 @@
   border-radius: var(--card-border-radius);
 }
 @media (max-width: 70rem) {
-  .pokemon-details .pokemon-stats,
-  .pokemon-details .pokemon-moves {
+  .pokemon-moves {
     width: 100vw;
     border: 0;
     border-radius: 0;

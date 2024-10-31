@@ -41,6 +41,13 @@ function PokemonDetailsPage() {
         >
           Moves
         </NavLink>
+        <NavLink
+          to={`/pokemon/${name}/evolution`}
+          preventScrollReset={true}
+          replace={true}
+        >
+          Evolution
+        </NavLink>
       </div>
       <div className="pokemon-details-outlet">
         <Outlet />

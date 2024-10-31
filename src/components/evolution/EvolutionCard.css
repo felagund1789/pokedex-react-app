@@ -1,0 +1,30 @@
+.evolution-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+@media (max-width: 70rem) {
+  .evolution-card {
+    flex-direction: column;
+  }
+}
+.evolution-card .evolves-from,
+.evolution-card .evolves-to {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 70rem) {
+  .evolution-card .evolves-from,
+  .evolution-card .evolves-to {
+    flex-direction: row;
+  }
+}

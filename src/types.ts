@@ -118,3 +118,36 @@ export interface PokemonForm {
     language: APIResource;
   }[];
 }
+
+export interface EvolutionDetails {
+  gender: number;
+  held_item: APIResource;
+  item: APIResource;
+  known_move_type: APIResource;
+  location: APIResource;
+  min_affection: number;
+  min_beauty: number;
+  min_happiness: number;
+  min_level: number;
+  needs_overworld_rain: boolean;
+  party_species: APIResource;
+  party_type: APIResource;
+  relative_physical_stats: number;
+  time_of_day: string;
+  trade_species: APIResource;
+  trigger: APIResource;
+  turn_upside_down: boolean;
+}
+
+export interface Evolution {
+  evolution_details: EvolutionDetails[];
+  evolves_to: Evolution[];
+  is_baby: boolean;
+  species: APIResource;
+}
+
+export interface EvolutionChain {
+  id: number;
+  baby_trigger_item: APIResource;
+  chain: Evolution;
+}
