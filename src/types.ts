@@ -123,6 +123,7 @@ export interface EvolutionDetails {
   gender: number;
   held_item: APIResource;
   item: APIResource;
+  known_move: APIResource;
   known_move_type: APIResource;
   location: APIResource;
   min_affection: number;

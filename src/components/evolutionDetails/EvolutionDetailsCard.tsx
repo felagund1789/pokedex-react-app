@@ -11,7 +11,8 @@ const EvolutionDetailsCard = ({ details }: Props) => {
   const { data: location } = useResourceName(details.location);
   const { data: heldItem } = useResourceName(details.held_item);
   const { data: item } = useResourceName(details.item);
-  const { data: knownMove } = useResourceName(details.known_move_type);
+  const { data: knownMove } = useResourceName(details.known_move);
+  const { data: knownMoveType } = useResourceName(details.known_move_type);
   const partySpecies = usePokemonName({ slug: details.party_species?.name });
   const { data: partyType } = useResourceName(details.party_type);
 
@@ -26,7 +27,8 @@ const EvolutionDetailsCard = ({ details }: Props) => {
       {details.trigger && details.trigger.name === "level-up" && <div className="level-up">level up</div>}
       {details.trigger && details.trigger.name === "trade" && <div className="trade">trade</div>}
       {details.held_item && <div className="holding">holding {heldItem}</div>}
-      {details.known_move_type && <div className="knowing">knowing a move of type {knownMove}</div>}
+      {details.known_move && <div className="knowing-move">knowing {knownMove}</div>}
+      {details.known_move_type && <div className="knowing-move-type">knowing a move of type {knownMoveType}</div>}
       {details.location && <div className="location">at {location}</div>}
       {details.min_affection && <div className="affection">having affection {details.min_affection}</div>}
       {details.min_beauty && <div className="beauty">having beauty {details.min_beauty}</div>}
