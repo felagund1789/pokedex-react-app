@@ -19,9 +19,14 @@ const EvolutionCard = ({ evolvesTo, children }: Props) => {
         <div className="evolves-to">
           {evolvesTo.map((evolution, index) => (
             <div className="evolution-transition">
-              {evolution.evolution_details.map((details, i) => (
-                <EvolutionDetailsCard key={i} details={details} />
-              ))}
+              {evolution.evolution_details
+                .slice(
+                  evolution.evolution_details.length - 1,
+                  evolution.evolution_details.length
+                )
+                .map((details, i) => (
+                  <EvolutionDetailsCard key={i} details={details} />
+                ))}
               <EvolutionCard key={index} evolvesTo={evolution.evolves_to}>
                 <PokemonCard
                   slug={evolution.species.name}
