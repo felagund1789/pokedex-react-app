@@ -26,6 +26,10 @@ const EvolutionDetailsCard = ({ details }: Props) => {
       {details.trigger && details.trigger.name === "use-item" && <div className="use-item">use {item}</div>}
       {details.trigger && details.trigger.name === "level-up" && <div className="level-up">level up</div>}
       {details.trigger && details.trigger.name === "trade" && <div className="trade">trade</div>}
+      {details.trigger && details.trigger.name === "three-critical-hits" && <div className="three-critical-hits">Land three critical hits in a battle</div>}
+      {details.relative_physical_stats === 0 && <div className="attack-eq-defense">having Attack = Defense</div>}
+      {details.relative_physical_stats === 1 && <div className="attack-eq-defense">having Attack &gt; Defense</div>}
+      {details.relative_physical_stats === -1 && <div className="attack-eq-defense">having Attack &lt; Defense</div>}
       {details.held_item && <div className="holding">holding {heldItem}</div>}
       {details.known_move && <div className="knowing-move">knowing {knownMove}</div>}
       {details.known_move_type && <div className="knowing-move-type">knowing a move of type {knownMoveType}</div>}
