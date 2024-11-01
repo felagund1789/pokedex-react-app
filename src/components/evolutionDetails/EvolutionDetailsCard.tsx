@@ -22,16 +22,19 @@ const EvolutionDetailsCard = ({ details }: Props) => {
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white" className="arrow">
         <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
       </svg>
+      {details.trigger && details.trigger.name === "use-item" && <div className="use-item">use {item}</div>}
+      {details.trigger && details.trigger.name === "level-up" && <div className="level-up">level up</div>}
+      {details.trigger && details.trigger.name === "trade" && <div className="trade">trade</div>}
       {details.held_item && <div className="holding">holding {heldItem}</div>}
-      {details.known_move_type && <div className="knowing">knowing {knownMove}</div>}
+      {details.known_move_type && <div className="knowing">knowing a move of type {knownMove}</div>}
       {details.location && <div className="location">at {location}</div>}
-      {details.min_affection && <div className="affection">affection {details.min_affection}</div>}
-      {details.min_beauty && <div className="beauty">beauty {details.min_beauty}</div>}
-      {details.min_happiness && <div className="happiness">happiness {details.min_happiness}</div>}
-      {details.min_level && <div className="level">level {details.min_level}</div>}
+      {details.min_affection && <div className="affection">having affection {details.min_affection}</div>}
+      {details.min_beauty && <div className="beauty">having beauty {details.min_beauty}</div>}
+      {details.min_happiness && <div className="happiness">having happiness {details.min_happiness}</div>}
+      {details.min_level && <div className="level">{details.min_level}</div>}
       {details.party_species && <div className="party-species">having {partySpecies} in party</div>}
       {details.party_type && <div className="party-type">having Pokémon of type {partyType} in party</div>}
-      {details.trigger && details.trigger.name === "use-item" && <div className="use-item">use {item}</div>}
+      {details.time_of_day && <div className="time">during {details.time_of_day}</div>}
     </div>
   );
 };
