@@ -15,12 +15,10 @@
     flex-shrink: 0;
   }
 }
-.evolution-chain h2 {
+.evolution-chain h2.title {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: 2rem;
-}
-.evolution-chain h2.title {
   color: var(--text-color);
 }
 .evolution-chain .evolution {
