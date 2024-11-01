@@ -14,9 +14,22 @@
   }
 }
 @media (max-width: 36rem) {
+  .evolution-card .pokemon-card {
+    width: 12rem;
+  }
+  .evolution-card .pokemon-card .pokemon-image-background {
+    width: 10rem;
+  }
   .evolution-card .pokemon-card .pokemon-image-background img {
     width: 8rem;
     height: 8rem;
+  }
+  .evolution-card .pokemon-card .types {
+    font-size: 0.675rem;
+  }
+  .evolution-card .pokemon-card img {
+    width: 1rem;
+    height: 1rem;
   }
 }
 .evolution-card .evolves-from,
