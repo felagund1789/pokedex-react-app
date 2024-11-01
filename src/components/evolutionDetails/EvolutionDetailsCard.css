@@ -1,0 +1,10 @@
+.evolution-details {
+  margin: 0;
+  padding: 0;
+  font-size: 0.75rem;
+}
+@media (max-width: 70rem) {
+  .evolution-details .arrow {
+    transform: rotate(90deg);
+  }
+}

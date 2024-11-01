@@ -49,3 +49,17 @@
     flex-wrap: wrap;
   }
 }
+.evolution-card .evolution-transition {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 70rem) {
+  .evolution-card .evolution-transition {
+    flex-direction: column;
+  }
+}
