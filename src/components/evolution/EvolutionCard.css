@@ -12,6 +12,14 @@
   .evolution-card {
     flex-direction: column;
   }
+}
+@media (max-width: 36rem) {
+  .evolution-card .pokemon-card {
+    width: 12rem;
+  }
+  .evolution-card .pokemon-card .pokemon-image-background {
+    width: 10rem;
+  }
   .evolution-card .pokemon-card .pokemon-image-background img {
     width: 8rem;
     height: 8rem;
