@@ -27,6 +27,9 @@ class ApiClient<T> {
   }
 
   async get(id: number | string, config?: AxiosRequestConfig) {
+    if (!id) {
+      throw new Error("Id is required");
+    }
     return axiosInstance
       .get<T>(`${this.endpoint}/${id}`, config)
       .then((res) => res.data);
