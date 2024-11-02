@@ -16,8 +16,6 @@ const EvolutionDetailsCard = ({ details }: Props) => {
   const partySpecies = usePokemonName({ slug: details.party_species?.name });
   const { data: partyType } = useResourceName(details.party_type);
 
-  console.log(location, heldItem, item);
-
   return (
     <div className="evolution-details">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white" className="arrow">

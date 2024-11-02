@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Evolution } from "../../types";
+import { findSimplestEvolution } from "../../utils";
 import EvolutionDetailsCard from "../evolutionDetails/EvolutionDetailsCard";
 import PokemonCard from "../pokemonCard/PokemonCard";
 import "./EvolutionCard.css";
@@ -18,16 +19,13 @@ const EvolutionCard = ({ evolvesTo, children }: Props) => {
       {evolvesTo && evolvesTo.length > 0 && (
         <div className="evolves-to">
           {evolvesTo.map((evolution, index) => (
-            <div className="evolution-transition">
+            <div key={index} className="evolution-transition">
               {evolution.evolution_details
-                .slice(
-                  evolution.evolution_details.length - 1,
-                  evolution.evolution_details.length
-                )
+                .reduce(findSimplestEvolution, [])
                 .map((details, i) => (
                   <EvolutionDetailsCard key={i} details={details} />
                 ))}
-              <EvolutionCard key={index} evolvesTo={evolution.evolves_to}>
+              <EvolutionCard evolvesTo={evolution.evolves_to}>
                 <PokemonCard
                   slug={evolution.species.name}
                   onClick={() =>
