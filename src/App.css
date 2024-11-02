@@ -200,6 +200,9 @@ body {
   font-weight: bold;
   flex-grow: 1;
 }
+.pokemon-details-buttons a.active {
+  background-color: rgba(255, 255, 255, 0.9);;
+}
 
 @media (max-width: 70rem) {
   .pokemon-details .pokemon-stats {

@@ -28,11 +28,11 @@ function PokemonDetailsPage() {
           Stats
         </NavLink>
         <NavLink
-          to={`/pokemon/${name}/forms`}
+          to={`/pokemon/${name}/evolution`}
           preventScrollReset={true}
           replace={true}
         >
-          Forms
+          Evolution
         </NavLink>
         <NavLink
           to={`/pokemon/${name}/moves`}
@@ -42,11 +42,11 @@ function PokemonDetailsPage() {
           Moves
         </NavLink>
         <NavLink
-          to={`/pokemon/${name}/evolution`}
+          to={`/pokemon/${name}/forms`}
           preventScrollReset={true}
           replace={true}
         >
-          Evolution
+          Forms
         </NavLink>
       </div>
       <div className="pokemon-details-outlet">
