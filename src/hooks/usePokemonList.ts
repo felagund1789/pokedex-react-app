@@ -15,7 +15,7 @@ const usePokemonList = (search: string) => {
           })
           .then((res) => {
             const results = res.results.filter((pokemon) =>
-              pokemon.name.includes(search.trim())
+              pokemon.name.includes(search.toLowerCase().trim())
             );
             return {
               count: results.length,
