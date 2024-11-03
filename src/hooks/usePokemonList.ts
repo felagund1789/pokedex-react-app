@@ -4,13 +4,31 @@ import { APIResource } from "../types";
 
 const apiClient = new ApiClient<APIResource>("/pokemon");
 
-const usePokemonList = () => {
+const usePokemonList = (search: string) => {
   return useInfiniteQuery<FetchResponse<APIResource>, Error>({
-    queryKey: ["pokemon"],
+    queryKey: ["pokemon-list", search],
     queryFn: ({ pageParam }) => {
-      return apiClient.getAll({
-        params: { offset: (Number(pageParam) - 1) * 20 },
-      });
+      if (search) {
+        return apiClient
+          .getAll({
+            params: { offset: 0, limit: 10000 },
+          })
+          .then((res) => {
+            const results = res.results.filter((pokemon) =>
+              pokemon.name.includes(search.trim())
+            );
+            return {
+              count: results.length,
+              next: null,
+              previous: null,
+              results,
+            };
+          });
+      } else {
+        return apiClient.getAll({
+          params: { offset: (Number(pageParam) - 1) * 20 },
+        });
+      }
     },
     getNextPageParam: (lastPage, allPages) =>
       lastPage.next ? allPages.length + 1 : undefined,
