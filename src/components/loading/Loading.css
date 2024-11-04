@@ -1,0 +1,32 @@
+.loading-bar {
+  position: sticky;
+  top: 4rem;
+  z-index: 500;
+  box-sizing: border-box;
+  width: 100%;
+  height: 0.5rem;
+  background-color: transparent;
+}
+.loading-bar.loading {
+  background: linear-gradient(
+    to right,
+    #e4e149,
+    #22af29,
+    #254dbb,
+    #c525bd,
+    #c92e2e,
+    #c99016,
+    #e4e149
+  );
+  background-size: 200% 100%; /* Larger background to create the effect of movement */
+  animation: infiniteLoading 2s linear infinite; /* Infinite loading animation */
+}
+
+@keyframes infiniteLoading {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

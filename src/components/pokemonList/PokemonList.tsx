@@ -6,11 +6,12 @@ import PokemonCard from "../pokemonCard/PokemonCard";
 import PokemonCardSkeleton from "../pokemonCard/PokemonCardSkeleton";
 import SearchInput from "../searchInput/SearchInput";
 import "./PokemonList.css";
+import Loading from "../loading/Loading";
 
 const PokemonList = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  const { data, isLoading, error, hasNextPage, fetchNextPage } =
+  const { data, isLoading, isFetching, error, hasNextPage, fetchNextPage } =
     usePokemonList(searchText);
 
   if (error) {
@@ -22,6 +23,7 @@ const PokemonList = () => {
 
   return (
     <>
+      <Loading isLoading={isLoading || isFetching} />
       <SearchInput onSearch={(text) => setSearchText(text)} />
       <InfiniteScroll
         className="pokemon-list"
