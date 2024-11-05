@@ -1,15 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import pokemonLogo from "../../assets/logo.png";
-import useOffest from "../../hooks/useOffset";
+import useOffset from "../../hooks/useOffset";
 import "./Header.css";
 
 const Header = () => {
-  const offeset = useOffest();
+  const offset = useOffset();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   return (
-    <header className={pathname === "/" && offeset === 0 ? "" : "collapsed"}>
+    <header className={pathname === "/" && offset === 0 ? "" : "collapsed"}>
       {pathname !== "/" ? (
         <div className="widget" onClick={() => navigate(-1)}>
           <svg

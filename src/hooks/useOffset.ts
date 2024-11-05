@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function useOffest() {
+function useOffset() {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -14,4 +14,4 @@ function useOffest() {
   return offset;
 }
 
-export default useOffest;
+export default useOffset;
