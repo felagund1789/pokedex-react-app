@@ -1,17 +1,12 @@
-import { useRef } from "react";
-import usePokedexNumber from "../../hooks/usePokedexNumber";
-import usePokemon from "../../hooks/usePokemon";
+import { Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
+import { useEffect, useRef, useState } from "react";
+import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonDescription from "../../hooks/usePokemonDescription";
-import usePokemonFormName from "../../hooks/usePokemonFormName";
-import usePokemonGenera from "../../hooks/usePokemonGenera";
-import usePokemonName from "../../hooks/usePokemonName";
-import usePokemonSpecies from "../../hooks/usePokemonSpecies";
-import useResourceName from "../../hooks/useResourceName";
+import pokedex from "../../services/pokedexService";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import StatPanel from "../statPanel/StatPanel";
 import "./PokemonInfoCard.css";
-import usePokemonColor from "../../hooks/usePokemonColor";
 
 interface Props {
   slug: string;
@@ -20,15 +15,31 @@ interface Props {
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
 const PokemonInfoCard = ({ slug }: Props) => {
-  const { data: pokemon } = usePokemon({ slug });
+  const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
+  const [species, setSpecies] = useState<PokemonSpecies>({} as PokemonSpecies);
+  const [pokemonGenera, setPokemonGenera] = useState<string>();
+  const [pokedexNumber, setPokedexNumber] = useState<number>();
+  const [pokemonName, setPokemonName] = useState<string>();
+  const [pokemonFormName, setPokemonFormName] = useState<string>();
+  const [habitat, setHabitat] = useState<string>();
+  
+  useEffect(() => {
+    pokedex.getPokemonByName(slug).then(async (data) => {
+      const species: PokemonSpecies = await pokedex.resource(data.species.url);
+      const form: PokemonForm = await pokedex.getPokemonFormByName(slug);
+      const habitat = species?.habitat ? await pokedex.resource(species?.habitat.url) : undefined;
+      setPokemon(data);
+      setSpecies(species);
+      setPokemonGenera(species.genera.find((g) => g.language.name === "en")?.genus);
+      setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
+      setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
+      setPokemonFormName(form.names.find((f) => f.language.name === "en")?.name);
+      setHabitat(habitat?.name);
+    });
+  }, [slug]);
+  
   const color = usePokemonColor({ slug });
-  const { data } = usePokemonSpecies({ slug });
-  const pokedexNumber = usePokedexNumber({ slug });
-  const pokemonName = usePokemonName({ slug });
-  const pokemonFormName = usePokemonFormName({ slug });
-  const pokemonGenera = usePokemonGenera({ slug });
-  const pokemonDescription = usePokemonDescription({ slug });
-  const { data: habitat } = useResourceName(data?.habitat);
+  const pokemonDescription = usePokemonDescription({ species });
 
   const cardRef = useRef<HTMLDivElement>(null);
   const imgUrl = pokemon?.id ? `${artworkBaseURL}${pokemon.id}.png` : "";
@@ -49,7 +60,7 @@ const PokemonInfoCard = ({ slug }: Props) => {
             <h3>{pokemonGenera}</h3>
           </div>
           <div className="pokemon-types">
-            {pokemon?.types.map((pokemonType, index) => {
+            {pokemon?.types?.map((pokemonType, index) => {
               return (
                 <PokemonType key={index}>{pokemonType.type.name}</PokemonType>
               );
@@ -67,14 +78,14 @@ const PokemonInfoCard = ({ slug }: Props) => {
             {pokemon.base_experience}
           </StatPanel>
         )}
-        {data?.base_happiness && (
-          <StatPanel title="Base Happiness">{data.base_happiness}</StatPanel>
+        {species?.base_happiness && (
+          <StatPanel title="Base Happiness">{species.base_happiness}</StatPanel>
         )}
-        {data?.capture_rate && (
-          <StatPanel title="Capture Rate">{data.capture_rate}</StatPanel>
+        {species?.capture_rate && (
+          <StatPanel title="Capture Rate">{species.capture_rate}</StatPanel>
         )}
-        {data?.hatch_counter && (
-          <StatPanel title="Hatch Counter">{data.hatch_counter}</StatPanel>
+        {species?.hatch_counter && (
+          <StatPanel title="Hatch Counter">{species.hatch_counter}</StatPanel>
         )}
         {habitat && <StatPanel title="Habitat">{habitat}</StatPanel>}
       </div>

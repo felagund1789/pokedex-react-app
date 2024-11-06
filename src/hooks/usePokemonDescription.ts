@@ -1,15 +1,14 @@
-import usePokemonSpecies from "./usePokemonSpecies";
+import { PokemonSpecies } from "pokeapi-js-wrapper";
 
 interface Props {
-  slug: string;
+  species?: PokemonSpecies;
 }
 
-const usePokemonDescription = ({ slug }: Props) => {
+const usePokemonDescription = ({ species }: Props) => {
   const language = "en";
   const version = null;
-  const { data } = usePokemonSpecies({ slug });
 
-  const texts = data?.flavor_text_entries.filter(
+  const texts = species?.flavor_text_entries?.filter(
     (entry) => entry.language.name === language
   );
 
