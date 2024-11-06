@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { APIResource } from "../types";
+import { NamedAPIResource } from "pokeapi-js-wrapper";
 
-const useResourceName = (resource?: APIResource) => {
+const useResourceName = (resource?: NamedAPIResource | null) => {
   const language = "en";
   const capitalize = (name: string) => name .split("-")
       .map((w: string) => `${w.charAt(0).toUpperCase()}${w.substring(1)}`)
@@ -15,7 +15,7 @@ const useResourceName = (resource?: APIResource) => {
         .then((data) =>
           data.names && data.names.length > 0 ?
           data.names.find(
-            (name: { name: string; language: APIResource }) =>
+            (name: { name: string; language: NamedAPIResource }) =>
               name.language.name === language
           ).name : capitalize(data.name)
         ),

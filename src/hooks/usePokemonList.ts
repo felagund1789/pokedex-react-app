@@ -1,17 +1,16 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import ApiClient, { FetchResponse } from "../services/apiClient";
-import { APIResource } from "../types";
-
-const apiClient = new ApiClient<APIResource>("/pokemon");
+import { NamedAPIResourceList } from "pokeapi-js-wrapper";
+import pokedex from "../services/pokedexService";
 
 const usePokemonList = (search: string) => {
-  return useInfiniteQuery<FetchResponse<APIResource>, Error>({
+  return useInfiniteQuery<NamedAPIResourceList, Error>({
     queryKey: ["pokemon-list", search],
     queryFn: ({ pageParam }) => {
       if (search) {
-        return apiClient
-          .getAll({
-            params: { offset: 0, limit: 10000 },
+        return pokedex
+          .getPokemonsList({
+            offset: 0,
+            limit: 10000,
           })
           .then((res) => {
             const results = res.results.filter((pokemon) =>
@@ -25,8 +24,9 @@ const usePokemonList = (search: string) => {
             };
           });
       } else {
-        return apiClient.getAll({
-          params: { offset: (Number(pageParam) - 1) * 20 },
+        return pokedex.getPokemonsList({
+          limit: 20,
+          offset: (Number(pageParam) - 1) * 20,
         });
       }
     },
