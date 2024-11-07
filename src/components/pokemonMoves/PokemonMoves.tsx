@@ -1,6 +1,6 @@
-import { useState } from "react";
-import usePokemon from "../../hooks/usePokemon";
-import { PokemonMove } from "../../types";
+import { MoveElement, Pokemon } from "pokeapi-js-wrapper";
+import { useEffect, useState } from "react";
+import pokedex from "../../services/pokedexService";
 import MoveCard from "../MoveCard";
 import "./PokemonMoves.css";
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const filterBy = (method: string) => {
-  return (pokemonMove: PokemonMove) => {
+  return (pokemonMove: MoveElement) => {
     return pokemonMove.version_group_details.find(
       (versionGroup) => versionGroup.move_learn_method.name === method
     );
@@ -18,8 +18,14 @@ const filterBy = (method: string) => {
 };
 
 const PokemonMoves = ({ slug }: Props) => {
-  const { data } = usePokemon({ slug });
+  const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
   const [filter, setFilter] = useState("level-up");
+
+  useEffect(() => {
+    pokedex.getPokemonByName(slug).then(async (data) => {
+      setPokemon(data);
+    });
+  }, [slug]);
 
   return (
     <div className="pokemon-moves">
@@ -51,23 +57,24 @@ const PokemonMoves = ({ slug }: Props) => {
         </button>
       </div>
       <div className="moves-list">
-        {data?.moves
-          .filter(filterBy(filter))
-          .map((pokemonMove) => ({
-            ...pokemonMove,
-            level: pokemonMove.version_group_details.find(
-              (versionGroup) =>
-                versionGroup.move_learn_method.name === "level-up"
-            )?.level_learned_at,
-          }))
-          .sort((a, b) => (a.level || 0) - (b.level || 0))
-          .map((pokemonMove, index) => (
-            <MoveCard
-              key={index}
-              slug={pokemonMove.move.name}
-              level={pokemonMove.level}
-            />
-          ))}
+        {pokemon.moves?.length > 0 &&
+          pokemon.moves
+            .filter(filterBy(filter))
+            .map((pokemonMove) => ({
+              ...pokemonMove,
+              level: pokemonMove.version_group_details.find(
+                (versionGroup) =>
+                  versionGroup.move_learn_method.name === "level-up"
+              )?.level_learned_at,
+            }))
+            .sort((a, b) => (a.level || 0) - (b.level || 0))
+            .map((pokemonMove, index) => (
+              <MoveCard
+                key={index}
+                slug={pokemonMove.move.name}
+                level={pokemonMove.level}
+              />
+            ))}
       </div>
     </div>
   );
