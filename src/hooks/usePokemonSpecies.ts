@@ -9,7 +9,10 @@ interface Props {
 const usePokemonSpecies = ({ slug }: Props) => {
   return useQuery<PokemonSpecies, Error>({
     queryKey: ["pokemon-species", slug],
-    queryFn: () => pokedex.getPokemonSpeciesByName(slug),
+    queryFn: () =>
+      pokedex.getPokemonByName(slug).then((data) => {
+        return pokedex.resource(data.species.url);
+      }),
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };
