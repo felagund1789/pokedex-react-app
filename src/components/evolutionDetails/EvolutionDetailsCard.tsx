@@ -1,10 +1,10 @@
+import { FluffyEvolutionDetail, PurpleEvolutionDetail } from "pokeapi-js-wrapper";
 import usePokemonName from "../../hooks/usePokemonName";
 import useResourceName from "../../hooks/useResourceName";
-import { EvolutionDetails } from "../../types";
 import "./EvolutionDetailsCard.css";
 
 interface Props {
-  details: EvolutionDetails;
+  details: FluffyEvolutionDetail | PurpleEvolutionDetail;
 }
 
 const EvolutionDetailsCard = ({ details }: Props) => {
@@ -13,7 +13,7 @@ const EvolutionDetailsCard = ({ details }: Props) => {
   const { data: item } = useResourceName(details.item);
   const { data: knownMove } = useResourceName(details.known_move);
   const { data: knownMoveType } = useResourceName(details.known_move_type);
-  const partySpecies = usePokemonName({ slug: details.party_species?.name });
+  const partySpecies = usePokemonName({ slug: details.party_species?.name ?? "" });
   const { data: partyType } = useResourceName(details.party_type);
 
   return (

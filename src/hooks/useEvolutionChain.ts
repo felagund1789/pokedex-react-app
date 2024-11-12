@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { EvolutionChain } from "../types";
-import usePokemonSpecies from "./usePokemonSpecies";
+import { EvolutionChain } from "pokeapi-js-wrapper";
 import pokedex from "../services/pokedexService";
+import usePokemonSpecies from "./usePokemonSpecies";
 
 interface Props {
   slug: string;
