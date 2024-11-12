@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import pokemonLogo from "../../assets/logo.png";
+import pokemonLogo from "../../assets/pokedex.png";
 import useOffset from "../../hooks/useOffset";
 import "./Header.css";
 

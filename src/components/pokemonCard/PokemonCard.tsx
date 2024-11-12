@@ -18,6 +18,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   const [pokedexNumber, setPokedexNumber] = useState<number>();
   const [pokemonName, setPokemonName] = useState<string>();
   const [pokemonFormName, setPokemonFormName] = useState<string>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     pokedex.getPokemonByName(slug).then(async (data) => {
@@ -27,6 +28,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
       setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
       setPokemonFormName(form.names.find((f) => f.language.name === "en")?.name);
+      setLoading(false);
     });
   }, [slug]);
   
@@ -42,13 +44,12 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     <div className="pokemon-card" ref={cardRef} onClick={onClick}>
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
-        <img
-          crossOrigin="anonymous"
+        {loading && <div className="image"></div>}
+        {!loading && <img
+          className="image"
           src={imgUrl}
           alt={pokemonName}
-          height={150}
-          width={150}
-        />
+        />}
       </div>
       <div className="pokemon-title">
         <div className="types">
