@@ -1,4 +1,5 @@
-import { EvolutionDetails } from "./types";
+import { FluffyEvolutionDetail, PurpleEvolutionDetail } from "pokeapi-js-wrapper";
+type EvolutionDetails = FluffyEvolutionDetail | PurpleEvolutionDetail;
 
 export const evolutionComplexity = (details: EvolutionDetails): number => {
   let complexity = 0;

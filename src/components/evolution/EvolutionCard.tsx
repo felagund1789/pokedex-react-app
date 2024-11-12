@@ -1,12 +1,12 @@
+import { ChainEvolvesTo } from "pokeapi-js-wrapper";
 import { useNavigate } from "react-router-dom";
-import { Evolution } from "../../types";
 import { findSimplestEvolution } from "../../utils";
 import EvolutionDetailsCard from "../evolutionDetails/EvolutionDetailsCard";
 import PokemonCard from "../pokemonCard/PokemonCard";
 import "./EvolutionCard.css";
 
 interface Props {
-  evolvesTo: Evolution[];
+  evolvesTo: ChainEvolvesTo[];
   children: React.ReactNode;
 }
 

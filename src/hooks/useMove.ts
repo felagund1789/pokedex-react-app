@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import ApiClient from "../services/apiClient";
-import { Move } from "../types";
-
-const apiClient = new ApiClient<Move>("/move");
+import { Move } from "pokeapi-js-wrapper";
+import pokedex from "../services/pokedexService";
 
 interface Props {
   slug: string;
@@ -11,7 +9,7 @@ interface Props {
 const useMove = ({ slug }: Props) => {
   return useQuery<Move, Error>({
     queryKey: ["pokemon-move", slug],
-    queryFn: () => apiClient.get(slug),
+    queryFn: () => pokedex.getMoveByName(slug),
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };

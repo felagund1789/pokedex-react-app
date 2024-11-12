@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { EvolutionChain } from "../types";
+import { EvolutionChain } from "pokeapi-js-wrapper";
+import pokedex from "../services/pokedexService";
 import usePokemonSpecies from "./usePokemonSpecies";
 
 interface Props {
@@ -11,7 +12,10 @@ const useEvolutionChain = ({ slug }: Props) => {
 
   return useQuery<EvolutionChain, Error>({
     queryKey: ["evolution-chain", data?.evolution_chain.url],
-    queryFn: () => fetch(data?.evolution_chain.url ?? "").then((res) => res.json()),
+    queryFn: () =>
+      data && data.evolution_chain
+        ? pokedex.resource(data.evolution_chain.url)
+        : Promise.resolve(null),
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };

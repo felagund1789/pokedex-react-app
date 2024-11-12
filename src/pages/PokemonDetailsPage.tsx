@@ -1,8 +1,9 @@
+import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import PokemonInfoCard from "../components/pokemonInfoCard/PokemonInfoCard";
 import usePokemonColor from "../hooks/usePokemonColor";
-import "../App.css";
+import pokedex from "../services/pokedexService";
 
 function PokemonDetailsPage() {
   const { name } = useParams();
@@ -11,6 +12,20 @@ function PokemonDetailsPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (!name) {
+      return;
+    }
+
+    pokedex.getPokemonByName(name).then(async (data) => {
+      const species: PokemonSpecies = await pokedex.resource(data.species.url);
+      const form: PokemonForm = await pokedex.getPokemonFormByName(name);
+      const _name = species.names.find((n) => n.language.name === "en")?.name;
+      const _formName = form.names.find((f) => f.language.name === "en")?.name;
+      document.title = `Pokédex | ${_formName ?? _name}`;
+    });
+  }, [name]);
 
   if (!name) {
     return null;

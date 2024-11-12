@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
 import usePokemonList from "../../hooks/usePokemonList";
@@ -13,6 +13,10 @@ const PokemonList = () => {
   const [searchText, setSearchText] = useState("");
   const { data, isLoading, isFetching, error, hasNextPage, fetchNextPage } =
     usePokemonList(searchText);
+
+  useEffect(() => {
+    document.title = "Pokédex";
+  }, []);
 
   if (error) {
     return <div>Error: {error.message}</div>;
