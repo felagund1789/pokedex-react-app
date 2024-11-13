@@ -1,4 +1,4 @@
-import { Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
+import { Generation, Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect, useRef, useState } from "react";
 import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonDescription from "../../hooks/usePokemonDescription";
@@ -18,6 +18,7 @@ const PokemonInfoCard = ({ slug }: Props) => {
   const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
   const [species, setSpecies] = useState<PokemonSpecies>({} as PokemonSpecies);
   const [pokemonGenera, setPokemonGenera] = useState<string>();
+  const [generation, setGeneration] = useState<string>();
   const [pokedexNumber, setPokedexNumber] = useState<number>();
   const [pokemonName, setPokemonName] = useState<string>();
   const [pokemonFormName, setPokemonFormName] = useState<string>();
@@ -28,9 +29,11 @@ const PokemonInfoCard = ({ slug }: Props) => {
       const species: PokemonSpecies = await pokedex.resource(data.species.url);
       const form: PokemonForm = await pokedex.getPokemonFormByName(slug);
       const habitat = species?.habitat ? await pokedex.resource(species?.habitat.url) : undefined;
+      const gen: Generation = species?.generation ? await pokedex.resource(species?.generation.url) : undefined;
       setPokemon(data);
       setSpecies(species);
       setPokemonGenera(species.genera.find((g) => g.language.name === "en")?.genus);
+      setGeneration(gen.names.find((g) => g.language.name === "en")?.name);
       setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
       setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
       setPokemonFormName(form.names.find((f) => f.language.name === "en")?.name);
@@ -88,6 +91,7 @@ const PokemonInfoCard = ({ slug }: Props) => {
           <StatPanel title="Hatch Counter">{species.hatch_counter}</StatPanel>
         )}
         {habitat && <StatPanel title="Habitat">{habitat}</StatPanel>}
+        {generation && <StatPanel title="Generation">{generation}</StatPanel>}
       </div>
     </div>
   );
