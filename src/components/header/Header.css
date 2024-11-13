@@ -16,6 +16,8 @@ header.collapsed {
 }
 
 header img {
+  box-sizing: border-box;
+  padding: 0.5rem;
   height: 8rem;
   transition: all 0.1s;
 }

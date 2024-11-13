@@ -53,9 +53,12 @@
 }
 
 @media (max-width: 36rem) {
+  .pokemon-card {
+    min-height: auto;
+  }
   .pokemon-list .pokemon-card {
     font-size: 1.5rem;
-    min-height: auto;
+    max-height: 8.75rem;
     width: calc(100vw - 2rem);
     display: flex;
     flex-direction: row-reverse;
