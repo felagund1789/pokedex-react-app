@@ -5,6 +5,7 @@ import pokedex from "../../services/pokedexService";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonCard.css";
+import Generation from "../generation/Generation";
 
 interface PokemonCardProps {
   slug: string;
@@ -18,6 +19,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   const [pokedexNumber, setPokedexNumber] = useState<number>();
   const [pokemonName, setPokemonName] = useState<string>();
   const [pokemonFormName, setPokemonFormName] = useState<string>();
+  const [generation, setGeneration] = useState<string>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
       setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
       setPokemonFormName(form.names.find((f) => f.language.name === "en")?.name);
+      setGeneration(species.generation.name.replace("generation-", "").toUpperCase());
       setLoading(false);
     });
   }, [slug]);
@@ -42,6 +45,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
 
   return (
     <div className="pokemon-card" ref={cardRef} onClick={onClick}>
+      {generation && <Generation>{generation}</Generation>}
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
         {loading && <div className="image"></div>}

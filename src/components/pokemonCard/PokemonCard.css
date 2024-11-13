@@ -52,6 +52,10 @@
   flex-wrap: nowrap;
 }
 
+.pokemon-card .generation {
+  position: absolute;
+}
+
 @media (max-width: 36rem) {
   .pokemon-card {
     min-height: auto;
@@ -94,4 +98,10 @@
   .pokemon-list .pokemon-card .pokemon-image-background .pokemon-number {
     margin-top: 0;
   }
+  .pokemon-list .pokemon-card:hover {
+    transform: none;
+  }
+  .pokemon-list .pokemon-card .generation {
+    left: 1.5rem;
+  }  
 }
