@@ -2,6 +2,7 @@ import { Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect, useRef, useState } from "react";
 import usePokemonColor from "../../hooks/usePokemonColor";
 import pokedex from "../../services/pokedexService";
+import usePokemonStore from "../../store";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonCard.css";
@@ -14,6 +15,7 @@ interface PokemonCardProps {
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
 const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
+  const language = usePokemonStore((state) => state.language);
   const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
   const [pokedexNumber, setPokedexNumber] = useState<number>();
   const [pokemonName, setPokemonName] = useState<string>();
@@ -26,11 +28,11 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       const form: PokemonForm = await pokedex.getPokemonFormByName(slug);
       setPokemon(data);
       setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
-      setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
-      setPokemonFormName(form.names.find((f) => f.language.name === "en")?.name);
+      setPokemonName(species.names.find((n) => n.language.name === language)?.name);
+      setPokemonFormName(form.names.find((f) => f.language.name === language)?.name);
       setLoading(false);
     });
-  }, [slug]);
+  }, [language, slug]);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const imgUrl = pokemon?.id ? `${artworkBaseURL}${pokemon.id}.png` : "";

@@ -4,9 +4,11 @@ import { NavLink, Outlet, useParams } from "react-router-dom";
 import PokemonInfoCard from "../components/pokemonInfoCard/PokemonInfoCard";
 import usePokemonColor from "../hooks/usePokemonColor";
 import pokedex from "../services/pokedexService";
+import usePokemonStore from "../store";
 
 function PokemonDetailsPage() {
   const { name } = useParams();
+  const language = usePokemonStore((state) => state.language);
   const color = usePokemonColor({ slug: name! });
 
   useEffect(() => {
@@ -21,11 +23,11 @@ function PokemonDetailsPage() {
     pokedex.getPokemonByName(name).then(async (data) => {
       const species: PokemonSpecies = await pokedex.resource(data.species.url);
       const form: PokemonForm = await pokedex.getPokemonFormByName(name);
-      const _name = species.names.find((n) => n.language.name === "en")?.name;
-      const _formName = form.names.find((f) => f.language.name === "en")?.name;
+      const _name = species.names.find((n) => n.language.name === language)?.name;
+      const _formName = form.names.find((f) => f.language.name === language)?.name;
       document.title = `Pokédex | ${_formName ?? _name}`;
     });
-  }, [name]);
+  }, [language, name]);
 
   if (!name) {
     return null;

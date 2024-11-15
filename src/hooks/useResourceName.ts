@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { NamedAPIResource } from "pokeapi-js-wrapper";
 import pokedex from "../services/pokedexService";
+import usePokemonStore from "../store";
 
 const useResourceName = (resource?: NamedAPIResource | null) => {
-  const language = "en";
+  const language = usePokemonStore((state) => state.language);
   const capitalize = (name: string) =>
     name
       .split("-")

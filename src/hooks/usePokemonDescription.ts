@@ -1,11 +1,12 @@
 import { PokemonSpecies } from "pokeapi-js-wrapper";
+import usePokemonStore from "../store";
 
 interface Props {
   species?: PokemonSpecies;
 }
 
 const usePokemonDescription = ({ species }: Props) => {
-  const language = "en";
+  const language = usePokemonStore((state) => state.language);
   const version = null;
 
   const texts = species?.flavor_text_entries?.filter(

@@ -1,3 +1,4 @@
+import usePokemonStore from "../store";
 import usePokemonForm from "./usePokemonForm";
 
 interface Props {
@@ -5,7 +6,7 @@ interface Props {
 }
 
 const usePokemonFormName = ({ slug }: Props) => {
-  const language = "en";
+  const language = usePokemonStore((state) => state.language);
   const { data } = usePokemonForm({ slug });
 
   return data?.names.find((name) => name.language?.name === language)?.name;

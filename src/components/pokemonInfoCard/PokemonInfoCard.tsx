@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonDescription from "../../hooks/usePokemonDescription";
 import pokedex from "../../services/pokedexService";
+import usePokemonStore from "../../store";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import StatPanel from "../statPanel/StatPanel";
@@ -15,6 +16,7 @@ interface Props {
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
 const PokemonInfoCard = ({ slug }: Props) => {
+  const language = usePokemonStore((state) => state.language);
   const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
   const [species, setSpecies] = useState<PokemonSpecies>({} as PokemonSpecies);
   const [pokemonGenera, setPokemonGenera] = useState<string>();
@@ -30,13 +32,13 @@ const PokemonInfoCard = ({ slug }: Props) => {
       const habitat = species?.habitat ? await pokedex.resource(species?.habitat.url) : undefined;
       setPokemon(data);
       setSpecies(species);
-      setPokemonGenera(species.genera.find((g) => g.language.name === "en")?.genus);
+      setPokemonGenera(species.genera.find((g) => g.language.name === language)?.genus);
       setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
-      setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
-      setPokemonFormName(form.names.find((f) => f.language.name === "en")?.name);
+      setPokemonName(species.names.find((n) => n.language.name === language)?.name);
+      setPokemonFormName(form.names.find((f) => f.language.name === language)?.name);
       setHabitat(habitat?.name);
     });
-  }, [slug]);
+  }, [language, slug]);
   
   const color = usePokemonColor({ slug });
   const pokemonDescription = usePokemonDescription({ species });

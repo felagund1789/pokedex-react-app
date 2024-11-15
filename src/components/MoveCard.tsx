@@ -1,5 +1,6 @@
 import icons from "../assets/types";
 import useMove from "../hooks/useMove";
+import usePokemonStore from "../store";
 
 interface Props {
   slug: string;
@@ -7,7 +8,7 @@ interface Props {
 }
 
 const MoveCard = ({ slug, level }: Props) => {
-  const language = "en";
+  const language = usePokemonStore((state) => state.language);
   const version = null;
   const { data } = useMove({ slug });
   const type = data?.type.name ?? "";
