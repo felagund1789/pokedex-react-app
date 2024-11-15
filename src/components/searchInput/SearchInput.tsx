@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from "react";
 import "./SearchInput.css";
 
 interface Props {
+  searchText: string;
   onSearch: (searchText: string) => void;
 }
 
@@ -13,7 +14,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
   }
 };
 
-const SearchInput = ({ onSearch }: Props) => {
+const SearchInput = ({ searchText, onSearch }: Props) => {
   const seacrchInputId = useId();
   const timerRef = useRef(0);
 
@@ -26,12 +27,16 @@ const SearchInput = ({ onSearch }: Props) => {
   };
 
   useEffect(() => {
+    const input = document.querySelector<HTMLInputElement>("input.search");
+    if (input) {
+      input.value = searchText;
+    }
     document.onkeydown = handleKeyPress;
     return () => {
       //cleanup keydown listener
       document.onkeydown = null;
     };
-  }, []);
+  }, [searchText]);
 
   return (
     <div className="search-container">
