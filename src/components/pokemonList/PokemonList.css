@@ -8,3 +8,17 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+button.generation-btn {
+  width: 2rem;
+  display: inline-block;
+  padding: 0.5rem;
+  margin: 0.125rem;
+  border-radius: 0.5rem;
+  background-color: rgba(216, 196, 17, 0.8);
+  box-shadow: none;
+  border: none;
+  color: var(--text-color);
+  font-weight: 700;
+  cursor: pointer;
+}

@@ -22,13 +22,24 @@ const PokemonList = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  const generations = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
   const fetchedPokemonCount =
     data?.pages.reduce((total, page) => total + page.results.length, 0) || 0;
 
   return (
     <>
       <Loading isLoading={isLoading || isFetching} />
-      <SearchInput onSearch={(text) => setSearchText(text)} />
+      <>
+        <SearchInput onSearch={(text) => setSearchText(text)} />
+        {generations.map((generation) => (
+          <button className="generation-btn"
+            key={generation}
+            onClick={() => setSearchText(`generation-${generation.toLowerCase()}`)}
+          >
+            {generation}
+          </button>
+        ))}
+      </>
       <InfiniteScroll
         className="pokemon-list"
         hasMore={!!hasNextPage}
