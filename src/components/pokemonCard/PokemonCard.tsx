@@ -25,7 +25,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   useEffect(() => {
     pokedex.getPokemonByName(slug).then(async (data) => {
       const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      const form: PokemonForm = await pokedex.getPokemonFormByName(slug);
+      const form: PokemonForm = await pokedex.getPokemonFormByName(data.forms[0].name);
       setPokemon(data);
       setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
       setPokemonName(species.names.find((n) => n.language.name === "en")?.name);
