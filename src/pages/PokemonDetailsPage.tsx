@@ -22,7 +22,7 @@ function PokemonDetailsPage() {
 
     pokedex.getPokemonByName(name).then(async (data) => {
       const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      const form: PokemonForm = await pokedex.getPokemonFormByName(name);
+      const form: PokemonForm = await pokedex.getPokemonFormByName(data.forms[0].name);
       const _name = species.names.find((n) => n.language.name === language)?.name;
       const _formName = form.names.find((f) => f.language.name === language)?.name;
       document.title = `Pokédex | ${_formName ?? _name}`;

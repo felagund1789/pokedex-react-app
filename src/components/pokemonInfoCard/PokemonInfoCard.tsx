@@ -28,7 +28,7 @@ const PokemonInfoCard = ({ slug }: Props) => {
   useEffect(() => {
     pokedex.getPokemonByName(slug).then(async (data) => {
       const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      const form: PokemonForm = await pokedex.getPokemonFormByName(slug);
+      const form: PokemonForm = await pokedex.getPokemonFormByName(data.forms[0].name);
       const habitat = species?.habitat ? await pokedex.resource(species?.habitat.url) : undefined;
       setPokemon(data);
       setSpecies(species);
