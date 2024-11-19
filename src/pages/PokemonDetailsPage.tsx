@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
@@ -34,41 +35,48 @@ function PokemonDetailsPage() {
   }
 
   return (
-    <div className="pokemon-details" style={{ backgroundColor: `${color}` }}>
-      <PokemonInfoCard slug={name} />
-      <div className="pokemon-details-buttons">
-        <NavLink
-          to={`/pokemon/${name}/stats`}
-          preventScrollReset={true}
-          replace={true}
-        >
-          Stats
-        </NavLink>
-        <NavLink
-          to={`/pokemon/${name}/evolution`}
-          preventScrollReset={true}
-          replace={true}
-        >
-          Evolution
-        </NavLink>
-        <NavLink
-          to={`/pokemon/${name}/moves`}
-          preventScrollReset={true}
-          replace={true}
-        >
-          Moves
-        </NavLink>
-        <NavLink
-          to={`/pokemon/${name}/forms`}
-          preventScrollReset={true}
-          replace={true}
-        >
-          Forms
-        </NavLink>
-      </div>
-      <div className="pokemon-details-outlet">
-        <Outlet />
-      </div>
+    <div style={{ backgroundColor: `${color}` }}>
+      <motion.div
+        className="pokemon-details" 
+        initial={{ y: window.innerHeight, height: "0%" }}
+        animate={{ y: 0, height: "100%", transition: { duration: 0.5 } }}
+        exit={{ opacity: 0 }}
+      >
+        <PokemonInfoCard slug={name} />
+        <div className="pokemon-details-buttons">
+          <NavLink
+            to={`/pokemon/${name}/stats`}
+            preventScrollReset={true}
+            replace={true}
+          >
+            Stats
+          </NavLink>
+          <NavLink
+            to={`/pokemon/${name}/evolution`}
+            preventScrollReset={true}
+            replace={true}
+          >
+            Evolution
+          </NavLink>
+          <NavLink
+            to={`/pokemon/${name}/moves`}
+            preventScrollReset={true}
+            replace={true}
+          >
+            Moves
+          </NavLink>
+          <NavLink
+            to={`/pokemon/${name}/forms`}
+            preventScrollReset={true}
+            replace={true}
+          >
+            Forms
+          </NavLink>
+        </div>
+        <div className="pokemon-details-outlet">
+          <Outlet />
+        </div>
+      </motion.div>
     </div>
   );
 }

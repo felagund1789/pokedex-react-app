@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +28,11 @@ const PokemonList = () => {
     data?.pages.reduce((total, page) => total + page.results.length, 0) || 0;
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { delay: 0.5, duration: 0.5 } }}
+      exit={{ opacity: 0, transition: { duration: 0.5 } }}
+    >
       <Loading isLoading={isLoading || isFetching} />
       <SearchInput searchText={searchText} onSearch={(text) => setSearchText(text)} />
       <InfiniteScroll
@@ -53,7 +58,7 @@ const PokemonList = () => {
           </React.Fragment>
         ))}
       </InfiniteScroll>
-    </>
+    </motion.div>
   );
 };
 

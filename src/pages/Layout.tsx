@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import { Outlet } from "react-router-dom";
 import Header from "../components/header/Header";
 import "../App.css";
@@ -7,7 +8,9 @@ function Layout() {
     <>
       <Header />
       <main>
-        <Outlet />
+        <AnimatePresence>
+          <Outlet />
+        </AnimatePresence>
       </main>
     </>
   );
