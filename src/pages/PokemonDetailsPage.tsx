@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
@@ -34,7 +35,11 @@ function PokemonDetailsPage() {
   }
 
   return (
-    <div className="pokemon-details" style={{ backgroundColor: `${color}` }}>
+    <motion.div
+      style={{ backgroundColor: `${color}` }}
+      className="pokemon-details"
+      layoutId={`pokemon-${name}`}
+    >
       <PokemonInfoCard slug={name} />
       <div className="pokemon-details-buttons">
         <NavLink
@@ -69,7 +74,7 @@ function PokemonDetailsPage() {
       <div className="pokemon-details-outlet">
         <Outlet />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

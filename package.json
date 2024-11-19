@@ -16,6 +16,7 @@
     "colorthief": "^2.6.0",
     "dotenv": "^16.4.5",
     "localforage": "^1.10.0",
+    "motion": "^11.11.17",
     "pokeapi-js-wrapper": "^1.2.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

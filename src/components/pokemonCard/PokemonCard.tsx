@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { useRef } from "react";
 import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
@@ -28,7 +29,12 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
   }
 
   return (
-    <div className="pokemon-card" ref={cardRef} onClick={onClick}>
+    <motion.div
+      layoutId={`pokemon-${slug}`}
+      className="pokemon-card"
+      ref={cardRef}
+      onClick={onClick}
+    >
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
         {loading && <div className="image"></div>}
@@ -48,7 +54,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
             : pokemonName}
         </h2>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
