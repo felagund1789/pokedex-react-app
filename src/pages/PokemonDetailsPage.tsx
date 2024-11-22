@@ -40,9 +40,9 @@ function PokemonDetailsPage() {
       <PageHeader />
       <motion.div
         className="pokemon-details" 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.5, duration: 0.5 } }}
-        exit={{ opacity: 0, transition: { duration: 0.5 } }}
+        initial={{ y: window.innerHeight, height: "0%" }}
+        animate={{ y: 0, height: "100%", transition: { duration: 0.5 } }}
+        exit={{ opacity: 0 }}
       >
         <PokemonInfoCard slug={name} />
         <div className="pokemon-details-buttons">
