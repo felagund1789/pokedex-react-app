@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
+import PageHeader from "../components/header/PageHeader";
 import PokemonInfoCard from "../components/pokemonInfoCard/PokemonInfoCard";
 import usePokemonColor from "../hooks/usePokemonColor";
 import pokedex from "../services/pokedexService";
@@ -36,11 +37,12 @@ function PokemonDetailsPage() {
 
   return (
     <div style={{ backgroundColor: `${color}` }}>
+      <PageHeader />
       <motion.div
         className="pokemon-details" 
-        initial={{ y: window.innerHeight, height: "0%" }}
-        animate={{ y: 0, height: "100%", transition: { duration: 0.5 } }}
-        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.5, duration: 0.5 } }}
+        exit={{ opacity: 0, transition: { duration: 0.5 } }}
       >
         <PokemonInfoCard slug={name} />
         <div className="pokemon-details-buttons">

@@ -9,6 +9,7 @@ import PokemonCard from "../pokemonCard/PokemonCard";
 import PokemonCardSkeleton from "../pokemonCard/PokemonCardSkeleton";
 import SearchInput from "../searchInput/SearchInput";
 import "./PokemonList.css";
+import MainHeader from "../header/MainHeader";
 
 const PokemonList = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const PokemonList = () => {
       animate={{ opacity: 1, transition: { delay: 0.5, duration: 0.5 } }}
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
+      <MainHeader />
       <Loading isLoading={isLoading || isFetching} />
       <SearchInput searchText={searchText} onSearch={(text) => setSearchText(text)} />
       <InfiniteScroll
