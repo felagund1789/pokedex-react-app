@@ -14,31 +14,29 @@ The Pokedex React App is a modern web application designed to provide comprehens
 
 ## Features
 
+- **Responsive Design** that works on both desktop and mobile devices
 - **Pokemon List**: View a list of all Pokemon
+- **Search**: Search for specific Pokemon by name
 - **Pokemon Details**: View detailed information about a Pokemon, including:
   - Pokedex number
-  - Types
-  - Base experience
-  - Base happiness
-  - Capture rate
-  - Hatch counter
-  - Habitat
-  - Moves
+  - Types (grass, fire, water, normal, etc.)
+  - Base experience, Base happiness, Capture rate, Hatch counter, Habitat, etc.
+  - Available moves
   - Alternate forms
-- **Responsive Design** that works on both desktop and mobile devices
+  - Evolution chains
 
 ### Key Technologies
 
 - **React**: A JavaScript library for building user interfaces.
-- **React Query**: A data-fetching library that simplifies server state management.
-- **React Router**: A library for routing in React applications.
+- **[Tanstack Query](https://tanstack.com/query) (former React Query)**: A data-fetching library that simplifies server state management.
+- **[React Router](https://reactrouter.com/)**: A library for routing in React applications.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **HTML5 & CSS3**: Standard technologies for structuring and styling web content.
-- **Vite**: A build tool that provides a faster and leaner development experience.
+- **[Vite](https://vite.dev/)**: A build tool that provides a faster and leaner development experience.
 
 ### Architecture
 
-The app follows a component-based architecture, where each part of the user interface is encapsulated in a reusable component. This modular approach makes the codebase easier to manage and scale. The state management is handled using React Query, which provides hooks for fetching, caching, and updating data. React Router is used to manage navigation between different views, ensuring a smooth and responsive user experience.
+The app follows a component-based architecture, where each part of the user interface is encapsulated in a reusable component. This modular approach makes the codebase easier to manage and scale. The management of the server state is handled using Tanstack Query, which provides hooks for fetching, caching, and updating data. React Router is used to manage navigation between different views, ensuring a smooth and responsive user experience.
 
 ### Data Source
 
@@ -56,7 +54,7 @@ The app is optimized for performance using Vite, which provides fast hot module 
 
 Future enhancements for the app may include features such as:
 
-- **Search and Filter**: Allowing users to search for Pokemon by name or filter them by type, generation, etc.
+- **Filter**: Allowing users to filter Pokemon by type, generation, etc.
 - **Favorites**: Enabling users to mark their favorite Pokemon and access them quickly.
 - **Battle Simulator**: Adding a feature to simulate battles between different Pokemon.
 - **User Accounts**: Implementing user authentication and profiles to save preferences and progress.
