@@ -14,16 +14,37 @@ The Pokedex React App is a modern web application designed to provide comprehens
 
 ## Features
 
-- **Responsive Design** that works on both desktop and mobile devices
-- **Pokemon List**: View a list of all Pokemon
-- **Search**: Search for specific Pokemon by name
-- **Pokemon Details**: View detailed information about a Pokemon, including:
-  - Pokedex number
-  - Types (grass, fire, water, normal, etc.)
-  - Base experience, Base happiness, Capture rate, Hatch counter, Habitat, etc.
-  - Available moves
-  - Alternate forms
-  - Evolution chains
+- **Responsive Design**: The app is designed to be fully responsive, ensuring it works seamlessly on both desktop and mobile devices. The layout adjusts dynamically to provide an optimal viewing experience regardless of screen size.
+- **Pokemon List**: Users can view a comprehensive list of all Pokemon. The list employs infinite scrolling, allowing users to continuously load more Pokemon as they scroll down the page. This feature ensures a smooth and uninterrupted browsing experience without the need for pagination.
+- **Search**: A powerful search feature allows users to quickly find specific Pokemon by name. The search functionality is designed to be fast and accurate, providing instant results as the user types.
+- **Pokemon Details**: Detailed information about each Pokemon is available, including:
+  - **Types**: Displays the Pokemon's types (e.g., grass, fire, water, normal).
+  - **Base Experience**: Shows the base experience points gained when a Pokemon is defeated.
+  - **Base Happiness**: Indicates the base happiness level of the Pokemon.
+  - **Capture Rate**: Provides the likelihood of successfully capturing the Pokemon.
+  - **Hatch Counter**: Shows the number of cycles required to hatch the Pokemon from an egg.
+  - **Habitat**: Describes the natural habitat where the Pokemon can be found.
+  - **Available Moves**: Lists all the moves that the Pokemon can learn, including level-up moves, TMs, HMs, and egg moves.
+  - **Alternate Forms**: Displays any alternate forms of the Pokemon, such as different appearances or regional variants.
+  - **Evolution Chains**: Shows the evolution chain of the Pokemon, including pre-evolutions and evolutions.
+
+## Screenshots
+
+![Pokedex App](screens/1-pokedex-app.png)
+
+![Pokemon details (stats)](screens/2-pokedex-details-stats.png)
+
+![Pokemon details (evolution)](screens/3-pokedex-details-evolution.png)
+
+![Pokemon details (alternate forms)](screens/4-pokedex-details-forms.png)
+
+![Pokemon Search](screens/5-pokedex-search.png)
+
+| ![Pokedex App (narrow screen)](screens/6-pokedex-app-narrow.png) | ![Pokemon details (narrow screen)](screens/7-pokedex-details-narrow.png) |
+|------------------------------------------------------------------|--------------------------------------------------------------------------|
+
+| ![Pokedex App (mobile)](screens/8-pokedex-app-mobile.png) | ![Pokemon details (mobile)](screens/9-pokedex-details-mobile.png) |
+|-----------------------------------------------------------|-------------------------------------------------------------------|
 
 ### Key Technologies
 
