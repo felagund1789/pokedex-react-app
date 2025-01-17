@@ -48,10 +48,10 @@ The Pokedex React App is a modern web application designed to provide comprehens
 
 ### Key Technologies
 
-- **React**: A JavaScript library for building user interfaces.
+- **[React](https://react.dev/)**: A JavaScript library for building user interfaces.
 - **[Tanstack Query](https://tanstack.com/query) (former React Query)**: A data-fetching library that simplifies server state management.
 - **[React Router](https://reactrouter.com/)**: A library for routing in React applications.
-- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **[TypeScript](https://www.typescriptlang.org/)**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **HTML5 & CSS3**: Standard technologies for structuring and styling web content.
 - **[Vite](https://vite.dev/)**: A build tool that provides a faster and leaner development experience.
 
