@@ -18,7 +18,6 @@ const usePokemonInfo = (slug: string) => {
 
   useEffect(() => {
     const pokemonInfo = getPokemonInfo(slug);
-    debugger; // eslint-disable-line
     if (pokemonInfo) {
       setPokemonName(pokemonInfo.pokemonName);
       setPokemonFormName(pokemonInfo.pokemonFormName);
