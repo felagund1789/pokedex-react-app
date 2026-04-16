@@ -1,0 +1,31 @@
+h3.generation {
+  position: relative;
+  box-sizing: border-box;
+  margin: 1rem 0 0 1rem;
+  padding: 0.2rem 0 0 0.125rem;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+  width: 2rem;
+  height: 2rem;
+  z-index: 20;
+}
+@media (max-width: 36rem) {
+  h3.generation {
+    margin: 1rem 0 0 0.5rem;
+    padding: 0 0 0 0.125rem;
+    font-size: 1.5rem;
+  }
+}
+h3.generation::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(216, 196, 17, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 0.5rem;
+  z-index: -10;
+  transform: rotate(45deg);
+}

@@ -4,6 +4,7 @@ import usePokemonInfo from "../../hooks/usePokemonInfo";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonCard.css";
+import Generation from "../generation/Generation";
 
 interface PokemonCardProps {
   slug: string;
@@ -15,6 +16,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     pokedexNumber,
     pokemonName,
     pokemonFormName,
+    generation,
     types,
     artworkURL,
     loading,
@@ -29,6 +31,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
 
   return (
     <div className="pokemon-card" ref={cardRef} onClick={onClick}>
+      {generation && <Generation>{generation}</Generation>}
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
         {loading && <div className="image"></div>}

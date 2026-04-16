@@ -12,6 +12,7 @@ const usePokemonInfo = (slug: string) => {
   const [pokedexNumber, setPokedexNumber] = useState<number>();
   const [pokemonName, setPokemonName] = useState<string>();
   const [pokemonFormName, setPokemonFormName] = useState<string>();
+  const [generation, setGeneration] = useState<string>();
   const [types, setTypes] = useState<string[]>([]);
   const [artworkURL, setArtworkURL] = useState<string>();
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ const usePokemonInfo = (slug: string) => {
         setPokemonFormName(form.names.find((f) => f.language.name === language)?.name);
         setArtworkURL(`${artworkBaseURL}${data.id}.png`);
         setTypes(data.types.map((type) => type.type.name));
+        setGeneration(species.generation.name.replace("generation-", "").toUpperCase());
         setLoading(false);
         addPokemonInfo(slug, {
           pokedexNumber: species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number ?? 0,
@@ -41,12 +43,13 @@ const usePokemonInfo = (slug: string) => {
           pokemonFormName: form.names.find((f) => f.language.name === language)?.name ?? "",
           types: data.types.map((type) => type.type.name),
           artworkUrl: `${artworkBaseURL}${data.id}.png`,
+          generation: species.generation.name.replace("generation-", "").toUpperCase(),
         });
       });
     }
   }, [addPokemonInfo, getPokemonInfo, language, slug]);
   
-  return { pokedexNumber, pokemonName, pokemonFormName, types, artworkURL, loading };
+  return { pokedexNumber, pokemonName, pokemonFormName, generation, types, artworkURL, loading };
 }
 
 export default usePokemonInfo;

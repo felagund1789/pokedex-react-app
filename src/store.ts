@@ -8,6 +8,7 @@ export type PokemonInfo = {
   pokedexNumber: number;
   pokemonFormName: string;
   pokemonName: string;
+  generation: string;
   types: string[];
   artworkUrl: string;
 };
