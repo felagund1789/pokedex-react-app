@@ -3,26 +3,28 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
-  margin-left: -1.5rem;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
   position: sticky;
   z-index: 200;
   top: 0;
 }
-@media (max-width: 70rem) {
-  .search-container {
-    background-color: white;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-    top: 4rem;
-  }
+
+.search-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.search-container label {
+
+.search-row label {
   position: relative;
   fill: var(--dark-text-color);
   top: 0.125rem;
-  left: 2.5rem;
+  left: 0.5rem;
 }
-.search-container input {
+
+.search-row input {
+  margin-left: -2rem;
   box-sizing: border-box;
   min-width: min(36rem, calc(100vw - 2rem));
   height: 3rem;
@@ -34,10 +36,67 @@
   color: var(--dark-text-color);
   font-size: 1.25rem;
 }
-.search-container input::placeholder {
+
+.search-row input::placeholder {
   color: var(--highlight-color);
 }
-.search-container input:focus {
+
+.search-row input:focus {
   border: 1px solid var(--dark-text-color);
   outline: none;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.filter-select,
+.clear-filters {
+  height: 3rem;
+  padding: 0 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--dark-text-color);
+  background-color: var(--bg-color);
+  color: var(--dark-text-color);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.filter-select {
+  min-width: 10rem;
+}
+
+.clear-filters {
+  font-weight: 600;
+}
+
+.clear-filters:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 70rem) {
+  .search-container {
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    top: 4rem;
+  }
+  
+  .search-row,
+  .filter-row {
+    width: 100%;
+  }
+
+  .search-row input {
+    width: calc(100vw - 2rem);
+  }
+  .filter-select,
+  .clear-filters {
+    width: calc(100vw - 2rem);
+  }
 }

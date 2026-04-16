@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import types from "./assets/types";
 
-type Generation = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII" | "VIII";
+export type Generation = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII" | "VIII" | "IX";
+export type PokemonTypeName = keyof typeof types;
+export const generations: Generation[] = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+
 type Language = "ja-Hrkt" | "ko" | "fr" | "de" | "es" | "it" | "en" | "zh-Hans" | "zh-Hant";
 
 export type PokemonInfo = {
@@ -15,7 +18,7 @@ export type PokemonInfo = {
 
 type SearchQuery = {
   searchText?: string;
-  type?: keyof typeof types;
+  type?: PokemonTypeName;
   generation?: Generation;
 };
 
@@ -29,22 +32,26 @@ type Actions = {
   setSearchText: (text: SearchQuery["searchText"]) => void;
   setType: (type: SearchQuery["type"]) => void;
   setGeneration: (generation: SearchQuery["generation"]) => void;
+  clearFilters: () => void;
   setLanguage: (language: State["language"]) => void;
   addPokemonInfo: (slug: string, pokemonInfo: PokemonInfo) => void;
   getPokemonInfo: (slug: string) => PokemonInfo | undefined;
 };
 
+const defaultQuery: SearchQuery = {
+  searchText: undefined,
+  type: undefined,
+  generation: undefined,
+};
+
 const usePokemonStore = create<State & Actions>((set) => ({
-  query: {
-    searchText: undefined,
-    type: undefined,
-    generation: undefined,
-  },
+  query: defaultQuery,
   language: "en",
   setSearchText: (searchText) => set((state) => ({ query: { ...state.query, searchText } })),
   setType: (type) => set((state) => ({ query: { ...state.query, type } })),
   setGeneration: (generation) =>
     set((state) => ({ query: { ...state.query, generation } })),
+  clearFilters: () => set((state) => ({ query: { ...state.query, ...defaultQuery } })),
   setLanguage: (language) => set({ language }),
   // pokemonInfo
   pokemonMap: new Map(),

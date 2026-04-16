@@ -25,6 +25,7 @@ const usePokemonInfo = (slug: string) => {
       setPokedexNumber(pokemonInfo.pokedexNumber);
       setArtworkURL(pokemonInfo.artworkUrl);
       setTypes(pokemonInfo.types);
+      setGeneration(pokemonInfo.generation);
       setLoading(false);
     } else {
       pokedex.getPokemonByName(slug).then(async (data) => {
@@ -48,8 +49,8 @@ const usePokemonInfo = (slug: string) => {
       });
     }
   }, [addPokemonInfo, getPokemonInfo, language, slug]);
-  
+
   return { pokedexNumber, pokemonName, pokemonFormName, generation, types, artworkURL, loading };
-}
+};
 
 export default usePokemonInfo;
