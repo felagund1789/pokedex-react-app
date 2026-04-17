@@ -213,9 +213,6 @@ const PokemonList = () => {
         onGenerationChange={(generation) => updateRouteFilters({ generation: generation ?? null })}
         onClear={() => updateRouteFilters({ search: null, type: null, generation: null })}
       />
-      <div className="pokemon-list-status">
-        Showing {visiblePokemon.length} of {data?.count ?? 0} Pokémon
-      </div>
       <InfiniteScroll
         className="pokemon-list"
         hasMore={hasMore}

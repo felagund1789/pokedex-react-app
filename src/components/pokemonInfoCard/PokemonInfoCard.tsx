@@ -78,18 +78,18 @@ const PokemonInfoCard = ({ slug }: Props) => {
       </div>
       <div className="pokemon-description">{pokemonDescription}</div>
       <div className="info">
-        {pokemon?.base_experience && (
+        {Boolean(pokemon?.base_experience) && (
           <StatPanel title="Base Experience">
             {pokemon.base_experience}
           </StatPanel>
         )}
-        {species?.base_happiness && (
+        {Boolean(species?.base_happiness) && (
           <StatPanel title="Base Happiness">{species.base_happiness}</StatPanel>
         )}
-        {species?.capture_rate && (
+        {Boolean(species?.capture_rate) && (
           <StatPanel title="Capture Rate">{species.capture_rate}</StatPanel>
         )}
-        {species?.hatch_counter && (
+        {Boolean(species?.hatch_counter) && (
           <StatPanel title="Hatch Counter">{species.hatch_counter}</StatPanel>
         )}
         {habitat && <StatPanel title="Habitat">{habitat}</StatPanel>}

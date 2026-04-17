@@ -27,14 +27,14 @@
   margin-left: -2rem;
   box-sizing: border-box;
   min-width: min(36rem, calc(100vw - 2rem));
-  height: 3rem;
+  height: 2.5rem;
   padding: 0.5rem 2.75rem;
   border-radius: 100px;
   border: 1px solid var(--dark-text-color);
   outline: none;
   background-color: var(--bg-color);
   color: var(--dark-text-color);
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .search-row input::placeholder {
@@ -56,13 +56,13 @@
 
 .filter-select,
 .clear-filters {
-  height: 3rem;
+  height: 2.5rem;
   padding: 0 1rem;
   border-radius: 100px;
   border: 1px solid var(--dark-text-color);
   background-color: var(--bg-color);
   color: var(--dark-text-color);
-  font-size: 1.25rem;
+  font-size: 1rem;
   cursor: pointer;
 }
 
