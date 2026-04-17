@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import types from "../../assets/types";
+import useMobile from "../../hooks/useMobile";
 import { generations, Generation, PokemonTypeName } from "../../store";
 import "./SearchInput.css";
 
@@ -36,6 +37,7 @@ const SearchInput = ({
   const [inputValue, setInputValue] = useState(searchText);
   const timerRef = useRef<number>();
   const hasActiveFilters = Boolean(searchText.trim() || selectedType || selectedGeneration);
+  const isMobile = useMobile();
 
   const debounceSearch = (searchTerm: string) => {
     window.clearTimeout(timerRef.current);
@@ -75,7 +77,7 @@ const SearchInput = ({
           className="search"
           id={searchInputId}
           value={inputValue}
-          placeholder="Press / to search for Pokémon"
+          placeholder={isMobile ? "Search for Pokémon": "Press / to search for Pokémon"}
           onChange={(event) => {
             const value = event.currentTarget.value ?? "";
             setInputValue(value);

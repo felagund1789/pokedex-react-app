@@ -81,6 +81,7 @@
 
 @media (max-width: 70rem) {
   .search-container {
+    position: static;
     flex-direction: column;
     background-color: white;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
@@ -92,10 +93,18 @@
     width: 100%;
   }
 
-  .search-row input {
-    width: calc(100vw - 2rem);
-  }
+  .search-row input,
   .filter-select,
+  .clear-filters {
+    height: 3.5rem;
+    font-size: 1.5rem;
+  }
+
+  .filter-select {
+    width: calc(50vw - 1.5rem);
+  }
+
+  .search-row input,
   .clear-filters {
     width: calc(100vw - 2rem);
   }
