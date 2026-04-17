@@ -14,11 +14,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <PokemonList /> },
       {
-        path: "/pokemon/:name",
+        path: "pokemon/:name",
         element: <PokemonDetailsPage />,
         children: [
           {
             index: true,
+            element: <PokemonStatsPage />,
+          },
+          {
             path: "stats",
             element: <PokemonStatsPage />,
           },

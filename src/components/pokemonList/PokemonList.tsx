@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import types from "../../assets/types";
 import usePokemonList from "../../hooks/usePokemonList";
-import usePokemonStore from "../../store";
+import { generations, Generation, PokemonTypeName } from "../../store";
 import MainHeader from "../header/MainHeader";
 import Loading from "../loading/Loading";
 import PokemonCard from "../pokemonCard/PokemonCard";
@@ -11,17 +12,60 @@ import SearchInput from "../searchInput/SearchInput";
 import "./PokemonList.css";
 
 const PAGE_SIZE = 20;
+const typeNames = new Set(Object.keys(types) as PokemonTypeName[]);
+
+type FilterUpdates = {
+  search?: string | null;
+  type?: PokemonTypeName | null;
+  generation?: Generation | null;
+};
+
+const isValidGeneration = (value: string | null): value is Generation =>
+  Boolean(value && generations.includes(value as Generation));
+
+const isValidType = (value: string | null): value is PokemonTypeName =>
+  Boolean(value && typeNames.has(value as PokemonTypeName));
 
 const PokemonList = () => {
   const navigate = useNavigate();
-  const searchText = usePokemonStore((state) => state.query.searchText) ?? "";
-  const selectedType = usePokemonStore((state) => state.query.type);
-  const selectedGeneration = usePokemonStore((state) => state.query.generation);
-  const setSearchText = usePokemonStore((state) => state.setSearchText);
-  const setType = usePokemonStore((state) => state.setType);
-  const setGeneration = usePokemonStore((state) => state.setGeneration);
-  const clearFilters = usePokemonStore((state) => state.clearFilters);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchText = searchParams.get("search") ?? "";
+  const typeParam = searchParams.get("type");
+  const generationParam = searchParams.get("generation");
+  const selectedType = isValidType(typeParam) ? typeParam : undefined;
+  const selectedGeneration = isValidGeneration(generationParam) ? generationParam : undefined;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const updateRouteFilters = (updates: FilterUpdates, replace = false) => {
+    const nextParams = new URLSearchParams(searchParams);
+
+    if ("search" in updates) {
+      const normalizedSearch = updates.search?.trim() ?? "";
+      if (normalizedSearch) {
+        nextParams.set("search", normalizedSearch);
+      } else {
+        nextParams.delete("search");
+      }
+    }
+
+    if ("type" in updates) {
+      if (updates.type) {
+        nextParams.set("type", updates.type);
+      } else {
+        nextParams.delete("type");
+      }
+    }
+
+    if ("generation" in updates) {
+      if (updates.generation) {
+        nextParams.set("generation", updates.generation);
+      } else {
+        nextParams.delete("generation");
+      }
+    }
+
+    setSearchParams(nextParams, { replace });
+  };
 
   const { data, isLoading, isFetching, error } = usePokemonList({
     search: searchText,
@@ -53,10 +97,10 @@ const PokemonList = () => {
         searchText={searchText}
         selectedType={selectedType}
         selectedGeneration={selectedGeneration}
-        onSearch={(text) => setSearchText(text.trim() ? text : undefined)}
-        onTypeChange={setType}
-        onGenerationChange={setGeneration}
-        onClear={clearFilters}
+        onSearch={(text) => updateRouteFilters({ search: text }, true)}
+        onTypeChange={(type) => updateRouteFilters({ type: type ?? null })}
+        onGenerationChange={(generation) => updateRouteFilters({ generation: generation ?? null })}
+        onClear={() => updateRouteFilters({ search: null, type: null, generation: null })}
       />
       <div className="pokemon-list-status">
         Showing {visiblePokemon.length} of {data?.count ?? 0} Pokémon

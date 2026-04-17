@@ -16,46 +16,27 @@ export type PokemonInfo = {
   artworkUrl: string;
 };
 
-type SearchQuery = {
-  searchText?: string;
-  type?: PokemonTypeName;
-  generation?: Generation;
-};
-
 type State = {
-  query: SearchQuery;
   language: Language;
   pokemonMap: Map<string, PokemonInfo>;
 };
 
 type Actions = {
-  setSearchText: (text: SearchQuery["searchText"]) => void;
-  setType: (type: SearchQuery["type"]) => void;
-  setGeneration: (generation: SearchQuery["generation"]) => void;
-  clearFilters: () => void;
   setLanguage: (language: State["language"]) => void;
   addPokemonInfo: (slug: string, pokemonInfo: PokemonInfo) => void;
   getPokemonInfo: (slug: string) => PokemonInfo | undefined;
 };
 
-const defaultQuery: SearchQuery = {
-  searchText: undefined,
-  type: undefined,
-  generation: undefined,
-};
-
 const usePokemonStore = create<State & Actions>((set) => ({
-  query: defaultQuery,
   language: "en",
-  setSearchText: (searchText) => set((state) => ({ query: { ...state.query, searchText } })),
-  setType: (type) => set((state) => ({ query: { ...state.query, type } })),
-  setGeneration: (generation) =>
-    set((state) => ({ query: { ...state.query, generation } })),
-  clearFilters: () => set((state) => ({ query: { ...state.query, ...defaultQuery } })),
   setLanguage: (language) => set({ language }),
-  // pokemonInfo
   pokemonMap: new Map(),
-  addPokemonInfo: (slug, pokemonInfo) => set((state) => ({ ...state, pokemonMap: new Map(state.pokemonMap.set(slug, pokemonInfo)) })),
+  addPokemonInfo: (slug, pokemonInfo) =>
+    set((state) => {
+      const pokemonMap = new Map(state.pokemonMap);
+      pokemonMap.set(slug, pokemonInfo);
+      return { pokemonMap };
+    }),
   getPokemonInfo: (slug): PokemonInfo | undefined => usePokemonStore.getState().pokemonMap.get(slug),
 }));
 
