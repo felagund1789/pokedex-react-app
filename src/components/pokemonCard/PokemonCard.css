@@ -3,13 +3,16 @@
   min-height: 22.5rem;
   text-transform: capitalize;
   border-radius: var(--card-border-radius);
+  overflow: hidden;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: translateY(0);
+  will-change: transform;
 }
 .pokemon-card:hover {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.375);
-  transform: scale(1.05);
-  transition: all 0.3s;
+  transform: translateY(-0.25rem);
 }
 
 .pokemon-card .pokemon-image-background {

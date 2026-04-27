@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
 import PokemonNumber from "../PokemonNumber";
@@ -22,15 +21,14 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     loading,
   } = usePokemonInfo(slug);
 
-  const cardRef = useRef<HTMLDivElement>(null);
   const color = usePokemonColor({ slug });
 
-  if (cardRef.current && color) {
-    cardRef.current.style.backgroundColor = color;
-  }
-
   return (
-    <div className="pokemon-card" ref={cardRef} onClick={onClick}>
+    <div
+      className="pokemon-card"
+      style={color ? { backgroundColor: color } : undefined}
+      onClick={onClick}
+    >
       {generation && <Generation>{generation}</Generation>}
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
