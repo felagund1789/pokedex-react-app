@@ -138,11 +138,28 @@ body {
   min-width: 0;
   width: 100%;
 }
+
+.pokemon-details > .pokemon-info-header-card,
+.pokemon-details > .evolution-chain {
+  grid-column: span 2;
+}
+
+@media (min-width: 110rem) {
+  .pokemon-details > .pokemon-info-header-card {
+    grid-column: span 1;
+  }
+}
+
 @media (max-width: 36rem) {
   .pokemon-details {
     grid-template-columns: minmax(0, 1fr);
     padding: 0.5rem;
     gap: 0.5rem;
+  }
+
+  .pokemon-details > .pokemon-info-header-card,
+  .pokemon-details > .evolution-chain {
+    grid-column: span 1;
   }
 }
 

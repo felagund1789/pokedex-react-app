@@ -6,11 +6,13 @@ import PokemonStatsCard from "../components/PokemonStatsCard";
 import EvolutionChain from "../components/evolutionChain/EvolutionChain";
 import PageHeader from "../components/header/PageHeader";
 import OtherForms from "../components/otherForms/OtherForms";
-import PokemonInfoCard from "../components/pokemonInfoCard/PokemonInfoCard";
 import PokemonMoves from "../components/pokemonMoves/PokemonMoves";
 import usePokemonColor from "../hooks/usePokemonColor";
 import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
+import PokemonInfoDetailsCard from "../components/pokemonInfoDetailsCard/PokemonInfoDetailsCard";
+import PokemonInfoHeaderCard from "../components/pokemonInfoHeaderCard/PokemonInfoHeaderCard";
+import PokemonDescriptionCard from "../components/pokemonDescriptionCard/PokemonDescriptionCard";
 
 function PokemonDetailsPage() {
   const { name } = useParams();
@@ -48,9 +50,11 @@ function PokemonDetailsPage() {
         animate={{ y: 0, height: "100%", transition: { duration: 0.5 } }}
         exit={{ opacity: 0 }}
       >
-        <PokemonInfoCard slug={name} />
-        <PokemonStatsCard slug={name} />
+        <PokemonInfoHeaderCard  slug={name} />
         <EvolutionChain slug={name} />
+        <PokemonDescriptionCard slug={name} />
+        <PokemonInfoDetailsCard  slug={name} />
+        <PokemonStatsCard slug={name} />
         <PokemonMoves slug={name} />
         <OtherForms slug={name} />
       </motion.div>

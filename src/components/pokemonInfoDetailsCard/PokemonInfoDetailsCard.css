@@ -1,0 +1,17 @@
+.pokemon-info-details-card {
+  border-radius: var(--card-border-radius);
+  font-size: 1.5rem;
+  overflow-x: hidden;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.pokemon-info-details-card__info {
+  display: grid;
+  color: var(--dark-text-color);
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--card-border-radius);
+  background-color: rgba(255, 255, 255, 0.5);
+}
