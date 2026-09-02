@@ -7,14 +7,6 @@
   flex-direction: column;
   border-radius: var(--card-border-radius);
 }
-@media (max-width: 70rem) {
-  .evolution-chain {
-    width: 100vw;
-    border: 0;
-    border-radius: 0;
-    flex-shrink: 0;
-  }
-}
 .evolution-chain h2.title {
   margin-top: 0;
   margin-bottom: 0.5rem;

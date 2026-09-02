@@ -243,7 +243,7 @@ const PokemonList = () => {
             slug={pokemon.name}
             onClick={() => {
               persistListState(visibleCount, window.scrollY);
-              navigate(`/pokemon/${pokemon.name}/stats`);
+              navigate(`/pokemon/${pokemon.name}`);
             }}
           />
         ))}

@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
 import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import PokemonStatsCard from "../components/PokemonStatsCard";
+import EvolutionChain from "../components/evolutionChain/EvolutionChain";
 import PageHeader from "../components/header/PageHeader";
+import OtherForms from "../components/otherForms/OtherForms";
 import PokemonInfoCard from "../components/pokemonInfoCard/PokemonInfoCard";
+import PokemonMoves from "../components/pokemonMoves/PokemonMoves";
 import usePokemonColor from "../hooks/usePokemonColor";
 import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
@@ -45,39 +49,10 @@ function PokemonDetailsPage() {
         exit={{ opacity: 0 }}
       >
         <PokemonInfoCard slug={name} />
-        <div className="pokemon-details-buttons">
-          <NavLink
-            to={`/pokemon/${name}/stats`}
-            preventScrollReset={true}
-            replace={true}
-          >
-            Stats
-          </NavLink>
-          <NavLink
-            to={`/pokemon/${name}/evolution`}
-            preventScrollReset={true}
-            replace={true}
-          >
-            Evolution
-          </NavLink>
-          <NavLink
-            to={`/pokemon/${name}/moves`}
-            preventScrollReset={true}
-            replace={true}
-          >
-            Moves
-          </NavLink>
-          <NavLink
-            to={`/pokemon/${name}/forms`}
-            preventScrollReset={true}
-            replace={true}
-          >
-            Forms
-          </NavLink>
-        </div>
-        <div className="pokemon-details-outlet">
-          <Outlet />
-        </div>
+        <PokemonStatsCard slug={name} />
+        <EvolutionChain slug={name} />
+        <PokemonMoves slug={name} />
+        <OtherForms slug={name} />
       </motion.div>
     </div>
   );

@@ -9,9 +9,7 @@
 
 @media (max-width: 36rem) {
   .pokemon-info-card {
-    width: 100vw;
-    border: 0;
-    border-radius: 0;
+    width: 100%;
     flex-shrink: 0;
   }
   .pokemon-info-card .pokemon-title h2 {

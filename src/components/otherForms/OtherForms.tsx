@@ -22,7 +22,7 @@ const OtherForms = ({ slug }: Props) => {
               key={index}
               slug={pokemonVariety.pokemon.name}
               onClick={() =>
-                navigate(`/pokemon/${pokemonVariety.pokemon.name}/stats`)
+                navigate(`/pokemon/${pokemonVariety.pokemon.name}`)
               }
             />
           ))}

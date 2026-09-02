@@ -26,7 +26,7 @@ const EvolutionChain = ({ slug }: Props) => {
           <PokemonCard
             slug={data.chain.species.name}
             onClick={() =>
-              navigate(`/pokemon/${data.chain.species.name}/stats`)
+              navigate(`/pokemon/${data.chain.species.name}`)
             }
           />
         </EvolutionCard>

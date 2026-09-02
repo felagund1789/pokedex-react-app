@@ -7,14 +7,6 @@
   flex-direction: column;
   border-radius: var(--card-border-radius);
 }
-@media (max-width: 70rem) {
-  .pokemon-moves {
-    width: 100vw;
-    border: 0;
-    border-radius: 0;
-    flex-shrink: 0;
-  }
-}
 .pokemon-moves h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;
@@ -38,8 +30,8 @@
 }
 .moves-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(34rem, 1fr));
-  justify-content: justify;
+  columns: 1;
+  justify-content: center;
   justify-items: center;
   align-items: center;
   flex-wrap: nowrap;

@@ -7,14 +7,6 @@
   flex-direction: column;
   border-radius: var(--card-border-radius);
 }
-@media (max-width: 70rem) {
-  .other-forms {
-    width: 100vw;
-    border: 0;
-    border-radius: 0;
-    flex-shrink: 0;
-  }
-}
 .other-forms h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;

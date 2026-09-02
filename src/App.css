@@ -122,95 +122,27 @@ body {
 }
 
 .pokemon-details {
-  padding: 0;
   display: grid;
-  grid-template-areas: "info buttons" "info details";
-  grid-template-columns: 36rem 1fr;
-  grid-template-rows: 4rem 1fr;
-  justify-content: start;
-  min-height: calc(100vh - 4rem);
-}
-@media (max-width: 70rem) {
-  .pokemon-details {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    gap: 0;
-    height: auto;
-  }
-}
-.pokemon-details .pokemon-info-card {
-  grid-area: info;
-  border-radius: 0;
-  height: auto;
-}
-.pokemon-details .pokemon-info-card .pokemon-image-background {
-  margin-top: 0.5rem;
-  margin-right: 0.5rem;
-  height: 12rem;
-  width: 12rem;
-  border-top-right-radius: 20rem;
-  border-bottom-right-radius: 20rem;
-}
-
-@media (max-width: 70rem) {
-  .pokemon-details .pokemon-info-card {
-    width: 100vw;
-  }
-  .pokemon-details .pokemon-info-card .pokemon-image-background {
-    margin-top: 0.5rem;
-    margin-right: 0;
-    height: 12rem;
-    width: 12rem;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-.pokemon-details-outlet {
-  grid-area: details;
-  display: flex;
-  padding: 1rem;
-  box-sizing: border-box;
-  width: 100%;
-}
-@media (max-width: 70rem) {
-  .pokemon-details-outlet {
-    padding: 0;
-    height: 100%;
-  }
-}
-
-.pokemon-details-buttons {
-  grid-area: buttons;
-  display: flex;
-  flex-direction: row;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   padding: 1rem;
   box-sizing: border-box;
+  min-height: calc(100vh - 4rem);
+}
+@media (min-width: 110rem) {
+  .pokemon-details {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.pokemon-details > * {
+  min-width: 0;
   width: 100%;
 }
-.pokemon-details-buttons a {
-  color: var(--dark-text-color);
-  background-color: rgba(255, 255, 255, 0.5);
-  text-decoration: none;
-  height: 2rem;
-  font-size: 1.25rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--card-border-radius);
-  font-weight: bold;
-  flex-grow: 1;
-}
-.pokemon-details-buttons a.active {
-  background-color: rgba(255, 255, 255, 0.9);;
-}
-
-@media (max-width: 70rem) {
-  .pokemon-details .pokemon-stats {
-    width: 100vw;
-    border: 0;
-    border-radius: 0;
-    flex-shrink: 0;
+@media (max-width: 36rem) {
+  .pokemon-details {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0.5rem;
+    gap: 0.5rem;
   }
 }
 
