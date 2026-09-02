@@ -1,19 +1,13 @@
-import ColorThief from "colorthief";
 import { useEffect, useState } from "react";
+import { Color, getColorSync, getPaletteSync } from "colorthief";
 import usePokemon from "./usePokemon";
 
-const colorthief = new ColorThief();
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
-const rgbToHex = (r: number, g: number, b: number, alpha: number) => {
-  const toHex = (n: number) => n.toString(16).padStart(2, "0");
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}${
-    alpha !== 1 ? toHex(Math.round(alpha * 255)) : ""
-  }`;
+const colorBrightness = (color: Color): number => {
+  const { r, g, b } = color.rgb();
+  return 0.299 * r + 0.587 * g + 0.114 * b;
 };
-
-const colorBrightness = ([r, g, b]: number[]): number =>
-  0.299 * r + 0.587 * g + 0.114 * b;
 
 interface Props {
   slug: string;
@@ -34,18 +28,17 @@ const usePokemonColor = ({ slug }: Props) => {
       img.style.display = "none";
       img.src = imgUrl;
       img.addEventListener("load", () => {
-        let dominantColor = colorthief.getColor(img);
-        const palette = colorthief
-          .getPalette(img)
-          .filter((c) => colorBrightness(c) > 63 && colorBrightness(c) < 224);
+        const palette = (getPaletteSync(img) ?? [])
+          .filter(c => colorBrightness(c) > 63 && colorBrightness(c) < 224);
 
-        dominantColor =
-          colorBrightness(dominantColor) > 63 &&
+        const dominantColor = getColorSync(img);
+        const selectedColor = dominantColor && 
+          colorBrightness(dominantColor) > 63 && 
           colorBrightness(dominantColor) < 224
             ? dominantColor
             : palette[0];
 
-        const color = rgbToHex(...dominantColor, 1);
+        const color = selectedColor?.hex() ?? null;
         localStorage.setItem(imgUrl, color);
         setPokemonColor(color);
         img.remove();
