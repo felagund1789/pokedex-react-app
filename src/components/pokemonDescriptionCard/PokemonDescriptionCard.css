@@ -5,6 +5,13 @@
 
 .pokemon-description-track-wrapper {
   overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+
+.pokemon-description-track-wrapper:active {
+  cursor: grabbing;
 }
 
 .pokemon-description-track {
