@@ -14,17 +14,17 @@ const sanitizeFlavorText = (flavorText: string): string => {
 };
 
 const removeSimilarDescriptions = (texts: string[] | undefined) => {
-    if (texts) {
-      for (let i = 0; i < texts.length; i++) {
-        for (let j = i + 1; j < texts.length; j++) {
-          if (stringSimilarity(texts[i], texts[j]) > 0.9) {
-            texts.splice(j, 1);
-            j--;
-          }
+  if (texts) {
+    for (let i = 0; i < texts.length; i++) {
+      for (let j = i + 1; j < texts.length; j++) {
+        if (stringSimilarity(texts[i], texts[j]) > 0.9) {
+          texts.splice(j, 1);
+          j--;
         }
       }
     }
   }
+};
 
 const usePokemonDescription = ({ species }: Props) => {
   const language = usePokemonStore((state) => state.language);
