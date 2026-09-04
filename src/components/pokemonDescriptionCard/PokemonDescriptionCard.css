@@ -3,6 +3,40 @@
   overflow-x: hidden;
 }
 
-.pokemon-description-card p {
+.pokemon-description-track-wrapper {
+  overflow: hidden;
+}
+
+.pokemon-description-track {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.pokemon-description-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
   margin: 0;
+}
+
+.pokemon-description-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.pokemon-description-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background-color: #d1d5db;
+  cursor: pointer;
+  transition: width 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.pokemon-description-dot.active {
+  width: 20px;
+  background-color: #374151;
 }
