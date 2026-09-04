@@ -8,7 +8,7 @@
   padding: 0;
   margin: 0;
 }
-@media (max-width: 16rem) {
+@media (max-width: 70rem) {
   .evolution-card {
     flex-direction: column;
   }
@@ -42,7 +42,7 @@
   margin: 0;
   padding: 0;
 }
-@media (max-width: 16rem) {
+@media (max-width: 70rem) {
   .evolution-card .evolves-from,
   .evolution-card .evolves-to {
     flex-direction: row;
@@ -58,7 +58,7 @@
   margin: 0;
   padding: 0;
 }
-@media (max-width: 16rem) {
+@media (max-width: 70rem) {
   .evolution-card .evolution-transition {
     flex-direction: column;
   }

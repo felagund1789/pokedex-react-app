@@ -23,9 +23,10 @@
   text-align: right;
 }
 .stat-bar p {
-  transition: all 3s;
+  transition: width 3s;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: var(--card-border-radius);
+  color: white;
 }
 .stat-bar.hp p {
   background-color: var(--stat-hp);

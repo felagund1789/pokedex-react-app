@@ -230,6 +230,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  color: white;
 }
 @media (max-width: 36rem) {
   .pokemon-move {
