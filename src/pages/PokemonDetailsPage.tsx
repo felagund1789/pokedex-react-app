@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import PokemonStatsCard from "../components/PokemonStatsCard";
 import EvolutionChain from "../components/evolutionChain/EvolutionChain";
@@ -8,6 +8,7 @@ import PageHeader from "../components/header/PageHeader";
 import OtherForms from "../components/otherForms/OtherForms";
 import PokemonMoves from "../components/pokemonMoves/PokemonMoves";
 import usePokemonColor from "../hooks/usePokemonColor";
+import useMasonryGrid from "../hooks/useMasonryGrid";
 import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
 import PokemonInfoDetailsCard from "../components/pokemonInfoDetailsCard/PokemonInfoDetailsCard";
@@ -18,6 +19,9 @@ function PokemonDetailsPage() {
   const { name } = useParams();
   const language = usePokemonStore((state) => state.language);
   const color = usePokemonColor({ slug: name! });
+  const detailsGridRef = useRef<HTMLDivElement>(null);
+
+  useMasonryGrid(detailsGridRef);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,6 +50,7 @@ function PokemonDetailsPage() {
       <PageHeader />
       <motion.div
         className="pokemon-details" 
+        ref={detailsGridRef}
         initial={{ y: window.innerHeight, height: "0%" }}
         animate={{ y: 0, height: "100%", transition: { duration: 0.5 } }}
         exit={{ opacity: 0 }}
