@@ -12,9 +12,12 @@
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   padding: 1rem;
   box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 @media (max-width: 70rem) {
   .evolution-chain .evolution {

@@ -7,13 +7,16 @@
   gap: 2rem;
   padding: 0;
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 @media (max-width: 70rem) {
   .evolution-card {
     flex-direction: column;
   }
 }
-@media (max-width: 36rem) {
+/* @media (max-width: 36rem) {
   .evolution-card .pokemon-card {
     width: 12rem;
   }
@@ -31,7 +34,7 @@
     width: 0.75rem;
     height: 0.75rem;
   }
-}
+} */
 .evolution-card .evolves-from,
 .evolution-card .evolves-to {
   display: flex;
@@ -41,6 +44,9 @@
   gap: 1rem;
   margin: 0;
   padding: 0;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 @media (max-width: 70rem) {
   .evolution-card .evolves-from,
@@ -53,13 +59,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
   margin: 0;
   padding: 0;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 @media (max-width: 70rem) {
   .evolution-card .evolution-transition {
-    flex-direction: column;
+    align-items: flex-start;
   }
 }
