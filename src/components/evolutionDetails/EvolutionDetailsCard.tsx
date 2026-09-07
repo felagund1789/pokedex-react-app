@@ -1,6 +1,7 @@
 import { FluffyEvolutionDetail, PurpleEvolutionDetail } from "pokeapi-js-wrapper";
 import usePokemonName from "../../hooks/usePokemonName";
 import useResourceName from "../../hooks/useResourceName";
+import "./EvolutionDetailsCard.css";
 
 interface Props {
   details: FluffyEvolutionDetail | PurpleEvolutionDetail;
