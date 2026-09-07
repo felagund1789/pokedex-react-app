@@ -59,7 +59,7 @@
   position: absolute;
 }
 
-@media (max-width: 36rem) {
+@media (max-width: 70rem) {
   .pokemon-card {
     min-height: auto;
   }
