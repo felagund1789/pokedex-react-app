@@ -22,13 +22,51 @@
 .pokemon-moves .filters button.filter.active {
   background-color: #4d4e4f;
 }
-.moves-list {
-  display: grid;
-  columns: 1;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: 0.5rem;
-  padding-top: 1rem;
+.moves-table-container {
+  margin-top: 1rem;
+  max-height: 32rem;
+  overflow: auto;
+  border: 1px solid rgba(37, 61, 91, 0.16);
+  border-radius: 0.25rem;
+}
+.moves-table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  text-align: left;
+  color: var(--dark-text-color);
+}
+.moves-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #e8ecf1;
+  color: #253d5b;
+  padding: 0.5rem;
+}
+.moves-table td {
+  padding: 0.4rem 0.5rem;
+  vertical-align: middle;
+  border-top: 1px solid rgba(37, 61, 91, 0.08);
+}
+.moves-table .move-row {
+  background-color: color-mix(in srgb, var(--move-color, transparent) 50%, white);
+}
+.moves-table .move-type img {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.moves-table .move-name {
+  font-weight: bold;
+  white-space: nowrap;
+}
+.moves-table th:nth-child(n + 4),
+.moves-table .move-stat {
+  text-align: center;
+  white-space: nowrap;
+}
+.moves-table .move-level {
+  font-weight: bold;
 }
