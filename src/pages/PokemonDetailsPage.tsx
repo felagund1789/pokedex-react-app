@@ -14,6 +14,8 @@ import usePokemonStore from "../store";
 import PokemonInfoDetailsCard from "../components/pokemonInfoDetailsCard/PokemonInfoDetailsCard";
 import PokemonInfoHeaderCard from "../components/pokemonInfoHeaderCard/PokemonInfoHeaderCard";
 import PokemonDescriptionCard from "../components/pokemonDescriptionCard/PokemonDescriptionCard";
+import AbilitiesCard from "../components/abilitiesCard/AbilitiesCard";
+import TypeCard from "../components/typeCard/TypeCard";
 
 function PokemonDetailsPage() {
   const { name } = useParams();
@@ -60,6 +62,8 @@ function PokemonDetailsPage() {
         <PokemonDescriptionCard slug={name} />
         <PokemonInfoDetailsCard  slug={name} />
         <PokemonStatsCard slug={name} />
+        <TypeCard slug={name} />
+        <AbilitiesCard slug={name} />
         <PokemonMoves slug={name} />
         <OtherForms slug={name} />
       </motion.div>

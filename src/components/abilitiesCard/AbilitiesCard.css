@@ -1,0 +1,41 @@
+.abilities-card {
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.abilities-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.abilities-card__item {
+  margin-top: 0.75rem;
+}
+
+.abilities-card__name {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: #253d5b;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.abilities-card__hidden {
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  background-color: #111827;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.abilities-card__effect {
+  margin: 0.25rem 0 0;
+  color: var(--dark-text-color);
+  line-height: 1.5;
+}

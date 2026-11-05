@@ -7,10 +7,10 @@ interface PokemonTypeProps {
 
 const PokemonType = ({ children: type }: PokemonTypeProps) => {
   return (
-    <div className={`pokemon-type ${type}`}>
+    <span className={`pokemon-type ${type}`}>
       <img src={icons[type as keyof typeof icons]} alt={type} />
       {type}
-    </div>
+    </span>
   );
 };
 
