@@ -1,27 +1,13 @@
 .other-forms {
-  padding: 1rem;
-  box-sizing: border-box;
   font-size: 1rem;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: var(--card-border-radius);
-}
-@media (max-width: 70rem) {
-  .other-forms {
-    width: 100vw;
-    border: 0;
-    border-radius: 0;
-    flex-shrink: 0;
-  }
 }
 .other-forms h2 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 .other-forms h2.title {
-  color: var(--text-color);
+  color: #253d5b;
 }
 .other-forms-list {
   display: flex;
@@ -30,5 +16,8 @@
   align-items: start;
   flex-wrap: wrap;
   gap: 1rem;
-  padding-top: 1rem;
+  padding: 1rem 0.5rem 0.5rem;
+  max-height: 30rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }

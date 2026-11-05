@@ -29,7 +29,7 @@ const EvolutionCard = ({ evolvesTo, children }: Props) => {
                 <PokemonCard
                   slug={evolution.species.name}
                   onClick={() =>
-                    navigate(`/pokemon/${evolution.species.name}/stats`)
+                    navigate(`/pokemon/${evolution.species.name}`)
                   }
                 />
               </EvolutionCard>

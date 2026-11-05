@@ -11,18 +11,25 @@ const OtherForms = ({ slug }: Props) => {
   const { data } = usePokemonSpecies({ slug });
   const navigate = useNavigate();
 
+  const otherVarieties =
+    data?.varieties.filter(
+      (pokemonVariety) => pokemonVariety.pokemon.name !== slug
+    ) ?? [];
+
+  if (otherVarieties.length === 0) {
+    return null;
+  }
+
   return (
     <div className="other-forms">
       <h2 className="title">Alternative Forms</h2>
       <div className="other-forms-list">
-        {data?.varieties
-          .filter((pokemonVariety) => pokemonVariety.pokemon.name !== slug)
-          .map((pokemonVariety, index) => (
+        {otherVarieties.map((pokemonVariety, index) => (
             <PokemonCard
               key={index}
               slug={pokemonVariety.pokemon.name}
               onClick={() =>
-                navigate(`/pokemon/${pokemonVariety.pokemon.name}/stats`)
+                navigate(`/pokemon/${pokemonVariety.pokemon.name}`)
               }
             />
           ))}
