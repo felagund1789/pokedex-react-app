@@ -56,7 +56,6 @@
 
 .filter-select,
 .clear-filters {
-  color-scheme: light;
   height: 2.5rem;
   padding: 0 1rem;
   border-radius: 100px;
@@ -84,7 +83,7 @@
   .search-container {
     position: static;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--bg-color);
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
     top: 4rem;
   }

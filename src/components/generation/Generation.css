@@ -4,7 +4,7 @@
   margin: 1rem 0 0 1rem;
   padding: 0.2rem 0 0 0.125rem;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--generation-text-color);
   font-weight: 700;
   width: 2rem;
   height: 2rem;
@@ -25,7 +25,7 @@
   width: 2rem;
   height: 2rem;
   /* background-color: rgba(216, 196, 17, 0.8); */
-  background-color: rgba(204, 204, 204, 0.8);
+  background-color: var(--generation-background-color);
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 0.5rem;
   z-index: -10;

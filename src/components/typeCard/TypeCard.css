@@ -54,7 +54,7 @@
 
 .type-card__label {
   margin: 0 0 0.375rem;
-  color: #253d5b;
+  color: var(--heading-color);
 }
 
 .type-card__tags {
