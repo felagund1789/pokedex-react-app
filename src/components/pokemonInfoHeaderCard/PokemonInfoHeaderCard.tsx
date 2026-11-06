@@ -5,6 +5,7 @@ import "./PokemonInfoHeaderCard.css";
 import usePokemonStore from "../../store";
 import { useEffect, useState } from "react";
 import pokedex from "../../services/pokedexService";
+import PokemonImageModal from "../pokemonImageModal/PokemonImageModal";
 import usePokemonColor from "../../hooks/usePokemonColor";
 
 interface Props {
@@ -44,6 +45,8 @@ const PokemonInfoHeaderCard = ({ slug }: Props) => {
     });
   }, [language, slug]);
 
+  const [isZoomed, setIsZoomed] = useState(false);
+
   const color = usePokemonColor({ slug });
 
   const imgUrl = pokemon?.id ? `${artworkBaseURL}${pokemon.id}.png` : "";
@@ -70,9 +73,21 @@ const PokemonInfoHeaderCard = ({ slug }: Props) => {
           </div>
         </div>
         <div className="pokemon-info-header-card__image-background">
-          <img src={imgUrl} alt={pokemonFormName ?? pokemonName} />
+          <img
+            src={imgUrl}
+            alt={pokemonFormName ?? pokemonName}
+            onClick={() => imgUrl && setIsZoomed(true)}
+            style={{ cursor: "zoom-in" }}
+          />
         </div>
       </div>
+      {isZoomed && (
+        <PokemonImageModal
+          src={imgUrl}
+          alt={pokemonFormName ?? pokemonName}
+          onClose={() => setIsZoomed(false)}
+        />
+      )}
     </div>
   );
 };
