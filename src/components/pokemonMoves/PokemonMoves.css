@@ -7,7 +7,7 @@
   font-size: 1.5rem;
 }
 .pokemon-moves h2.title {
-  color: #253d5b;
+  color: var(--heading-color);
 }
 .pokemon-moves .filters button.filter {
   height: 2.5rem;
@@ -41,8 +41,8 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #e8ecf1;
-  color: #253d5b;
+  background-color: var(--table-header-background-color);
+  color: var(--heading-color);
   padding: 0.5rem;
 }
 .moves-table td {

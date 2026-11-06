@@ -19,7 +19,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  color: #253d5b;
+  color: var(--heading-color);
   font-weight: 700;
   text-transform: capitalize;
 }

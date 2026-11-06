@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: var(--surface-overlay-color);
   width: 12rem;
   height: 14rem;
   border-top-right-radius: var(--card-border-radius);
