@@ -38,12 +38,12 @@
   padding: 0;
   border: none;
   border-radius: 4px;
-  background-color: #d1d5db;
+  background-color: var(--description-dot-color);
   cursor: pointer;
   transition: width 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
 .pokemon-description-dot.active {
   width: 20px;
-  background-color: #374151;
+  background-color: var(--description-dot-active-color);
 }
