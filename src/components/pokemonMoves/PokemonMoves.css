@@ -52,8 +52,11 @@
   border-top: 1px solid rgba(37, 61, 91, 0.08);
 }
 .moves-table .move-row {
-  background-color: color-mix(in srgb, var(--move-color, transparent) 50%, white);
-  color: var(--move-row-text-color);
+  background-color: color-mix(
+    in srgb,
+    var(--move-color, transparent) 50%,
+    var(--surface-background-color)
+  );
 }
 .moves-table .move-type img {
   display: block;
