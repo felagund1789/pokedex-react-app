@@ -18,6 +18,7 @@
   padding: 0.25rem 1rem;
   margin: 0.25em;
   cursor: pointer;
+  color: var(--text-color);
 }
 .pokemon-moves .filters button.filter.active {
   background-color: #4d4e4f;
