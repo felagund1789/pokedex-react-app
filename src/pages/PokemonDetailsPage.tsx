@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { useParams } from "react-router-dom";
 import PokemonStatsCard from "../components/PokemonStatsCard";
 import EvolutionChain from "../components/evolutionChain/EvolutionChain";
@@ -48,7 +48,10 @@ function PokemonDetailsPage() {
   }
 
   return (
-    <div style={{ backgroundColor: `${color}` }}>
+    <div
+      className="pokemon-details-page"
+      style={{ "--pokemon-color": color } as CSSProperties}
+    >
       <PageHeader />
       <motion.div
         className="pokemon-details" 

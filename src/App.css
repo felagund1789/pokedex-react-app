@@ -31,6 +31,7 @@
   --move-row-text-color: #6d6e6f;
   --highlight-color: #6d6d6d;
   --heading-color: #253d5b;
+  --arrow-color: #000000;
   --surface-background-color: rgba(255, 255, 255, 0.92);
   --surface-overlay-color: rgba(255, 255, 255, 0.6);
   --subtle-background-color: rgba(37, 61, 91, 0.05);
@@ -63,12 +64,11 @@
     --dark-text-color: #d1d5db;
     --highlight-color: #9ca3af;
     --heading-color: #f3f4f6;
+    --arrow-color: #ffffff;
     --surface-background-color: #1f2937;
     --surface-overlay-color: rgba(17, 24, 39, 0.6);
     --subtle-background-color: rgba(255, 255, 255, 0.08);
     --table-header-background-color: #374151;
-    --generation-background-color: rgba(55, 65, 81, 0.9);
-    --generation-text-color: rgba(255, 255, 255, 0.7);
     --description-dot-color: #4b5563;
     --description-dot-active-color: #d1d5db;
     --pokemon-number-color: rgba(255, 255, 255, 0.25);
@@ -87,6 +87,16 @@ body {
   align-items: start;
   min-width: 320px;
   min-height: 100vh;
+}
+
+.pokemon-details-page {
+  background-color: var(--pokemon-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  .pokemon-details-page {
+    background-color: var(--bg-color);
+  }
 }
 
 #root {
