@@ -56,22 +56,20 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg-color: #111827;
-    --dark-text-color: #d1d5db;
-    --highlight-color: #9ca3af;
-    --heading-color: #f3f4f6;
-    --arrow-color: #ffffff;
-    --surface-background-color: #1f2937;
-    --surface-overlay-color: rgba(17, 24, 39, 0.6);
-    --subtle-background-color: rgba(255, 255, 255, 0.08);
-    --table-header-background-color: #374151;
-    --description-dot-color: #4b5563;
-    --description-dot-active-color: #d1d5db;
-    --pokemon-number-color: rgba(255, 255, 255, 0.25);
-  }
+:root.dark-theme {
+  color-scheme: dark;
+  --bg-color: #111827;
+  --dark-text-color: #d1d5db;
+  --highlight-color: #9ca3af;
+  --heading-color: #f3f4f6;
+  --arrow-color: #ffffff;
+  --surface-background-color: #1f2937;
+  --surface-overlay-color: rgba(17, 24, 39, 0.6);
+  --subtle-background-color: rgba(255, 255, 255, 0.08);
+  --table-header-background-color: #374151;
+  --description-dot-color: #4b5563;
+  --description-dot-active-color: #d1d5db;
+  --pokemon-number-color: rgba(255, 255, 255, 0.25);
 }
 @media (max-width: 36rem) {
   :root {
@@ -92,16 +90,15 @@ body {
   background-color: var(--pokemon-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  .pokemon-details-page {
-    background-color: var(--bg-color);
-  }
+:root.dark-theme .pokemon-details-page {
+  background-color: var(--bg-color);
 }
 
 #root {
   width: 100%;
   margin: 0 auto;
   text-align: center;
+  display: grid;
 }
 
 .bug {

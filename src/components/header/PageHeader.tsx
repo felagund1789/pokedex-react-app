@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import pokemonLogo from "../../assets/pokedex.png";
 import "./Header.css";
+import ThemeToggle from "./ThemeToggle";
 
 const PageHeader = () => {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ const PageHeader = () => {
         </svg>
       </div>
       <img src={pokemonLogo} alt="Pokedex" />
+      <div className="spacer"></div>
+      <ThemeToggle />
     </header>
   );
 };
