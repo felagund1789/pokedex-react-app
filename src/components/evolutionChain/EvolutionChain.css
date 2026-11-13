@@ -4,7 +4,7 @@
   flex-direction: column;
 }
 .evolution-chain h2.title {
-  color: #253d5b;
+  color: var(--heading-color);
 }
 .evolution-chain .evolution {
   display: flex;
