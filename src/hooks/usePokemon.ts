@@ -1,17 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { Pokemon } from "pokeapi-js-wrapper";
-import pokedex from "../services/pokedexService";
+import useResolvedPokemon from "./useResolvedPokemon";
 
 interface Props {
   slug: string;
 }
 
 const usePokemon = ({ slug }: Props) => {
-  return useQuery<Pokemon, Error>({
-    queryKey: ["pokemon", slug],
-    queryFn: () => pokedex.getPokemonByName(slug),
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours
-  });
+  const query = useResolvedPokemon(slug);
+  return { ...query, data: query.data?.pokemon };
 };
 
 export default usePokemon;

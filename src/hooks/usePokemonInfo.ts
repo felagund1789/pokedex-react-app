@@ -1,68 +1,26 @@
-import { PokemonSpecies } from "pokeapi-js-wrapper";
-import { useEffect, useState } from "react";
-import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
-import { resolvePokemonForm } from "./useSelectedPokemonForm";
-
-const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
+import { formArtwork } from "../services/pokemonResolver";
+import { pokemonFormName as getFormName } from "../utils/pokemonFormName";
+import useResolvedPokemon from "./useResolvedPokemon";
+import usePokemonSpecies from "./usePokemonSpecies";
 
 const usePokemonInfo = (slug: string) => {
   const language = usePokemonStore((state) => state.language);
-  const getPokemonInfo = usePokemonStore((state) => state.getPokemonInfo);
-  const addPokemonInfo = usePokemonStore((state) => state.addPokemonInfo);
-  const [pokedexNumber, setPokedexNumber] = useState<number>();
-  const [pokemonName, setPokemonName] = useState<string>();
-  const [pokemonFormName, setPokemonFormName] = useState<string>();
-  const [generation, setGeneration] = useState<string>();
-  const [types, setTypes] = useState<string[]>([]);
-  const [artworkURL, setArtworkURL] = useState<string>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    let active = true;
-    setError(null);
-    setLoading(true);
-    const pokemonInfo = getPokemonInfo(slug);
-    if (pokemonInfo) {
-      setPokemonName(pokemonInfo.pokemonName);
-      setPokemonFormName(pokemonInfo.pokemonFormName);
-      setPokedexNumber(pokemonInfo.pokedexNumber);
-      setArtworkURL(pokemonInfo.artworkUrl);
-      setTypes(pokemonInfo.types);
-      setGeneration(pokemonInfo.generation);
-      setLoading(false);
-    } else {
-      pokedex.getPokemonByName(slug).then(async (data) => {
-        const species: PokemonSpecies = await pokedex.resource(data.species.url);
-        const form = await resolvePokemonForm(data, null);
-        if (!active) return;
-        setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
-        setPokemonName(species.names.find((n) => n.language.name === language)?.name);
-        setPokemonFormName(form.names.find((f) => f.language.name === language)?.name);
-        setArtworkURL(`${artworkBaseURL}${data.id}.png`);
-        setTypes(data.types.map((type) => type.type.name));
-        setGeneration(species.generation.name.replace("generation-", "").toUpperCase());
-        setLoading(false);
-        addPokemonInfo(slug, {
-          pokedexNumber: species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number ?? 0,
-          pokemonName: species.names.find((n) => n.language.name === language)?.name ?? "",
-          pokemonFormName: form.names.find((f) => f.language.name === language)?.name ?? "",
-          types: data.types.map((type) => type.type.name),
-          artworkUrl: `${artworkBaseURL}${data.id}.png`,
-          generation: species.generation.name.replace("generation-", "").toUpperCase(),
-        });
-      }).catch((reason: unknown) => {
-        if (active) {
-          setError(reason instanceof Error ? reason : new Error(String(reason)));
-          setLoading(false);
-        }
-      });
-    }
-    return () => { active = false; };
-  }, [addPokemonInfo, getPokemonInfo, language, slug]);
-
-  return { pokedexNumber, pokemonName, pokemonFormName, generation, types, artworkURL, loading, error };
+  const resolved = useResolvedPokemon(slug);
+  const species = usePokemonSpecies({ slug });
+  const pokemon = resolved.data?.pokemon;
+  const form = resolved.data?.form;
+  const pokemonName = species.data?.names.find((entry) => entry.language.name === language)?.name;
+  return {
+    pokedexNumber: species.data?.pokedex_numbers.find((entry) => entry.pokedex.name === "national")?.entry_number,
+    pokemonName,
+    pokemonFormName: getFormName(form, language, pokemonName, Boolean(form && !form.is_default)),
+    generation: species.data?.generation.name.replace("generation-", "").toUpperCase(),
+    types: (form?.types?.length ? form.types : pokemon?.types)?.map((entry) => entry.type.name) ?? [],
+    artworkURL: form && pokemon ? formArtwork(form, pokemon) : undefined,
+    loading: resolved.isLoading || species.isLoading,
+    error: resolved.error ?? species.error,
+  };
 };
 
 export default usePokemonInfo;

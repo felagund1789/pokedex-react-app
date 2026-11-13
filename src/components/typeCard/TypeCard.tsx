@@ -1,12 +1,14 @@
-import { Pokemon, Type } from "pokeapi-js-wrapper";
+import { Type } from "pokeapi-js-wrapper";
 import { useEffect, useState } from "react";
 import typeIcons from "../../assets/types";
 import pokedex from "../../services/pokedexService";
 import PokemonType from "../pokemonType/PokemonType";
 import "./TypeCard.css";
+import useResolvedPokemon from "../../hooks/useResolvedPokemon";
 
 interface Props {
   slug: string;
+  selectedForm?: string | null;
 }
 
 interface TypeMatchup {
@@ -39,21 +41,26 @@ const getDamageMultiplier = (attackType: string, defenseTypes: Type[]) =>
     return multiplier;
   }, 1);
 
-const TypeCard = ({ slug }: Props) => {
+const TypeCard = ({ slug, selectedForm = null }: Props) => {
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
   const [matchups, setMatchups] = useState<TypeMatchup[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+  const resolved = useResolvedPokemon(slug, selectedForm);
 
   useEffect(() => {
     let isCurrent = true;
     setPokemonTypes([]);
     setMatchups([]);
+    setError(null);
+    if (!resolved.data) return;
 
     const loadMatchups = async () => {
-      const pokemon: Pokemon = await pokedex.getPokemonByName(slug);
+      const { pokemon, form } = resolved.data!;
+      const currentTypes = form.types?.length ? form.types : pokemon.types;
       const defenseTypes: Type[] = await Promise.all(
-        pokemon.types.map(({ type }) => pokedex.resource(type.url)),
+        currentTypes.map(({ type }) => pokedex.resource(type.url)),
       );
-      const types = pokemon.types.map(({ type }) => type.name);
+      const types = currentTypes.map(({ type }) => type.name);
       const damageMatchups = allTypes
         .map((name) => ({
           name,
@@ -72,14 +79,17 @@ const TypeCard = ({ slug }: Props) => {
       setMatchups(damageMatchups);
     };
 
-    void loadMatchups();
+    void loadMatchups().catch((reason: unknown) => {
+      if (isCurrent) setError(reason instanceof Error ? reason : new Error(String(reason)));
+    });
     return () => {
       isCurrent = false;
     };
-  }, [slug]);
+  }, [resolved.data]);
 
   return (
     <div className="type-card">
+      {(resolved.error || error) && <div role="alert">Unable to load types: {(resolved.error ?? error)?.message}</div>}
       <h2 className="type-card__title">
         <span>Type</span>
         <span className="type-card__pokemon-types">

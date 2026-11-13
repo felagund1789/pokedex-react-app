@@ -1,7 +1,8 @@
 import { useLayoutEffect, type RefObject } from "react";
 
-const useMasonryGrid = (gridRef: RefObject<HTMLElement | null>) => {
+const useMasonryGrid = (gridRef: RefObject<HTMLElement | null>, ready = true) => {
   useLayoutEffect(() => {
+    if (!ready) return;
     const grid = gridRef.current;
 
     if (!grid) {
@@ -76,7 +77,7 @@ const useMasonryGrid = (gridRef: RefObject<HTMLElement | null>) => {
       mutationObserver.disconnect();
       resizeObserver.disconnect();
     };
-  }, [gridRef]);
+  }, [gridRef, ready]);
 };
 
 export default useMasonryGrid;

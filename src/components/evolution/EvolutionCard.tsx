@@ -10,19 +10,14 @@ interface Props {
 
 const EvolutionCard = ({ node }: Props) => {
   const navigate = useNavigate();
-  const { pokemon, form, explicitForm } = node.display;
-  const formParam = pokemon.forms.length > 1 && !form.is_default
-    ? `?form=${encodeURIComponent(form.name)}`
-    : "";
+  const { form, explicitForm } = node.display;
 
   return (
     <div className="evolution-card">
       <div className="evolves-from">
         <PokemonCard
-          slug={pokemon.name}
-          form={explicitForm ? form : undefined}
-          useFormSprite={Boolean(formParam)}
-          onClick={() => navigate(`/pokemon/${pokemon.name}${formParam}`)}
+          slug={form.name}
+          onClick={() => navigate(`/pokemon/${form.name}`)}
         />
         {!explicitForm && node.display.hasAlternatives && (
           <small hidden>Form unspecified; showing the default variety</small>

@@ -19,6 +19,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     types,
     artworkURL,
     loading,
+    error,
   } = usePokemonInfo(slug);
 
   const color = usePokemonColor({ slug });
@@ -33,9 +34,10 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
         {loading && <div className="image"></div>}
-        {!loading && (
-          <img className="image" src={artworkURL} alt={pokemonName} />
+        {!loading && artworkURL && (
+          <img className="image" src={artworkURL} alt={pokemonFormName || pokemonName} />
         )}
+        {!loading && !artworkURL && <div className="image">Artwork unavailable</div>}
       </div>
       <div className="pokemon-title">
         <div className="types">
@@ -48,6 +50,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
             ? pokemonFormName
             : pokemonName}
         </h2>
+        {error && <div role="alert">Unable to load Pokémon: {error.message}</div>}
       </div>
     </div>
   );

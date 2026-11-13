@@ -1,6 +1,6 @@
 import type { NamedAPIResource, Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import pokedex from "../../services/pokedexService";
-import { resolvePokemonForm } from "../../hooks/useSelectedPokemonForm";
+import { resolvePokemonForm } from "../../services/pokemonResolver";
 
 export interface EvolutionMethod {
   trigger: NamedAPIResource;

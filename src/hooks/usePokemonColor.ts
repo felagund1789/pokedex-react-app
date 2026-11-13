@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Color, getColorSync, getPaletteSync } from "colorthief";
-import usePokemon from "./usePokemon";
-
-const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
+import useResolvedPokemon from "./useResolvedPokemon";
+import { formArtwork } from "../services/pokemonResolver";
 
 // This function calculates the perceived brightness of a color using the formula for luminance. 
 // It is used to filter out colors that are too dark or too light when selecting a dominant color for the Pokémon image.
@@ -17,11 +16,13 @@ interface Props {
 }
 
 const usePokemonColor = ({ slug }: Props) => {
-  const { data } = usePokemon({ slug });
+  const { data } = useResolvedPokemon(slug);
   const [pokemonColor, setPokemonColor] = useState<string | null>(null);
-  const imgUrl = data?.id ? `${artworkBaseURL}${data.id}.png` : "";
+  const imgUrl = data ? formArtwork(data.form, data.pokemon) : undefined;
 
   useEffect(() => {
+    setPokemonColor(null);
+    if (!imgUrl) return;
     const storedColor = localStorage.getItem(imgUrl);
     if (storedColor) {
       setPokemonColor(storedColor);
@@ -30,7 +31,7 @@ const usePokemonColor = ({ slug }: Props) => {
       img.crossOrigin = "anonymous";
       img.style.display = "none";
       img.src = imgUrl;
-      img.addEventListener("load", () => {
+      const onLoad = () => {
         const palette = (getPaletteSync(img) ?? [])
           .filter(c => colorBrightness(c) > 63 && colorBrightness(c) < 224);
 
@@ -42,10 +43,15 @@ const usePokemonColor = ({ slug }: Props) => {
             : palette[0];
 
         const color = selectedColor?.hex() ?? null;
-        localStorage.setItem(imgUrl, color);
+        if (color) localStorage.setItem(imgUrl, color);
         setPokemonColor(color);
         img.remove();
-      });
+      };
+      img.addEventListener("load", onLoad);
+      return () => {
+        img.removeEventListener("load", onLoad);
+        img.remove();
+      };
     }
   }, [imgUrl]);
 

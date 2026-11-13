@@ -25,10 +25,10 @@ The Pokedex React App is a modern web application designed to provide comprehens
   - **Hatch Counter**: Shows the number of cycles required to hatch the Pokemon from an egg.
   - **Habitat**: Describes the natural habitat where the Pokemon can be found.
   - **Available Moves**: Lists all the moves that the Pokemon can learn, including level-up moves, TMs, HMs, and egg moves.
-  - **Alternate Forms**: Displays any alternate forms of the Pokemon, such as different appearances or regional variants.
+  - **Alternate Forms**: Displays forms from each species variety, including forms that share a Pokémon resource and regional variants.
   - **Evolution Chains**: Shows branching pre-evolutions and evolutions, including alternative methods, form-specific outcomes, and chances when supplied by the API. For otherwise equivalent methods, a matching explicit form takes precedence over an unspecified form; the app does not infer a form from the game version.
 
-Evolution nodes use the current Pokemon's form where known, otherwise the species' default Pokemon variety. When multiple forms share a Pokemon, evolution links retain the selected form in a `form` query parameter; the form's sprite is used where available. Other Pokemon details still describe the associated Pokemon resource.
+Evolution nodes use the current Pokemon's form where known, otherwise the species' default Pokemon variety. Form links use the Pokemon form name as the route identifier; existing Pokémon URLs and `form` query parameters remain supported. Artwork uses the form's official artwork where available, then a form sprite; if neither exists, the app indicates that artwork is unavailable. Stats, abilities and moves describe the associated Pokemon resource.
 Compatible branches share the ancestor forms inferred from the current Pokemon; if an ancestor form is unspecified, its default form is used for the displayed chain.
 
 ## Screenshots

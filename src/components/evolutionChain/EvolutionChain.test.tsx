@@ -4,9 +4,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import usePokemonStore from "../../store";
-import { resolvePokemonForm } from "../../hooks/useSelectedPokemonForm";
+import { formArtwork, resolvePokemon, resolvePokemonForm } from "../../services/pokemonResolver";
 import PokemonInfoHeaderCard from "../pokemonInfoHeaderCard/PokemonInfoHeaderCard";
 import TypeCard from "../typeCard/TypeCard";
+import OtherForms from "../otherForms/OtherForms";
 import EvolutionChain from "./EvolutionChain";
 
 const api = vi.hoisted(() => ({
@@ -132,7 +133,7 @@ const pending = () => new Promise<never>(() => {});
 function setupApi(chain: Node) {
   api.getPokemonByName.mockImplementation((name: string) => {
     const pokemon = fixtures.find((entry) => entry.slug === name);
-    if (!pokemon) return pending();
+    if (!pokemon) return Promise.reject({ isAxiosError: true, response: { status: 404 } });
     return Promise.resolve({
       id: pokemon.id,
       name: pokemon.slug,
@@ -149,7 +150,10 @@ function setupApi(chain: Node) {
       pokemon: resource("pokemon", pokemon.slug),
       names: localized(pokemon.label),
       form_names: localized(pokemon.label),
-      sprites: { front_default: `https://example.test/${pokemon.formName}.png` },
+      sprites: {
+        front_default: `https://example.test/${pokemon.formName}.png`,
+        other: { "official-artwork": { front_default: `https://example.test/artwork/${pokemon.formName}.png` } },
+      },
       types: pokemon.formName === "maushold-special" ? [{ type: resource("type", "fire"), slot: 1 }] : [],
       is_default: fixtures.find((entry) => entry.slug === pokemon.slug)?.formName === pokemon.formName,
     });
@@ -299,8 +303,8 @@ describe("EvolutionChain", () => {
   ])("shares the inferred ancestor with compatible branches for %s", async (slug, burmy, wormadam, otherBurmy, otherCloak) => {
     const { container } = renderChain(slug, burmyChain);
     await screen.findByText(wormadam);
-    expect(screen.getByText(burmy)).toBeTruthy();
-    expect(screen.getByText("Mothim")).toBeTruthy();
+    expect(await screen.findByText(burmy)).toBeTruthy();
+    expect(await screen.findByText("Mothim")).toBeTruthy();
     expect(screen.queryByText(otherBurmy)).toBeNull();
     expect(screen.queryByText(otherCloak)).toBeNull();
     expect(container.querySelector(".evolution")?.children).toHaveLength(1);
@@ -319,8 +323,8 @@ describe("EvolutionChain", () => {
   it("uses the displayed default ancestor across Mothim's branches", async () => {
     const { container } = renderChain("mothim", burmyChain);
     await screen.findByText("Mothim");
-    expect(screen.getByText("Plant Burmy")).toBeTruthy();
-    expect(screen.getByText("Plant Wormadam")).toBeTruthy();
+    expect(await screen.findByText("Plant Burmy")).toBeTruthy();
+    expect(await screen.findByText("Plant Wormadam")).toBeTruthy();
     expect(screen.queryByText("Sandy Burmy")).toBeNull();
     expect(screen.queryByText("Trash Burmy")).toBeNull();
     expect(container.querySelector(".evolution")?.children).toHaveLength(1);
@@ -339,10 +343,10 @@ describe("EvolutionChain", () => {
     ]);
     const { container } = renderChain("charizard", chain);
     await screen.findByText("Charizard");
-    expect(screen.getByText("Sandy Burmy")).toBeTruthy();
-    expect(screen.getByText("Hisuian Growlithe")).toBeTruthy();
-    expect(screen.getByText("Arcanine")).toBeTruthy();
-    expect(screen.getByText("Mothim")).toBeTruthy();
+    expect(await screen.findByText("Sandy Burmy")).toBeTruthy();
+    expect(await screen.findByText("Hisuian Growlithe")).toBeTruthy();
+    expect(await screen.findByText("Arcanine")).toBeTruthy();
+    expect(await screen.findByText("Mothim")).toBeTruthy();
     expect(screen.queryByText("Plant Burmy")).toBeNull();
     expect(screen.queryByText("Growlithe")).toBeNull();
     expect(container.querySelector(".evolution")?.children).toHaveLength(1);
@@ -410,7 +414,14 @@ describe("EvolutionChain", () => {
     const card = (await screen.findByText("Maushold Special Form")).closest(".pokemon-card");
     expect(card).not.toBeNull();
     fireEvent.click(card!);
-    expect(screen.getByTestId("location").textContent).toBe("/pokemon/maushold-family-of-four?form=maushold-special");
+    expect(screen.getByTestId("location").textContent).toBe("/pokemon/maushold-special");
+  });
+
+  it("uses a form-name URL to select a shared Pokémon form", async () => {
+    renderChain("burmy-sandy", burmyChain);
+    expect(await screen.findByText("Sandy Burmy")).toBeTruthy();
+    expect(await screen.findByText("Sandy Wormadam")).toBeTruthy();
+    expect(screen.queryByText("Plant Burmy")).toBeNull();
   });
 
   it("uses the selected form for the destination header, image and types", async () => {
@@ -424,7 +435,7 @@ describe("EvolutionChain", () => {
     );
     expect(await screen.findByText("Maushold Special Form")).toBeTruthy();
     expect((await screen.findByAltText("Maushold Special Form")).getAttribute("src"))
-      .toBe("https://example.test/maushold-special.png");
+      .toBe("https://example.test/artwork/maushold-special.png");
     await waitFor(() => {
       expect(container.querySelector(".type-card__pokemon-types img")?.getAttribute("alt")).toMatch(/fire/i);
     });
@@ -492,8 +503,8 @@ describe("EvolutionChain", () => {
       ]),
     ]));
     expect(await screen.findAllByText("Hisuian Arcanine")).toHaveLength(2);
-    expect(screen.getByText("Hisuian Growlithe")).toBeTruthy();
-    expect(screen.getByText("Growlithe")).toBeTruthy();
+    expect(await screen.findByText("Hisuian Growlithe")).toBeTruthy();
+    expect(await screen.findByText("Growlithe")).toBeTruthy();
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
@@ -633,6 +644,100 @@ describe("EvolutionChain", () => {
       const pokemon = await api.getPokemonByName("maushold-family-of-four");
       pokemon.forms.reverse();
       expect((await resolvePokemonForm(pokemon, null)).name).toBe("maushold-family-of-four");
+    });
+
+    describe("resolvePokemon", () => {
+      it("resolves form names to their associated Pokémon", async () => {
+        setupApi(burmyChain);
+        const result = await resolvePokemon("burmy-sandy");
+        expect(result.pokemon.name).toBe("burmy");
+        expect(result.form.name).toBe("burmy-sandy");
+      });
+
+      it("preserves old Pokémon links and explicit query forms", async () => {
+        setupApi(burmyChain);
+        expect((await resolvePokemon("burmy")).form.name).toBe("burmy-plant");
+        expect((await resolvePokemon("burmy", "burmy-trash")).form.name).toBe("burmy-trash");
+      });
+
+      it("does not mistake network failures for missing Pokémon", async () => {
+        setupApi(burmyChain);
+        api.getPokemonByName.mockRejectedValue(new Error("Network unavailable"));
+        await expect(resolvePokemon("burmy-sandy")).rejects.toThrow("Network unavailable");
+        expect(api.getPokemonFormByName).not.toHaveBeenCalled();
+      });
+
+      it("uses official form artwork, then the form sprite, without substituting another form", async () => {
+        setupApi(burmyChain);
+        const { pokemon, form: formData } = await resolvePokemon("burmy-sandy");
+        expect(formArtwork(formData, pokemon)).toBe("https://example.test/artwork/burmy-sandy.png");
+        const noOfficial = { ...formData, sprites: { ...formData.sprites, other: undefined } };
+        expect(formArtwork(noOfficial, pokemon)).toBe("https://example.test/burmy-sandy.png");
+        const noImage = { ...noOfficial, sprites: { ...noOfficial.sprites, front_default: null } };
+        expect(formArtwork(noImage, pokemon)).toBeUndefined();
+      });
+    });
+
+    describe("Alternative Forms", () => {
+      function renderForms(slug: string) {
+        setupApi(burmyChain);
+        const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+        return render(
+          <QueryClientProvider client={client}>
+            <MemoryRouter initialEntries={[`/pokemon/${slug}`]}>
+              <OtherForms slug={slug} />
+              <CurrentLocation />
+            </MemoryRouter>
+          </QueryClientProvider>,
+        );
+      }
+
+      it("lists other forms of one Pokémon and navigates to the form slug", async () => {
+        renderForms("burmy");
+        const sandy = await screen.findByText("Sandy Burmy");
+        expect(await screen.findByText("Trash Burmy")).toBeTruthy();
+        expect(screen.queryByText("Plant Burmy")).toBeNull();
+        const card = sandy.closest(".pokemon-card");
+        expect(card).not.toBeNull();
+        expect(card?.querySelector("img.image")?.getAttribute("src")).toBe("https://example.test/artwork/burmy-sandy.png");
+        fireEvent.click(card!);
+        expect(screen.getByTestId("location").textContent).toBe("/pokemon/burmy-sandy");
+      });
+
+      it("includes the default form when viewing another form", async () => {
+        renderForms("burmy-sandy");
+        expect(await screen.findByText("Plant Burmy")).toBeTruthy();
+        expect(await screen.findByText("Trash Burmy")).toBeTruthy();
+        expect(screen.queryByText("Sandy Burmy")).toBeNull();
+      });
+
+      it("lists different Pokémon varieties and excludes the selected form", async () => {
+        renderForms("growlithe");
+        expect(await screen.findByText("Hisuian Growlithe")).toBeTruthy();
+        expect(screen.queryByText("Growlithe")).toBeNull();
+      });
+
+      it("deduplicates forms returned by more than one variety", async () => {
+        renderForms("growlithe");
+        const load = api.getPokemonByName.getMockImplementation()!;
+        api.getPokemonByName.mockImplementation(async (name: string) => {
+          const pokemon = await load(name);
+          if (name === "growlithe-hisui") {
+            return { ...pokemon, forms: [...pokemon.forms, form("growlithe-hisui")] };
+          }
+          return pokemon;
+        });
+        expect(await screen.findAllByText("Hisuian Growlithe")).toHaveLength(1);
+      });
+
+      it("renders a clear error if a variety cannot be loaded", async () => {
+        renderForms("growlithe");
+        const load = api.getPokemonByName.getMockImplementation()!;
+        api.getPokemonByName.mockImplementation((name: string) =>
+          name === "growlithe-hisui" ? Promise.reject(new Error("Variety unavailable")) : load(name),
+        );
+        expect((await screen.findByRole("alert")).textContent).toMatch(/Variety unavailable/);
+      });
     });
 
     it("rejects a multiple-form Pokémon without a default form", async () => {
