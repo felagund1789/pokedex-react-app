@@ -13,19 +13,12 @@ const useResourceName = (resource?: NamedAPIResource | null) => {
 
   return useQuery<string, Error>({
     queryKey: [resource?.url, language],
-    queryFn: () =>
-      resource
-        ? pokedex
-            .resource(resource.url)
-            .then((data) =>
-              data.names && data.names.length > 0
-                ? data.names.find(
-                    (name: { name: string; language: NamedAPIResource }) =>
-                      name.language.name === language
-                  ).name
-                : capitalize(data.name)
-            )
-        : "",
+    queryFn: () => pokedex.resource(resource!.url).then((data) =>
+      data.names?.find(
+        (name: { name: string; language: NamedAPIResource }) => name.language.name === language,
+      )?.name ?? capitalize(data.name),
+    ),
+    enabled: Boolean(resource),
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 };

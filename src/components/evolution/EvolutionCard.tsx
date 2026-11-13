@@ -1,38 +1,46 @@
-import { ChainEvolvesTo } from "pokeapi-js-wrapper";
 import { useNavigate } from "react-router-dom";
-import { findSimplestEvolution } from "../../utils";
+import type { DisplayNode } from "../evolutionChain/evolutionModel";
 import EvolutionDetailsCard from "../evolutionDetails/EvolutionDetailsCard";
 import PokemonCard from "../pokemonCard/PokemonCard";
 import "./EvolutionCard.css";
 
 interface Props {
-  evolvesTo: ChainEvolvesTo[];
-  children: React.ReactNode;
+  node: DisplayNode;
 }
 
-const EvolutionCard = ({ evolvesTo, children }: Props) => {
+const EvolutionCard = ({ node }: Props) => {
   const navigate = useNavigate();
+  const { pokemon, form, explicitForm } = node.display;
+  const formParam = pokemon.forms.length > 1 && !form.is_default
+    ? `?form=${encodeURIComponent(form.name)}`
+    : "";
 
   return (
     <div className="evolution-card">
-      <div className="evolves-from">{children}</div>
-      {evolvesTo && evolvesTo.length > 0 && (
+      <div className="evolves-from">
+        <PokemonCard
+          slug={pokemon.name}
+          form={explicitForm ? form : undefined}
+          useFormSprite={Boolean(formParam)}
+          onClick={() => navigate(`/pokemon/${pokemon.name}${formParam}`)}
+        />
+        {!explicitForm && node.display.hasAlternatives && (
+          <small hidden>Form unspecified; showing the default variety</small>
+        )}
+      </div>
+      {node.transitions.length > 0 && (
         <div className="evolves-to">
-          {evolvesTo.map((evolution, index) => (
-            <div key={index} className="evolution-transition">
-              {evolution.evolution_details
-                .reduce(findSimplestEvolution, [])
-                .map((details, i) => (
-                  <EvolutionDetailsCard key={i} details={details} />
-                ))}
-              <EvolutionCard evolvesTo={evolution.evolves_to}>
-                <PokemonCard
-                  slug={evolution.species.name}
-                  onClick={() =>
-                    navigate(`/pokemon/${evolution.species.name}`)
-                  }
-                />
-              </EvolutionCard>
+          {node.transitions.map((transition) => (
+            <div key={transition.target.display.formResource.url} className="evolution-transition">
+              <div className="evolution-methods">
+                {transition.methods.length ? transition.methods.map((method, index) => (
+                  <EvolutionDetailsCard key={index} details={method} />
+                )) : <div>Evolution requirements unavailable</div>}
+                {transition.uncertain && (
+                  <small hidden>Form applicability may vary by game</small>
+                )}
+              </div>
+              <EvolutionCard node={transition.target} />
             </div>
           ))}
         </div>

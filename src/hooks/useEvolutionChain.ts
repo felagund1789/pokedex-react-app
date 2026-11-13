@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { EvolutionChain } from "pokeapi-js-wrapper";
+import type { EvolutionChainData } from "../components/evolutionChain/evolutionModel";
 import pokedex from "../services/pokedexService";
 import usePokemonSpecies from "./usePokemonSpecies";
 
@@ -8,16 +8,21 @@ interface Props {
 }
 
 const useEvolutionChain = ({ slug }: Props) => {
-  const { data } = usePokemonSpecies({ slug });
+  const species = usePokemonSpecies({ slug });
 
-  return useQuery<EvolutionChain, Error>({
-    queryKey: ["evolution-chain", data?.evolution_chain.url],
-    queryFn: () =>
-      data && data.evolution_chain
-        ? pokedex.resource(data.evolution_chain.url)
-        : Promise.resolve(null),
+  const chain = useQuery<EvolutionChainData, Error>({
+    queryKey: ["evolution-chain", species.data?.evolution_chain.url],
+    queryFn: () => pokedex.resource(species.data!.evolution_chain.url),
+    enabled: Boolean(species.data?.evolution_chain?.url),
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
   });
+  return {
+    data: chain.data,
+    error: species.error ?? chain.error ?? (species.data && !species.data.evolution_chain?.url
+      ? new Error(`Evolution chain is unavailable for ${slug}.`)
+      : null),
+    isLoading: species.isLoading || (Boolean(species.data) && chain.isLoading),
+  };
 };
 
 export default useEvolutionChain;

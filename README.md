@@ -26,7 +26,10 @@ The Pokedex React App is a modern web application designed to provide comprehens
   - **Habitat**: Describes the natural habitat where the Pokemon can be found.
   - **Available Moves**: Lists all the moves that the Pokemon can learn, including level-up moves, TMs, HMs, and egg moves.
   - **Alternate Forms**: Displays any alternate forms of the Pokemon, such as different appearances or regional variants.
-  - **Evolution Chains**: Shows the evolution chain of the Pokemon, including pre-evolutions and evolutions.
+  - **Evolution Chains**: Shows branching pre-evolutions and evolutions, including alternative methods, form-specific outcomes, and chances when supplied by the API. For otherwise equivalent methods, a matching explicit form takes precedence over an unspecified form; the app does not infer a form from the game version.
+
+Evolution nodes use the current Pokemon's form where known, otherwise the species' default Pokemon variety. When multiple forms share a Pokemon, evolution links retain the selected form in a `form` query parameter; the form's sprite is used where available. Other Pokemon details still describe the associated Pokemon resource.
+Compatible branches share the ancestor forms inferred from the current Pokemon; if an ancestor form is unspecified, its default form is used for the displayed chain.
 
 ## Screenshots
 
@@ -101,6 +104,7 @@ The following environment variables are used in the project:
 - `npm run dev`: Start the development server
 - `npm run build`: Build the project for production
 - `npm run lint`: Run ESLint to check for linting errors
+- `npm test -- --run`: Run the test suite once
 - `npm run preview`: Preview the production build
 
 ## License

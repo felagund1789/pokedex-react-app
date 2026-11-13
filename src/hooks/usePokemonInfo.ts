@@ -1,7 +1,8 @@
-import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
+import { PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect, useState } from "react";
 import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
+import { resolvePokemonForm } from "./useSelectedPokemonForm";
 
 const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
@@ -16,8 +17,12 @@ const usePokemonInfo = (slug: string) => {
   const [types, setTypes] = useState<string[]>([]);
   const [artworkURL, setArtworkURL] = useState<string>();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    let active = true;
+    setError(null);
+    setLoading(true);
     const pokemonInfo = getPokemonInfo(slug);
     if (pokemonInfo) {
       setPokemonName(pokemonInfo.pokemonName);
@@ -30,7 +35,8 @@ const usePokemonInfo = (slug: string) => {
     } else {
       pokedex.getPokemonByName(slug).then(async (data) => {
         const species: PokemonSpecies = await pokedex.resource(data.species.url);
-        const form: PokemonForm = await pokedex.getPokemonFormByName(data.forms[0].name);
+        const form = await resolvePokemonForm(data, null);
+        if (!active) return;
         setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
         setPokemonName(species.names.find((n) => n.language.name === language)?.name);
         setPokemonFormName(form.names.find((f) => f.language.name === language)?.name);
@@ -46,11 +52,17 @@ const usePokemonInfo = (slug: string) => {
           artworkUrl: `${artworkBaseURL}${data.id}.png`,
           generation: species.generation.name.replace("generation-", "").toUpperCase(),
         });
+      }).catch((reason: unknown) => {
+        if (active) {
+          setError(reason instanceof Error ? reason : new Error(String(reason)));
+          setLoading(false);
+        }
       });
     }
+    return () => { active = false; };
   }, [addPokemonInfo, getPokemonInfo, language, slug]);
 
-  return { pokedexNumber, pokemonName, pokemonFormName, generation, types, artworkURL, loading };
+  return { pokedexNumber, pokemonName, pokemonFormName, generation, types, artworkURL, loading, error };
 };
 
 export default usePokemonInfo;

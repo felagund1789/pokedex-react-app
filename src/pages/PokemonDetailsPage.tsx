@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
+import { PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect, useRef, type CSSProperties } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import PokemonStatsCard from "../components/PokemonStatsCard";
 import EvolutionChain from "../components/evolutionChain/EvolutionChain";
 import PageHeader from "../components/header/PageHeader";
@@ -16,9 +16,13 @@ import PokemonInfoHeaderCard from "../components/pokemonInfoHeaderCard/PokemonIn
 import PokemonDescriptionCard from "../components/pokemonDescriptionCard/PokemonDescriptionCard";
 import AbilitiesCard from "../components/abilitiesCard/AbilitiesCard";
 import TypeCard from "../components/typeCard/TypeCard";
+import { resolvePokemonForm } from "../hooks/useSelectedPokemonForm";
+import { pokemonFormName } from "../utils/pokemonFormName";
 
 function PokemonDetailsPage() {
   const { name } = useParams();
+  const [searchParams] = useSearchParams();
+  const selectedForm = searchParams.get("form");
   const language = usePokemonStore((state) => state.language);
   const color = usePokemonColor({ slug: name! });
   const detailsGridRef = useRef<HTMLDivElement>(null);
@@ -34,14 +38,16 @@ function PokemonDetailsPage() {
       return;
     }
 
+    let active = true;
     pokedex.getPokemonByName(name).then(async (data) => {
       const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      const form: PokemonForm = await pokedex.getPokemonFormByName(data.forms[0].name);
+      const form = await resolvePokemonForm(data, selectedForm);
       const _name = species.names.find((n) => n.language.name === language)?.name;
-      const _formName = form.names.find((f) => f.language.name === language)?.name;
-      document.title = `Pokédex | ${_formName ?? _name}`;
-    });
-  }, [language, name]);
+      const _formName = pokemonFormName(form, language, _name, Boolean(selectedForm));
+      if (active) document.title = `Pokédex | ${_formName ?? _name}`;
+    }).catch((error: unknown) => console.error("Unable to load Pokémon page title:", error));
+    return () => { active = false; };
+  }, [language, name, selectedForm]);
 
   if (!name) {
     return null;
@@ -60,12 +66,12 @@ function PokemonDetailsPage() {
         animate={{ y: 0, height: "100%", transition: { duration: 0.5 } }}
         exit={{ opacity: 0 }}
       >
-        <PokemonInfoHeaderCard  slug={name} />
+        <PokemonInfoHeaderCard slug={name} selectedForm={selectedForm} />
         <EvolutionChain slug={name} />
         <PokemonDescriptionCard slug={name} />
         <PokemonInfoDetailsCard  slug={name} />
         <PokemonStatsCard slug={name} />
-        <TypeCard slug={name} />
+        <TypeCard slug={name} selectedForm={selectedForm} />
         <AbilitiesCard slug={name} />
         <PokemonMoves slug={name} />
         <OtherForms slug={name} />

@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import usePokemonStore from "../../store";
+import { resolvePokemonForm } from "../../hooks/useSelectedPokemonForm";
+import PokemonInfoHeaderCard from "../pokemonInfoHeaderCard/PokemonInfoHeaderCard";
+import TypeCard from "../typeCard/TypeCard";
 import EvolutionChain from "./EvolutionChain";
 
 const api = vi.hoisted(() => ({
@@ -41,6 +44,11 @@ const method = (overrides: Partial<{
   evolved_pokemon_form: Resource | null;
   version_group: Resource | null;
   condition_expression: { expression: string; percentage_chance: number | null; variables: Resource[] } | null;
+  needs_overworld_rain: boolean;
+  turn_upside_down: boolean;
+  gender: number | null;
+  used_move: Resource | null;
+  min_move_count: number | null;
 }> = {}) => ({
   trigger: trigger("level-up"),
   item: null,
@@ -106,6 +114,13 @@ const fixtures: PokemonFixture[] = [
   { slug: "tatsugiri-curly", speciesName: "tatsugiri", formName: "tatsugiri-curly", label: "Tatsugiri Curly", id: 978, isDefault: true },
   { slug: "tatsugiri-droopy", speciesName: "tatsugiri", formName: "tatsugiri-droopy", label: "Tatsugiri Droopy", id: 10276, isDefault: false },
   { slug: "tatsugiri-stretchy", speciesName: "tatsugiri", formName: "tatsugiri-stretchy", label: "Tatsugiri Stretchy", id: 10277, isDefault: false },
+  { slug: "burmy", speciesName: "burmy", formName: "burmy-plant", label: "Plant Burmy", id: 412, isDefault: true },
+  { slug: "burmy", speciesName: "burmy", formName: "burmy-sandy", label: "Sandy Burmy", id: 412, isDefault: true },
+  { slug: "burmy", speciesName: "burmy", formName: "burmy-trash", label: "Trash Burmy", id: 412, isDefault: true },
+  { slug: "wormadam-plant", speciesName: "wormadam", formName: "wormadam-plant", label: "Plant Wormadam", id: 413, isDefault: true },
+  { slug: "wormadam-sandy", speciesName: "wormadam", formName: "wormadam-sandy", label: "Sandy Wormadam", id: 10004, isDefault: false },
+  { slug: "wormadam-trash", speciesName: "wormadam", formName: "wormadam-trash", label: "Trash Wormadam", id: 10005, isDefault: false },
+  { slug: "mothim", speciesName: "mothim", formName: "mothim", label: "Mothim", id: 414, isDefault: true },
 ];
 
 const chainUrl = "https://pokeapi.co/api/v2/evolution-chain/test/";
@@ -134,7 +149,9 @@ function setupApi(chain: Node) {
       pokemon: resource("pokemon", pokemon.slug),
       names: localized(pokemon.label),
       form_names: localized(pokemon.label),
-      sprites: {},
+      sprites: { front_default: `https://example.test/${pokemon.formName}.png` },
+      types: pokemon.formName === "maushold-special" ? [{ type: resource("type", "fire"), slot: 1 }] : [],
+      is_default: fixtures.find((entry) => entry.slug === pokemon.slug)?.formName === pokemon.formName,
     });
   });
   api.resource.mockImplementation((url: string) => {
@@ -147,6 +164,7 @@ function setupApi(chain: Node) {
         evolution_chain: { url: chainUrl },
         names: localized(name[0].toUpperCase() + name.slice(1)),
         generation: { name: "generation-i" },
+        genera: [{ genus: "Test Pokémon", language: { name: "en", url: "" } }],
         pokedex_numbers: [{ pokedex: { name: "national" }, entry_number: matches[0].id }],
         varieties: matches.filter((entry, index) => matches.findIndex((other) => other.slug === entry.slug) === index).map((entry) => ({
           is_default: entry.isDefault,
@@ -159,22 +177,31 @@ function setupApi(chain: Node) {
     const pokemonFixture = fixtures.find((entry) => resource("pokemon", entry.slug).url === url);
     if (pokemonFixture) return api.getPokemonByName(pokemonFixture.slug);
     if (url === item("fire-stone").url) return Promise.resolve({ name: "fire-stone", names: localized("Fire Stone") });
+    if (url === resource("move", "psyshield-bash").url) {
+      return Promise.resolve({ name: "psyshield-bash", names: localized("Psyshield Bash") });
+    }
+    if (url === resource("type", "fire").url) {
+      return Promise.resolve({
+        damage_relations: { no_damage_from: [], double_damage_from: [], half_damage_from: [] },
+      });
+    }
     return Promise.reject(new Error(`Unknown resource: ${url}`));
   });
 }
 
 function CurrentLocation() {
-  return <div data-testid="location">{useLocation().pathname}</div>;
+  const location = useLocation();
+  return <div data-testid="location">{location.pathname}{location.search}</div>;
 }
 
-function renderChain(slug: string, chain: Node) {
+function renderChain(slug: string, chain: Node, search = "") {
   setupApi(chain);
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
   return render(
     <QueryClientProvider client={client}>
-      <MemoryRouter initialEntries={[`/pokemon/${slug}`]}>
+      <MemoryRouter initialEntries={[`/pokemon/${slug}${search}`]}>
         <EvolutionChain slug={slug} />
         <CurrentLocation />
       </MemoryRouter>
@@ -232,6 +259,16 @@ const growlitheChain = node("growlithe", [], [
   ]),
 ]);
 
+const burmyChain = node("burmy", [], [
+  node("wormadam", ["plant", "sandy", "trash"].map((cloak) => method({
+    min_level: 20,
+    gender: 1,
+    required_pokemon_form: form(`burmy-${cloak}`),
+    evolved_pokemon_form: form(`wormadam-${cloak}`),
+  }))),
+  node("mothim", [method({ min_level: 20, gender: 2 })]),
+]);
+
 describe("EvolutionChain", () => {
   it("renders a three-stage chain and attaches each level to its transition", async () => {
     const { container } = renderChain("charmeleon", charmanderChain);
@@ -255,6 +292,62 @@ describe("EvolutionChain", () => {
     expect(screen.getByText(/36/)).toBeTruthy();
   });
 
+  it.each([
+    ["wormadam-plant", "Plant Burmy", "Plant Wormadam", "Sandy Burmy", "Trash Burmy"],
+    ["wormadam-sandy", "Sandy Burmy", "Sandy Wormadam", "Plant Burmy", "Trash Burmy"],
+    ["wormadam-trash", "Trash Burmy", "Trash Wormadam", "Plant Burmy", "Sandy Burmy"],
+  ])("shares the inferred ancestor with compatible branches for %s", async (slug, burmy, wormadam, otherBurmy, otherCloak) => {
+    const { container } = renderChain(slug, burmyChain);
+    await screen.findByText(wormadam);
+    expect(screen.getByText(burmy)).toBeTruthy();
+    expect(screen.getByText("Mothim")).toBeTruthy();
+    expect(screen.queryByText(otherBurmy)).toBeNull();
+    expect(screen.queryByText(otherCloak)).toBeNull();
+    expect(container.querySelector(".evolution")?.children).toHaveLength(1);
+    expect(container.querySelectorAll(".evolution-transition")).toHaveLength(2);
+  });
+
+  it("uses the current Burmy form for both evolution branches", async () => {
+    const { container } = renderChain("burmy", burmyChain, "?form=burmy-sandy");
+    await screen.findByText("Sandy Wormadam");
+    expect(screen.getByText("Sandy Burmy")).toBeTruthy();
+    expect(screen.getByText("Mothim")).toBeTruthy();
+    expect(screen.queryByText("Plant Burmy")).toBeNull();
+    expect(container.querySelector(".evolution")?.children).toHaveLength(1);
+  });
+
+  it("uses the displayed default ancestor across Mothim's branches", async () => {
+    const { container } = renderChain("mothim", burmyChain);
+    await screen.findByText("Mothim");
+    expect(screen.getByText("Plant Burmy")).toBeTruthy();
+    expect(screen.getByText("Plant Wormadam")).toBeTruthy();
+    expect(screen.queryByText("Sandy Burmy")).toBeNull();
+    expect(screen.queryByText("Trash Burmy")).toBeNull();
+    expect(container.querySelector(".evolution")?.children).toHaveLength(1);
+  });
+
+  it("propagates multiple ancestor forms to a sibling branch at an intermediate stage", async () => {
+    const chain = node("burmy", [], [
+      node("growlithe", [
+        method({ required_pokemon_form: form("burmy-plant"), evolved_pokemon_form: form("growlithe") }),
+        method({ required_pokemon_form: form("burmy-sandy"), evolved_pokemon_form: form("growlithe-hisui") }),
+      ], [
+        node("charizard", [method({ required_pokemon_form: form("growlithe-hisui") })]),
+        node("arcanine", [method()]),
+      ]),
+      node("mothim", [method()]),
+    ]);
+    const { container } = renderChain("charizard", chain);
+    await screen.findByText("Charizard");
+    expect(screen.getByText("Sandy Burmy")).toBeTruthy();
+    expect(screen.getByText("Hisuian Growlithe")).toBeTruthy();
+    expect(screen.getByText("Arcanine")).toBeTruthy();
+    expect(screen.getByText("Mothim")).toBeTruthy();
+    expect(screen.queryByText("Plant Burmy")).toBeNull();
+    expect(screen.queryByText("Growlithe")).toBeNull();
+    expect(container.querySelector(".evolution")?.children).toHaveLength(1);
+  });
+
   it("renders distinct form outcomes with their own chances and in-battle trigger", async () => {
     renderChain("tandemaus", mausholdChain);
     await screen.findByText("Maushold Family of Four");
@@ -268,19 +361,18 @@ describe("EvolutionChain", () => {
   });
 
   it.each([
-    ["growlithe-hisui", "Hisuian Growlithe", "Hisuian Arcanine"],
-    ["arcanine-hisui", "Hisuian Growlithe", "Hisuian Arcanine"],
-    ["growlithe", "Growlithe", "Arcanine"],
-    ["arcanine", "Growlithe", "Arcanine"],
-  ])("shows the matching path for %s", async (slug, from, to) => {
+    ["growlithe-hisui", "Hisuian Growlithe", "Hisuian Arcanine", "Growlithe", "Arcanine"],
+    ["arcanine-hisui", "Hisuian Growlithe", "Hisuian Arcanine", "Growlithe", "Arcanine"],
+    ["growlithe", "Growlithe", "Arcanine", "Hisuian Growlithe", "Hisuian Arcanine"],
+    ["arcanine", "Growlithe", "Arcanine", "Hisuian Growlithe", "Hisuian Arcanine"],
+  ])("shows only the matching path for %s", async (slug, from, to, wrongFrom, wrongTo) => {
     renderChain(slug, growlitheChain);
-    await screen.findByText(from);
-    await screen.findByText(to);
+    expect(await screen.findAllByText(from)).toHaveLength(1);
+    expect(await screen.findAllByText(to)).toHaveLength(1);
     expect(await screen.findAllByText(/Fire Stone/i)).not.toHaveLength(0);
-    if (!slug.endsWith("-hisui")) {
-      expect(screen.queryByText("Hisuian Growlithe")).toBeNull();
-      expect(screen.queryByText("Hisuian Arcanine")).toBeNull();
-    }
+    expect(screen.queryByText(wrongFrom)).toBeNull();
+    expect(screen.queryByText(wrongTo)).toBeNull();
+    expect(document.querySelectorAll(".evolution-transition")).toHaveLength(1);
   });
 
   it("excludes an explicitly incompatible source form", async () => {
@@ -311,6 +403,109 @@ describe("EvolutionChain", () => {
     expect(await screen.findByText("Maushold Special Form")).toBeTruthy();
   });
 
+  it("navigates to a specific form when forms share the same Pokémon", async () => {
+    renderChain("tandemaus", node("tandemaus", [], [
+      node("maushold", [method({ evolved_pokemon_form: form("maushold-special") })]),
+    ]));
+    const card = (await screen.findByText("Maushold Special Form")).closest(".pokemon-card");
+    expect(card).not.toBeNull();
+    fireEvent.click(card!);
+    expect(screen.getByTestId("location").textContent).toBe("/pokemon/maushold-family-of-four?form=maushold-special");
+  });
+
+  it("uses the selected form for the destination header, image and types", async () => {
+    setupApi(mausholdChain);
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const { container } = render(
+      <QueryClientProvider client={client}>
+        <PokemonInfoHeaderCard slug="maushold-family-of-four" selectedForm="maushold-special" />
+        <TypeCard slug="maushold-family-of-four" selectedForm="maushold-special" />
+      </QueryClientProvider>,
+    );
+    expect(await screen.findByText("Maushold Special Form")).toBeTruthy();
+    expect((await screen.findByAltText("Maushold Special Form")).getAttribute("src"))
+      .toBe("https://example.test/maushold-special.png");
+    await waitFor(() => {
+      expect(container.querySelector(".type-card__pokemon-types img")?.getAttribute("alt")).toMatch(/fire/i);
+    });
+  });
+
+  it("preserves the selected form from the URL and filters incompatible outcomes", async () => {
+    renderChain("maushold-family-of-four", node("tandemaus", [], [
+      node("maushold", [
+        method({ evolved_pokemon_form: form("maushold-family-of-four") }),
+        method({ evolved_pokemon_form: form("maushold-special") }),
+      ]),
+    ]), "?form=maushold-special");
+    await screen.findByText("Maushold Special Form");
+    expect(screen.queryByText("Maushold Family of Four")).toBeNull();
+  });
+
+  it("reports a selected form that does not belong to the Pokémon", async () => {
+    renderChain("maushold-family-of-four", mausholdChain, "?form=growlithe-hisui");
+    expect((await screen.findByRole("alert")).textContent).toMatch(/not available/i);
+  });
+
+  it("retains different unspecified methods and hides the uncertainty disclaimer", async () => {
+    renderChain("arcanine-hisui", node("growlithe", [], [
+      node("arcanine", [
+        method({ trigger: trigger("level-up"), min_level: 30 }),
+        method({
+          trigger: trigger("use-item"),
+          item: item("fire-stone"),
+          required_pokemon_form: form("growlithe-hisui"),
+          evolved_pokemon_form: form("arcanine-hisui"),
+        }),
+      ]),
+    ]));
+    expect(await screen.findByText(/30/)).toBeTruthy();
+    expect(await screen.findByText(/Fire Stone/i)).toBeTruthy();
+    const disclaimer = screen.getByText(/form applicability may vary/i);
+    expect(disclaimer.hasAttribute("hidden")).toBe(true);
+  });
+
+  it("retains an unspecified method if the explicit alternative conflicts with a later form", async () => {
+    renderChain("growlithe-hisui", node("growlithe", [], [
+      node("arcanine", [
+        method({ trigger: trigger("use-item"), item: item("fire-stone") }),
+        method({
+          trigger: trigger("use-item"),
+          item: item("fire-stone"),
+          required_pokemon_form: form("growlithe-hisui"),
+          evolved_pokemon_form: form("arcanine-hisui"),
+        }),
+      ], [
+        node("charizard", [method({ required_pokemon_form: form("arcanine") })]),
+      ]),
+    ]));
+    await screen.findByText("Charizard");
+    expect(screen.getByText("Hisuian Growlithe")).toBeTruthy();
+    expect(screen.getByText("Arcanine")).toBeTruthy();
+    expect(screen.queryByText("Hisuian Arcanine")).toBeNull();
+  });
+
+  it("does not discard methods with complementary form constraints", async () => {
+    renderChain("arcanine-hisui", node("growlithe", [], [
+      node("arcanine", [
+        method({ required_pokemon_form: form("growlithe-hisui") }),
+        method({ evolved_pokemon_form: form("arcanine-hisui") }),
+      ]),
+    ]));
+    expect(await screen.findAllByText("Hisuian Arcanine")).toHaveLength(2);
+    expect(screen.getByText("Hisuian Growlithe")).toBeTruthy();
+    expect(screen.getByText("Growlithe")).toBeTruthy();
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("filters incompatible intermediate forms in a multi-stage path", async () => {
+    renderChain("growlithe", node("growlithe", [], [
+      node("arcanine", [method({ evolved_pokemon_form: form("arcanine-hisui") })], [
+        node("charizard", [method({ required_pokemon_form: form("arcanine") })]),
+      ]),
+    ]));
+    expect((await screen.findByRole("alert")).textContent).toMatch(/no evolution path/i);
+  });
+
   it.each(["tatsugiri-curly", "tatsugiri-droopy", "tatsugiri-stretchy"])(
     "preserves the current variety %s when there is no evolution",
     async (slug) => {
@@ -326,6 +521,7 @@ describe("EvolutionChain", () => {
       node("tatsugiri", [method({ min_level: 16 })]),
     ]));
     await screen.findByText("Tatsugiri Curly");
+    expect(screen.getByText(/form unspecified; showing the default variety/i).hasAttribute("hidden")).toBe(true);
     expect(api.getPokemonByName).not.toHaveBeenCalledWith("tatsugiri");
   });
 
@@ -398,6 +594,28 @@ describe("EvolutionChain", () => {
     expect(screen.getByText(/additional condition|unknown condition/i)).toBeTruthy();
   });
 
+  it("displays additional boolean and gender conditions", async () => {
+    renderChain("charmander", node("charmander", [], [
+      node("charmeleon", [method({ gender: 1, needs_overworld_rain: true, turn_upside_down: true })]),
+    ]));
+    await screen.findByText("Charmeleon");
+    expect(screen.getByText(/female/i)).toBeTruthy();
+    expect(screen.getByText(/raining/i)).toBeTruthy();
+    expect(screen.getByText(/upside down/i)).toBeTruthy();
+  });
+
+  it("uses the supplied move and count for style-move evolution", async () => {
+    renderChain("charmander", node("charmander", [], [
+      node("charmeleon", [method({
+        trigger: trigger("agile-style-move"),
+        used_move: resource("move", "psyshield-bash"),
+        min_move_count: 20,
+      })]),
+    ]));
+    expect(await screen.findByText(/Psyshield Bash.*Agile Style/i)).toBeTruthy();
+    expect(screen.getByText(/20 times/i)).toBeTruthy();
+  });
+
   it("renders an explicit error if the chain cannot be fetched", async () => {
     renderChain("charmander", charmanderChain);
     const resolveResource = api.resource.getMockImplementation()!;
@@ -405,7 +623,28 @@ describe("EvolutionChain", () => {
       if (url === chainUrl) return Promise.reject(new Error("Chain unavailable"));
       return resolveResource(url);
     });
+
     await waitFor(() => expect(screen.getByText(/Chain unavailable/i)).toBeTruthy());
+  });
+
+  describe("resolvePokemonForm", () => {
+    it("finds the default form even when it is not first", async () => {
+      setupApi(mausholdChain);
+      const pokemon = await api.getPokemonByName("maushold-family-of-four");
+      pokemon.forms.reverse();
+      expect((await resolvePokemonForm(pokemon, null)).name).toBe("maushold-family-of-four");
+    });
+
+    it("rejects a multiple-form Pokémon without a default form", async () => {
+      setupApi(mausholdChain);
+      const pokemon = await api.getPokemonByName("maushold-family-of-four");
+      const resolveResource = api.resource.getMockImplementation()!;
+      api.resource.mockImplementation(async (url: string) => {
+        const result = await resolveResource(url);
+        return url.includes("pokemon-form") ? { ...result, is_default: false } : result;
+      });
+      await expect(resolvePokemonForm(pokemon, null)).rejects.toThrow(/no default form/i);
+    });
   });
 
   it("indicates while the chain is loading", async () => {
