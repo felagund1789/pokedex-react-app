@@ -42,6 +42,8 @@
   --description-dot-active-color: #374151;
   --pokemon-number-color: rgba(0, 0, 0, 0.175);
   --card-border-radius: 0.5rem;
+  --version-group-background-color: var(--subtle-background-color);
+  --version-group-text-color: var(--dark-text-color);
 
   color-scheme: light;
   color: var(--text-color);
