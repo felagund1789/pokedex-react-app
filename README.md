@@ -71,6 +71,8 @@ The user interface is designed to be intuitive and user-friendly. It features a 
 
 The app is optimized for performance using Vite, which provides fast hot module replacement (HMR) during development and efficient bundling for production. React Query's caching mechanism also helps in reducing redundant network requests, improving the overall performance and responsiveness of the app.
 
+Pokémon form, Pokémon and species data are shared between components. Concurrent requests for the same form or resource are deduplicated, and completed Pokémon data is retained in the Zustand store for the lifetime of the app. Names are derived from that data for the current language. Evolution and alternate-form cards can still request data for other Pokémon; PokeAPI's wrapper also maintains its own browser cache.
+
 ### Future Enhancements
 
 Future enhancements for the app may include features such as:

@@ -6,20 +6,12 @@ export type Generation = "I" | "II" | "III" | "IV" | "V" | "VI" | "VII" | "VIII"
 export type PokemonTypeName = keyof typeof types;
 export const generations: Generation[] = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
 
-type Language = "ja-Hrkt" | "ko" | "fr" | "de" | "es" | "it" | "en" | "zh-Hans" | "zh-Hant";
+type Language = "ja" | "ja-Hrkt" | "ko" | "fr" | "de" | "es" | "it" | "en" | "zh-Hans" | "zh-Hant";
 
 export type PokemonInfo = {
   pokemonForm: PokemonForm;
   pokemon: Pokemon;
   pokemonSpecies: PokemonSpecies;
-  pokedexNumber: number;
-  pokemonFormName: string;
-  pokemonName: string;
-  pokemonGenera: string;
-  habitat: string;
-  generation: string;
-  types: string[];
-  artworkUrl: string;
 };
 
 type State = {

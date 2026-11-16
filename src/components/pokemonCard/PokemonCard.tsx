@@ -19,9 +19,14 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     types,
     artworkURL,
     loading,
+    error,
   } = usePokemonInfo(slug);
 
   const color = usePokemonColor({ slug });
+
+  if (error) {
+    return <div className="pokemon-card">Error loading {slug}: {error.message}</div>;
+  }
 
   return (
     <div

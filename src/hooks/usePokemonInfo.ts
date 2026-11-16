@@ -1,87 +1,65 @@
-import { Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Pokemon, PokemonSpecies } from "pokeapi-js-wrapper";
+import { useMemo } from "react";
 import pokedex from "../services/pokedexService";
-import usePokemonStore, { PokemonInfo } from "../store";
+import usePokemonStore, { type PokemonInfo } from "../store";
 
 const usePokemonInfo = (slug: string) => {
+  const queryClient = useQueryClient();
   const language = usePokemonStore((state) => state.language);
-  const getPokemonInfo = usePokemonStore((state) => state.getPokemonInfo);
-  const addPokemonInfo = usePokemonStore((state) => state.addPokemonInfo);
-  const [pokemonForm, setPokemonForm] = useState<PokemonForm>();
-  const [pokemon, setPokemon] = useState<Pokemon>();
-  const [pokemonSpecies, setPokemonSpecies] = useState<PokemonSpecies>();
-  const [pokedexNumber, setPokedexNumber] = useState<number>();
-  const [pokemonName, setPokemonName] = useState<string>();
-  const [pokemonFormName, setPokemonFormName] = useState<string>();
-  const [pokemonGenera, setPokemonGenera] = useState<string>();
-  const [habitat, setHabitat] = useState<string>();
-  const [generation, setGeneration] = useState<string>();
-  const [types, setTypes] = useState<string[]>([]);
-  const [artworkURL, setArtworkURL] = useState<string>();
-  const [loading, setLoading] = useState(true);
+  const cachedInfo = usePokemonStore((state) => state.pokemonMap.get(slug));
 
-  useEffect(() => {
-    const pokemonInfo: PokemonInfo | undefined = getPokemonInfo(slug);
-    if (pokemonInfo) {
-      setPokemonForm(pokemonInfo.pokemonForm);
-      setPokemon(pokemonInfo.pokemon);
-      setPokemonSpecies(pokemonInfo.pokemonSpecies);
-      setPokemonName(pokemonInfo.pokemonName);
-      setPokemonFormName(pokemonInfo.pokemonFormName);
-      setPokemonGenera(pokemonInfo.pokemonGenera);
-      setHabitat(pokemonInfo.habitat);
-      setPokedexNumber(pokemonInfo.pokedexNumber);
-      setArtworkURL(pokemonInfo.artworkUrl);
-      setTypes(pokemonInfo.types);
-      setGeneration(pokemonInfo.generation);
-      setLoading(false);
-    } else {
-      pokedex.getPokemonFormByName(slug).then(async (form: PokemonForm) => {
-        const pokemon: Pokemon = await pokedex.resource(form.pokemon.url) as Pokemon;
-        const species: PokemonSpecies = await pokedex.resource(pokemon.species.url);
-        const artworkUrl = form.sprites.other["official-artwork"].front_default || pokemon.sprites.other["official-artwork"].front_default;
-        setPokemonForm(form);
-        setPokemon(pokemon);
-        setPokemonSpecies(species);
-        setPokedexNumber(species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number);
-        setPokemonName(species.names.find((n) => n.language.name === language)?.name);
-        setPokemonFormName(form.names.find((f) => f.language.name === language)?.name);
-        setPokemonGenera(species.genera.find((g) => g.language.name === language)?.genus);
-        setHabitat(species.habitat?.name ?? "");
-        setArtworkURL(artworkUrl);
-        setTypes(form.types.map((type) => type.type.name));
-        setGeneration(species.generation.name.replace("generation-", "").toUpperCase());
-        setLoading(false);
-        addPokemonInfo(slug, {
-          pokemonForm: form,
-          pokemon: pokemon,
-          pokemonSpecies: species,
-          pokedexNumber: species.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number ?? 0,
-          pokemonName: species.names.find((n) => n.language.name === language)?.name ?? "",
-          pokemonFormName: form.names.find((f) => f.language.name === language)?.name ?? "",
-          pokemonGenera: species.genera.find((g) => g.language.name === language)?.genus ?? "",
-          habitat: species.habitat?.name ?? "",
-          types: form.types.map((type) => type.type.name),
-          artworkUrl: artworkUrl,
-          generation: species.generation.name.replace("generation-", "").toUpperCase(),
-        });
+  const { data, isPending, error } = useQuery<PokemonInfo, Error>({
+    queryKey: ["pokemon-info", slug],
+    initialData: cachedInfo,
+    staleTime: Infinity,
+    enabled: !!slug,
+    queryFn: async () => {
+      const cached = usePokemonStore.getState().getPokemonInfo(slug);
+      if (cached) return cached;
+
+      const pokemonForm = await pokedex.getPokemonFormByName(slug);
+      const pokemon = await queryClient.fetchQuery<Pokemon>({
+        queryKey: ["pokemon-resource", pokemonForm.pokemon.url],
+        queryFn: () => pokedex.resource(pokemonForm.pokemon.url),
+        staleTime: Infinity,
+        retry: false,
       });
-    }
-  }, [addPokemonInfo, getPokemonInfo, language, slug]);
+      const pokemonSpecies = await queryClient.fetchQuery<PokemonSpecies>({
+        queryKey: ["pokemon-species-resource", pokemon.species.url],
+        queryFn: () => pokedex.resource(pokemon.species.url),
+        staleTime: Infinity,
+        retry: false,
+      });
+      const info = { pokemonForm, pokemon, pokemonSpecies };
+      usePokemonStore.getState().addPokemonInfo(slug, info);
+      return info;
+    },
+  });
+
+  const pokemonForm = data?.pokemonForm;
+  const pokemon = data?.pokemon;
+  const pokemonSpecies = data?.pokemonSpecies;
+  const types = useMemo(
+    () => pokemonForm?.types.map((type) => type.type.name) ?? [],
+    [pokemonForm],
+  );
 
   return {
     pokemonForm,
     pokemon,
     pokemonSpecies,
-    pokedexNumber,
-    pokemonName,
-    pokemonFormName,
-    pokemonGenera,
-    habitat,
-    generation,
+    pokedexNumber: pokemonSpecies?.pokedex_numbers.find((n) => n.pokedex.name === "national")?.entry_number,
+    pokemonName: pokemonSpecies?.names.find((n) => n.language.name === language)?.name,
+    pokemonFormName: pokemonForm?.names.find((n) => n.language.name === language)?.name,
+    pokemonGenera: pokemonSpecies?.genera.find((g) => g.language.name === language)?.genus,
+    habitat: pokemonSpecies?.habitat?.name ?? "",
+    generation: pokemonSpecies?.generation.name.replace("generation-", "").toUpperCase(),
     types,
-    artworkURL,
-    loading
+    artworkURL: pokemonForm?.sprites.other["official-artwork"].front_default ||
+      pokemon?.sprites.other["official-artwork"].front_default,
+    loading: isPending,
+    error,
   };
 };
 

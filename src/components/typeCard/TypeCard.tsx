@@ -41,7 +41,7 @@ const getDamageMultiplier = (attackType: string, defenseTypes: Type[]) =>
   }, 1);
 
 const TypeCard = ({ slug }: Props) => {
-  const { pokemon, types } = usePokemonInfo(slug);
+  const { types } = usePokemonInfo(slug);
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
   const [matchups, setMatchups] = useState<TypeMatchup[]>([]);
 
@@ -76,7 +76,7 @@ const TypeCard = ({ slug }: Props) => {
     return () => {
       isCurrent = false;
     };
-  }, [pokemon]);
+  }, [types]);
 
   return (
     <div className="type-card">

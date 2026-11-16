@@ -32,7 +32,7 @@ const PokemonInfoDetailsCard = ({ slug }: Props) => {
           <StatPanel title="Hatch Counter">{pokemonSpecies?.hatch_counter}</StatPanel>
         )}
         {habitat && <StatPanel title="Habitat">{habitat}</StatPanel>}
-        {generation && <StatPanel title="Generation">{generation}</StatPanel>}
+        {generation && <StatPanel title="Generation">Generation {generation}</StatPanel>}
       </div>
     </div>
   );

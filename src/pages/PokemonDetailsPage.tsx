@@ -19,7 +19,8 @@ import usePokemonStore from "../store";
 function PokemonDetailsPage() {
   const { name } = useParams();
   const language = usePokemonStore((state) => state.language);
-  const color = usePokemonColor({ slug: name! });
+  const color = usePokemonColor({ slug: name ?? "" });
+  const { pokemonSpecies, pokemonForm, error } = usePokemonInfo(name ?? "");
   const detailsGridRef = useRef<HTMLDivElement>(null);
 
   useMasonryGrid(detailsGridRef);
@@ -32,7 +33,9 @@ function PokemonDetailsPage() {
     return null;
   }
 
-  const { pokemonSpecies, pokemonForm } = usePokemonInfo(name);
+  if (error) {
+    return <div>Error loading Pokémon: {error.message}</div>;
+  }
   const _name = pokemonSpecies?.names.find((n) => n.language.name === language)?.name;
   const _formName = pokemonForm?.names.find((f) => f.language.name === language)?.name;
   document.title = `Pokédex | ${_formName ?? _name}`;
