@@ -68,8 +68,7 @@ describe("usePokemonInfo", () => {
     const first = renderHook(() => usePokemonInfo("bulbasaur"), { wrapper: wrapper(queryClient) });
     const second = renderHook(() => usePokemonInfo("bulbasaur"), { wrapper: wrapper(queryClient) });
     const evolution = renderHook(() => {
-      const { pokemonSpecies, error } = usePokemonInfo("bulbasaur");
-      return useEvolutionChain({ slug: "bulbasaur", pokemonInfo: { pokemonSpecies, error } });
+      return useEvolutionChain({ slug: "bulbasaur" });
     }, { wrapper: wrapper(queryClient) });
     expect(api.getPokemonFormByName).toHaveBeenCalledTimes(1);
 
