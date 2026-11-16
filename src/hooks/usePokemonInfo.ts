@@ -19,13 +19,13 @@ const usePokemonInfo = (slug: string) => {
       if (cached) return cached;
 
       const pokemonForm = await pokedex.getPokemonFormByName(slug);
-      const pokemon = await queryClient.fetchQuery<Pokemon>({
+      const pokemon = await queryClient.query<Pokemon>({
         queryKey: ["pokemon-resource", pokemonForm.pokemon.url],
         queryFn: () => pokedex.resource(pokemonForm.pokemon.url),
         staleTime: Infinity,
         retry: false,
       });
-      const pokemonSpecies = await queryClient.fetchQuery<PokemonSpecies>({
+      const pokemonSpecies = await queryClient.query<PokemonSpecies>({
         queryKey: ["pokemon-species-resource", pokemon.species.url],
         queryFn: () => pokedex.resource(pokemon.species.url),
         staleTime: Infinity,

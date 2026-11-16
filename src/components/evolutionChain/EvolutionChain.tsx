@@ -3,6 +3,7 @@ import usePokemonInfo from "../../hooks/usePokemonInfo";
 import EvolutionCard from "../evolution/EvolutionCard";
 import type { EvolutionMethod } from "./evolutionModel";
 import "./EvolutionChain.css";
+import useDefaultPokemonForm from "../../hooks/useDefaultPokemonForm";
 
 interface Props {
   slug: string;
@@ -24,7 +25,8 @@ const findPath = (node: EvolutionNode, species: string): EvolutionNode[] | undef
 
 const EvolutionChain = ({ slug }: Props) => {
   const { data, error } = useEvolutionChain({ slug });
-  const { pokemonForm, pokemonSpecies } = usePokemonInfo(slug);
+  const { pokemonForm, pokemon, pokemonSpecies } = usePokemonInfo(slug);
+  const { data: defaultForm } = useDefaultPokemonForm(pokemon!.species, true);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -36,10 +38,10 @@ const EvolutionChain = ({ slug }: Props) => {
   if (pokemonForm && pokemonSpecies) {
     const path = findPath(data.chain, pokemonSpecies.name);
     if (path) {
-      forms[pokemonSpecies.name] = 
-        pokemonForm.is_battle_only || pokemonForm.is_mega 
-        ? pokemonSpecies.name 
-        : pokemonForm.name;
+      forms[pokemonSpecies.name] = pokemonForm.name;
+      if ((pokemonForm.is_battle_only || pokemonForm.is_mega) && defaultForm) {
+        forms[pokemonSpecies.name] = defaultForm;
+      }
       for (let i = path.length - 1; i > 0; i--) {
         const method = path[i].evolution_details.find(
           (details) => details.evolved_pokemon_form?.name === forms[path[i].species.name],

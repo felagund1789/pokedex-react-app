@@ -10,7 +10,7 @@ const useDefaultPokemonForm = (species: NamedAPIResource, enabled: boolean) => {
     enabled,
     staleTime: Infinity,
     queryFn: async () => {
-      const speciesData = await queryClient.fetchQuery<PokemonSpecies>({
+      const speciesData = await queryClient.query<PokemonSpecies>({
         queryKey: ["pokemon-species-resource", species.url],
         queryFn: () => pokedex.resource(species.url),
         staleTime: Infinity,
@@ -18,13 +18,13 @@ const useDefaultPokemonForm = (species: NamedAPIResource, enabled: boolean) => {
       const variety = speciesData.varieties.find((entry) => entry.is_default);
       if (!variety) throw new Error(`No default variety for ${species.name}`);
 
-      const pokemon = await queryClient.fetchQuery<Pokemon>({
+      const pokemon = await queryClient.query<Pokemon>({
         queryKey: ["pokemon-resource", variety.pokemon.url],
         queryFn: () => pokedex.resource(variety.pokemon.url),
         staleTime: Infinity,
       });
       const forms = await Promise.all(pokemon.forms.map((form) =>
-        queryClient.fetchQuery<PokemonForm>({
+        queryClient.query<PokemonForm>({
           queryKey: ["pokemon-form-resource", form.url],
           queryFn: () => pokedex.resource(form.url),
           staleTime: Infinity,
