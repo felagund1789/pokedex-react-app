@@ -11,6 +11,9 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("../../hooks/useEvolutionChain", () => ({ default: mocks.chain }));
 vi.mock("../../hooks/usePokemonInfo", () => ({ default: mocks.pokemon }));
+vi.mock("../../hooks/useDefaultPokemonForm", () => ({
+  default: (species: { name: string }) => ({ data: species.name }),
+}));
 vi.mock("../pokemonCard/PokemonCard", () => ({
   default: ({ slug, onClick }: { slug: string; onClick: () => void }) =>
     <button onClick={onClick}>{slug}</button>,

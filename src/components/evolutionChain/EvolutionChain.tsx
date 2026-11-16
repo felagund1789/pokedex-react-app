@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import useEvolutionChain from "../../hooks/useEvolutionChain";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
 import EvolutionCard from "../evolution/EvolutionCard";
-import PokemonCard from "../pokemonCard/PokemonCard";
 import type { EvolutionMethod } from "./evolutionModel";
 import "./EvolutionChain.css";
 
@@ -27,7 +25,6 @@ const findPath = (node: EvolutionNode, species: string): EvolutionNode[] | undef
 const EvolutionChain = ({ slug }: Props) => {
   const { data, error } = useEvolutionChain({ slug });
   const { pokemonForm, pokemonSpecies } = usePokemonInfo(slug);
-  const navigate = useNavigate();
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -50,20 +47,16 @@ const EvolutionChain = ({ slug }: Props) => {
       }
     }
   }
-  const rootForm = forms[data.chain.species.name] ?? data.chain.species.name;
-
   return (
     <div className="evolution-chain">
       <h2 className="title">Evolution</h2>
       <div className="evolution">
-        <EvolutionCard evolvesTo={data.chain.evolves_to} form={rootForm} forms={forms}>
-          <PokemonCard
-            slug={rootForm}
-            onClick={() =>
-              navigate(`/pokemon/${rootForm}`)
-            }
-          />
-        </EvolutionCard>
+        <EvolutionCard
+          species={data.chain.species}
+          evolvesTo={data.chain.evolves_to}
+          form={forms[data.chain.species.name]}
+          forms={forms}
+        />
       </div>
     </div>
   );

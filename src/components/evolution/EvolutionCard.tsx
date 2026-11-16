@@ -1,5 +1,6 @@
-import { ChainEvolvesTo } from "pokeapi-js-wrapper";
+import type { ChainEvolvesTo, NamedAPIResource } from "pokeapi-js-wrapper";
 import { useNavigate } from "react-router-dom";
+import useDefaultPokemonForm from "../../hooks/useDefaultPokemonForm";
 import { findSimplestEvolution } from "../../utils";
 import type { EvolutionMethod } from "../evolutionChain/evolutionModel";
 import EvolutionDetailsCard from "../evolutionDetails/EvolutionDetailsCard";
@@ -7,18 +8,25 @@ import PokemonCard from "../pokemonCard/PokemonCard";
 import "./EvolutionCard.css";
 
 interface Props {
+  species: NamedAPIResource;
   evolvesTo: ChainEvolvesTo[];
-  children: React.ReactNode;
-  form: string;
+  form?: string;
   forms: Record<string, string>;
 }
 
-const EvolutionCard = ({ evolvesTo, children, form, forms }: Props) => {
+const EvolutionCard = ({ species, evolvesTo, form: selectedForm, forms }: Props) => {
   const navigate = useNavigate();
+  const { data: defaultForm, error } = useDefaultPokemonForm(species, !selectedForm);
+  const form = selectedForm ?? defaultForm;
+
+  if (!selectedForm && error) return <div role="alert">Error loading default form: {error.message}</div>;
+  if (!form) return null;
 
   return (
     <div className="evolution-card">
-      <div className="evolves-from">{children}</div>
+      <div className="evolves-from">
+        <PokemonCard slug={form} onClick={() => navigate(`/pokemon/${form}`)} />
+      </div>
       {evolvesTo && evolvesTo.length > 0 && (
         <div className="evolves-to">
           {evolvesTo.map((evolution, index) => {
@@ -35,21 +43,13 @@ const EvolutionCard = ({ evolvesTo, children, form, forms }: Props) => {
             );
             const details = (matching.length ? matching : defaults.length ? defaults : methods)
               .reduce<EvolutionMethod[]>(findSimplestEvolution, []);
-            const nextForm = targetForm ?? (matching.length ? details[0]?.evolved_pokemon_form?.name : undefined)
-              ?? evolution.species.name;
+            const nextForm = targetForm ?? (matching.length ? details[0]?.evolved_pokemon_form?.name : undefined);
             return (
               <div key={index} className="evolution-transition">
                 {details.map((detail, i) => (
                   <EvolutionDetailsCard key={i} details={detail} />
                 ))}
-                <EvolutionCard evolvesTo={evolution.evolves_to} form={nextForm} forms={forms}>
-                  <PokemonCard
-                    slug={nextForm}
-                    onClick={() =>
-                      navigate(`/pokemon/${nextForm}`)
-                    }
-                  />
-                </EvolutionCard>
+                <EvolutionCard species={evolution.species} evolvesTo={evolution.evolves_to} form={nextForm} forms={forms} />
               </div>
             );
           })}
