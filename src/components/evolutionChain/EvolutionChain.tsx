@@ -36,7 +36,10 @@ const EvolutionChain = ({ slug }: Props) => {
   if (pokemonForm && pokemonSpecies) {
     const path = findPath(data.chain, pokemonSpecies.name);
     if (path) {
-      forms[pokemonSpecies.name] = pokemonForm.name;
+      forms[pokemonSpecies.name] = 
+        pokemonForm.is_battle_only || pokemonForm.is_mega 
+        ? pokemonSpecies.name 
+        : pokemonForm.name;
       for (let i = path.length - 1; i > 0; i--) {
         const method = path[i].evolution_details.find(
           (details) => details.evolved_pokemon_form?.name === forms[path[i].species.name],
@@ -47,6 +50,7 @@ const EvolutionChain = ({ slug }: Props) => {
       }
     }
   }
+
   return (
     <div className="evolution-chain">
       <h2 className="title">Evolution</h2>
