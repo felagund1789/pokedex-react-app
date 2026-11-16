@@ -15,6 +15,7 @@ import TypePoison from './poison.svg';
 import TypePsychic from './psychic.svg';
 import TypeRock from './rock.svg';
 import TypeSteel from './steel.svg';
+import TypeUnknown from './unknown.svg';
 import TypeWater from './water.svg';
 
 export default {
@@ -35,5 +36,6 @@ export default {
   psychic: TypePsychic,
   rock: TypeRock,
   steel: TypeSteel,
+  unknown: TypeUnknown,
   water: TypeWater,
 };

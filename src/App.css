@@ -22,6 +22,7 @@
   --type-psychic: #ea5d60;
   --type-rock: #baab82;
   --type-steel: #417d9a;
+  --type-unknown: #9da0aa;
   --type-water: #4a90da;
 
   --header-color: #ff4949;
@@ -151,6 +152,9 @@ body {
 }
 .steel {
   background-color: var(--type-steel);
+}
+.unknown {
+  background-color: var(--type-unknown);
 }
 .water {
   background-color: var(--type-water);

@@ -1,3 +1,4 @@
+import { gameVersionGroups, gameVersions } from "../../assets/gameVersions";
 import useResourceName from "../../hooks/useResourceName";
 import type { EvolutionMethod } from "../evolutionChain/evolutionModel";
 import "./EvolutionDetailsCard.css";
@@ -18,9 +19,7 @@ const knownFields = new Set([
 
 const label = (name: string) => name.replace(/[-_]/g, " ");
 const gameVersion = (name: string) =>
-      name.split(/[-_]/)
-      .map((w: string) => `${w.charAt(0).toUpperCase()}${w.substring(1)}`)
-      .join(" / ");
+      gameVersionGroups[name]?.map((gameVersion) => gameVersions[gameVersion]).join(" / ");
 
 const EvolutionDetailsCard = ({ details }: Props) => {
   const location = useResourceName(details.location);
