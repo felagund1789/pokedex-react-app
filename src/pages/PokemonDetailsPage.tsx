@@ -1,21 +1,20 @@
 import { motion } from "framer-motion";
-import { PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useEffect, useRef, type CSSProperties } from "react";
 import { useParams } from "react-router-dom";
 import PokemonStatsCard from "../components/PokemonStatsCard";
+import AbilitiesCard from "../components/abilitiesCard/AbilitiesCard";
 import EvolutionChain from "../components/evolutionChain/EvolutionChain";
 import PageHeader from "../components/header/PageHeader";
 import OtherForms from "../components/otherForms/OtherForms";
-import PokemonMoves from "../components/pokemonMoves/PokemonMoves";
-import usePokemonColor from "../hooks/usePokemonColor";
-import useMasonryGrid from "../hooks/useMasonryGrid";
-import pokedex from "../services/pokedexService";
-import usePokemonStore from "../store";
+import PokemonDescriptionCard from "../components/pokemonDescriptionCard/PokemonDescriptionCard";
 import PokemonInfoDetailsCard from "../components/pokemonInfoDetailsCard/PokemonInfoDetailsCard";
 import PokemonInfoHeaderCard from "../components/pokemonInfoHeaderCard/PokemonInfoHeaderCard";
-import PokemonDescriptionCard from "../components/pokemonDescriptionCard/PokemonDescriptionCard";
-import AbilitiesCard from "../components/abilitiesCard/AbilitiesCard";
+import PokemonMoves from "../components/pokemonMoves/PokemonMoves";
 import TypeCard from "../components/typeCard/TypeCard";
+import useMasonryGrid from "../hooks/useMasonryGrid";
+import usePokemonColor from "../hooks/usePokemonColor";
+import usePokemonInfo from "../hooks/usePokemonInfo";
+import usePokemonStore from "../store";
 
 function PokemonDetailsPage() {
   const { name } = useParams();
@@ -29,23 +28,14 @@ function PokemonDetailsPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    if (!name) {
-      return;
-    }
-
-    pokedex.getPokemonByName(name).then(async (data) => {
-      const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      const form: PokemonForm = await pokedex.getPokemonFormByName(data.forms[0].name);
-      const _name = species.names.find((n) => n.language.name === language)?.name;
-      const _formName = form.names.find((f) => f.language.name === language)?.name;
-      document.title = `Pokédex | ${_formName ?? _name}`;
-    });
-  }, [language, name]);
-
   if (!name) {
     return null;
   }
+
+  const { pokemonSpecies, pokemonForm } = usePokemonInfo(name);
+  const _name = pokemonSpecies?.names.find((n) => n.language.name === language)?.name;
+  const _formName = pokemonForm?.names.find((f) => f.language.name === language)?.name;
+  document.title = `Pokédex | ${_formName ?? _name}`;
 
   return (
     <div

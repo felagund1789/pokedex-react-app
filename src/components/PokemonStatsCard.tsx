@@ -1,6 +1,4 @@
-import { Pokemon } from "pokeapi-js-wrapper";
-import { useEffect, useState } from "react";
-import pokedex from "../services/pokedexService";
+import usePokemonInfo from "../hooks/usePokemonInfo";
 import StatBar from "./statBar/StatBar";
 import StatPanel from "./statPanel/StatPanel";
 
@@ -17,35 +15,29 @@ const metersToFeetAndInches = (meters: number) => {
 };
 
 const PokemonStatsCard = ({ slug }: Props) => {
-  const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
+  const { pokemon } = usePokemonInfo(slug);
 
-  useEffect(() => {
-    pokedex.getPokemonByName(slug).then(async (data) => {
-      setPokemon(data);
-    });
-  }, [slug]);
-
-  const height = `${pokemon.height ? pokemon.height / 10 : 0}m`;
-  const weight = `${pokemon.weight ? pokemon.weight / 10 : 0}kg`;
-  const heightUS = `${pokemon.height ? metersToFeetAndInches(pokemon.height / 10) : 0}`;
-  const weightUS = `${pokemon.weight ? kilogramsToPounds(pokemon.weight / 10).toFixed(1) : 0}lbs`;
+  const height = `${pokemon?.height ? pokemon?.height / 10 : 0}m`;
+  const weight = `${pokemon?.weight ? pokemon?.weight / 10 : 0}kg`;
+  const heightUS = `${pokemon?.height ? metersToFeetAndInches(pokemon?.height / 10) : 0}`;
+  const weightUS = `${pokemon?.weight ? kilogramsToPounds(pokemon?.weight / 10).toFixed(1) : 0}lbs`;
 
   return (
     <div className="pokemon-stats">
       <h2>Base Stats</h2>
       <div className="stat-info">
-        {pokemon.height && (
+        {pokemon?.height && (
           <StatPanel title="Height">
             {height} ({heightUS})
           </StatPanel>
         )}
-        {pokemon.weight && (
+        {pokemon?.weight && (
           <StatPanel title="Weight">
             {weight} ({weightUS})
           </StatPanel>
         )}
       </div>
-      {pokemon.stats?.map((pokemonStat, index) => (
+      {pokemon?.stats?.map((pokemonStat, index) => (
         <StatBar key={index} pokemonStat={pokemonStat} />
       ))}
     </div>

@@ -1,3 +1,4 @@
+import type { Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
 import { create } from "zustand";
 import types from "./assets/types";
 
@@ -8,9 +9,14 @@ export const generations: Generation[] = ["I", "II", "III", "IV", "V", "VI", "VI
 type Language = "ja-Hrkt" | "ko" | "fr" | "de" | "es" | "it" | "en" | "zh-Hans" | "zh-Hant";
 
 export type PokemonInfo = {
+  pokemonForm: PokemonForm;
+  pokemon: Pokemon;
+  pokemonSpecies: PokemonSpecies;
   pokedexNumber: number;
   pokemonFormName: string;
   pokemonName: string;
+  pokemonGenera: string;
+  habitat: string;
   generation: string;
   types: string[];
   artworkUrl: string;

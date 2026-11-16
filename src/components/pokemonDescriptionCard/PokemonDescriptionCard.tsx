@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import usePokemonStore from "../../store";
-import "./PokemonDescriptionCard.css";
-import { PokemonSpecies } from "pokeapi-js-wrapper";
-import pokedex from "../../services/pokedexService";
-import usePokemonDescription from "../../hooks/usePokemonDescription";
-import useWheelScroll from "../../hooks/useWheelScroll";
 import usePointerDrag from "../../hooks/usePointerDrag";
+import usePokemonDescription from "../../hooks/usePokemonDescription";
+import usePokemonInfo from "../../hooks/usePokemonInfo";
+import useWheelScroll from "../../hooks/useWheelScroll";
+import "./PokemonDescriptionCard.css";
 
 interface Props {
   slug: string;
@@ -15,24 +13,16 @@ const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
 const PokemonDescriptionCard = ({ slug }: Props) => {
-  const language = usePokemonStore((state) => state.language);
-  const [species, setSpecies] = useState<PokemonSpecies>({} as PokemonSpecies);
+  const { pokemonSpecies } = usePokemonInfo(slug);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    pokedex.getPokemonByName(slug).then(async (data) => {
-      const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      setSpecies(species);
-    });
-  }, [language, slug]);
-
-  const descriptions = usePokemonDescription({ species });
+  const descriptions = usePokemonDescription({ species: pokemonSpecies });
 
   useEffect(() => {
     setActiveIndex(0);
-  }, [language, slug]);
+  }, [slug]);
 
   const goTo = (index: number) => {
     setActiveIndex(clamp(index, 0, Math.max(descriptions.length - 1, 0)));

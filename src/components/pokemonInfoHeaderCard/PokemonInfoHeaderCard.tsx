@@ -1,55 +1,22 @@
-import { Pokemon, PokemonForm, PokemonSpecies } from "pokeapi-js-wrapper";
+import { useState } from "react";
+import usePokemonColor from "../../hooks/usePokemonColor";
+import usePokemonInfo from "../../hooks/usePokemonInfo";
+import PokemonImageModal from "../pokemonImageModal/PokemonImageModal";
 import PokemonNumber from "../PokemonNumber";
 import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonInfoHeaderCard.css";
-import usePokemonStore from "../../store";
-import { useEffect, useState } from "react";
-import pokedex from "../../services/pokedexService";
-import PokemonImageModal from "../pokemonImageModal/PokemonImageModal";
-import usePokemonColor from "../../hooks/usePokemonColor";
 
 interface Props {
   slug: string;
 }
 
-const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
-
 const PokemonInfoHeaderCard = ({ slug }: Props) => {
-  const language = usePokemonStore((state) => state.language);
-  const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
-  const [pokemonGenera, setPokemonGenera] = useState<string>();
-  const [pokedexNumber, setPokedexNumber] = useState<number>();
-  const [pokemonName, setPokemonName] = useState<string>();
-  const [pokemonFormName, setPokemonFormName] = useState<string>();
-
-  useEffect(() => {
-    pokedex.getPokemonByName(slug).then(async (data) => {
-      const species: PokemonSpecies = await pokedex.resource(data.species.url);
-      const form: PokemonForm = await pokedex.getPokemonFormByName(
-        data.forms[0].name,
-      );
-      setPokemon(data);
-      setPokemonGenera(
-        species.genera.find((g) => g.language.name === "en")?.genus,
-      );
-      setPokedexNumber(
-        species.pokedex_numbers.find((n) => n.pokedex.name === "national")
-          ?.entry_number,
-      );
-      setPokemonName(
-        species.names.find((n) => n.language.name === language)?.name,
-      );
-      setPokemonFormName(
-        form.names.find((f) => f.language.name === language)?.name,
-      );
-    });
-  }, [language, slug]);
+  const { pokedexNumber, pokemonName, pokemonFormName, pokemonGenera, types, artworkURL } = usePokemonInfo(slug);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
   const color = usePokemonColor({ slug });
 
-  const imgUrl = pokemon?.id ? `${artworkBaseURL}${pokemon.id}.png` : "";
   return (
     <div
       className="pokemon-info-card pokemon-info-header-card"
@@ -65,25 +32,25 @@ const PokemonInfoHeaderCard = ({ slug }: Props) => {
             <h3>{pokemonGenera}</h3>
           </div>
           <div className="pokemon-info-header-card__types">
-            {pokemon.types?.map((pokemonType) => (
-              <PokemonType key={pokemonType.type.name}>
-                {pokemonType.type.name}
+            {types?.map((type) => (
+              <PokemonType key={type}>
+                {type}
               </PokemonType>
             ))}
           </div>
         </div>
         <div className="pokemon-info-header-card__image-background">
           <img
-            src={imgUrl}
+            src={artworkURL}
             alt={pokemonFormName ?? pokemonName}
-            onClick={() => imgUrl && setIsZoomed(true)}
+            onClick={() => artworkURL && setIsZoomed(true)}
             style={{ cursor: "zoom-in" }}
           />
         </div>
       </div>
       {isZoomed && (
         <PokemonImageModal
-          src={imgUrl}
+          src={artworkURL || ""}
           alt={pokemonFormName ?? pokemonName}
           onClose={() => setIsZoomed(false)}
         />

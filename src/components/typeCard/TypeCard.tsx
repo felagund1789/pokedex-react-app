@@ -1,6 +1,7 @@
-import { Pokemon, Type } from "pokeapi-js-wrapper";
+import { Type } from "pokeapi-js-wrapper";
 import { useEffect, useState } from "react";
 import typeIcons from "../../assets/types";
+import usePokemonInfo from "../../hooks/usePokemonInfo";
 import pokedex from "../../services/pokedexService";
 import PokemonType from "../pokemonType/PokemonType";
 import "./TypeCard.css";
@@ -40,6 +41,7 @@ const getDamageMultiplier = (attackType: string, defenseTypes: Type[]) =>
   }, 1);
 
 const TypeCard = ({ slug }: Props) => {
+  const { pokemon, types } = usePokemonInfo(slug);
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
   const [matchups, setMatchups] = useState<TypeMatchup[]>([]);
 
@@ -49,11 +51,9 @@ const TypeCard = ({ slug }: Props) => {
     setMatchups([]);
 
     const loadMatchups = async () => {
-      const pokemon: Pokemon = await pokedex.getPokemonByName(slug);
-      const defenseTypes: Type[] = await Promise.all(
-        pokemon.types.map(({ type }) => pokedex.resource(type.url)),
-      );
-      const types = pokemon.types.map(({ type }) => type.name);
+      const defenseTypes: Type[] = types ? await Promise.all(
+        types.map((type) => pokedex.resource(`https://pokeapi.co/api/v2/type/${type}`)),
+      ) : [];
       const damageMatchups = allTypes
         .map((name) => ({
           name,
@@ -76,7 +76,7 @@ const TypeCard = ({ slug }: Props) => {
     return () => {
       isCurrent = false;
     };
-  }, [slug]);
+  }, [pokemon]);
 
   return (
     <div className="type-card">

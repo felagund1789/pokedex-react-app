@@ -1,7 +1,8 @@
 import { Ability } from "pokeapi-js-wrapper";
 import { useEffect, useState } from "react";
-import usePokemonStore from "../../store";
+import usePokemonInfo from "../../hooks/usePokemonInfo";
 import pokedex from "../../services/pokedexService";
+import usePokemonStore from "../../store";
 import "./AbilitiesCard.css";
 
 interface Props {
@@ -16,6 +17,7 @@ interface PokemonAbility {
 
 const AbilitiesCard = ({ slug }: Props) => {
   const language = usePokemonStore((state) => state.language);
+  const { pokemon } = usePokemonInfo(slug);
   const [abilities, setAbilities] = useState<PokemonAbility[]>([]);
 
   useEffect(() => {
@@ -23,16 +25,15 @@ const AbilitiesCard = ({ slug }: Props) => {
     setAbilities([]);
 
     const loadAbilities = async () => {
-      const pokemon = await pokedex.getPokemonByName(slug);
-      const abilityDetails: Ability[] = await Promise.all(
+      const abilityDetails: Ability[] = pokemon?.abilities ? await Promise.all(
         pokemon.abilities.map(({ ability }) => pokedex.resource(ability.url)),
-      );
+      ) : [];
 
       if (!isCurrent) {
         return;
       }
 
-      setAbilities(
+      setAbilities(pokemon?.abilities ?
         pokemon.abilities.map(({ ability, is_hidden }, index) => {
           const details = abilityDetails[index];
           const effect =
@@ -53,7 +54,7 @@ const AbilitiesCard = ({ slug }: Props) => {
             effect: effect?.short_effect ?? "",
             isHidden: is_hidden,
           };
-        }),
+        }) : []
       );
     };
 
@@ -61,7 +62,7 @@ const AbilitiesCard = ({ slug }: Props) => {
     return () => {
       isCurrent = false;
     };
-  }, [language, slug]);
+  }, [language, pokemon]);
 
   return (
     <div className="abilities-card">

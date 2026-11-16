@@ -1,6 +1,6 @@
-import { MoveElement, Pokemon } from "pokeapi-js-wrapper";
-import { useEffect, useState } from "react";
-import pokedex from "../../services/pokedexService";
+import { MoveElement } from "pokeapi-js-wrapper";
+import { useState } from "react";
+import usePokemonInfo from "../../hooks/usePokemonInfo";
 import MoveRow from "./MoveRow";
 import "./PokemonMoves.css";
 
@@ -18,14 +18,8 @@ const filterBy = (method: string) => {
 };
 
 const PokemonMoves = ({ slug }: Props) => {
-  const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
+  const { pokemon } = usePokemonInfo(slug);
   const [filter, setFilter] = useState("level-up");
-
-  useEffect(() => {
-    pokedex.getPokemonByName(slug).then(async (data) => {
-      setPokemon(data);
-    });
-  }, [slug]);
 
   return (
     <div className="pokemon-moves">
@@ -70,8 +64,8 @@ const PokemonMoves = ({ slug }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {pokemon.moves?.length > 0 &&
-              pokemon.moves
+            {Boolean(pokemon?.moves?.length) &&
+              pokemon?.moves
                 .filter(filterBy(filter))
                 .map((pokemonMove) => ({
                   ...pokemonMove,

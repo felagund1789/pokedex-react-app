@@ -46,7 +46,7 @@ const usePokemonList = ({ search = "", type, generation }: FilterQuery) => {
     queryKey: ["pokemon-list", normalizedSearch, type ?? "all", generation ?? "all"],
     queryFn: async () => {
       const [pokemonList, typeData, generationData] = await Promise.all([
-        pokedex.getPokemonsList({
+        pokedex.getPokemonFormsList({
           offset: 0,
           limit: ALL_POKEMON_LIMIT,
         }),

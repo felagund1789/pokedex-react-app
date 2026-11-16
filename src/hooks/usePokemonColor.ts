@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import { Color, getColorSync, getPaletteSync } from "colorthief";
-import usePokemon from "./usePokemon";
-
-const artworkBaseURL = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
+import { useEffect, useState } from "react";
+import usePokemonInfo from "./usePokemonInfo";
 
 // This function calculates the perceived brightness of a color using the formula for luminance. 
 // It is used to filter out colors that are too dark or too light when selecting a dominant color for the Pokémon image.
@@ -17,9 +15,10 @@ interface Props {
 }
 
 const usePokemonColor = ({ slug }: Props) => {
-  const { data } = usePokemon({ slug });
+  const { pokemonForm, pokemon } = usePokemonInfo(slug);
   const [pokemonColor, setPokemonColor] = useState<string | null>(null);
-  const imgUrl = data?.id ? `${artworkBaseURL}${data.id}.png` : "";
+  const imgUrl = pokemonForm?.sprites.other["official-artwork"].front_default ||
+                 pokemon?.sprites.other["official-artwork"].front_default;
 
   useEffect(() => {
     const storedColor = localStorage.getItem(imgUrl);

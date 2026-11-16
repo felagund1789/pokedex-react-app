@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import usePokemonSpecies from "../../hooks/usePokemonSpecies";
+import usePokemonInfo from "../../hooks/usePokemonInfo";
 import PokemonCard from "../pokemonCard/PokemonCard";
 import "./OtherForms.css";
 
@@ -8,15 +8,18 @@ interface Props {
 }
 
 const OtherForms = ({ slug }: Props) => {
-  const { data } = usePokemonSpecies({ slug });
+  const { pokemon, pokemonSpecies } = usePokemonInfo(slug);
   const navigate = useNavigate();
 
-  const otherVarieties =
-    data?.varieties.filter(
-      (pokemonVariety) => pokemonVariety.pokemon.name !== slug
+  const otherForms = pokemon?.forms.filter(
+    (form) => form.name !== slug
+  ) ?? [];
+
+  const otherVarieties = pokemonSpecies?.varieties.filter(
+      (pokemonVariety) => pokemonVariety.pokemon.name !== pokemon?.name
     ) ?? [];
 
-  if (otherVarieties.length === 0) {
+  if (otherForms.length === 0 && otherVarieties.length === 0) {
     return null;
   }
 
@@ -24,6 +27,15 @@ const OtherForms = ({ slug }: Props) => {
     <div className="other-forms">
       <h2 className="title">Alternative Forms</h2>
       <div className="other-forms-list">
+        {otherForms.map((form, index) => (
+            <PokemonCard
+              key={index}
+              slug={form.name}
+              onClick={() =>
+                navigate(`/pokemon/${form.name}`)
+              }
+            />
+          ))}
         {otherVarieties.map((pokemonVariety, index) => (
             <PokemonCard
               key={index}
