@@ -1,4 +1,6 @@
 .pokemon-card {
+  display: grid;
+  grid-template: "generation" "image" "title";
   width: 16rem;
   min-height: 22.5rem;
   text-transform: capitalize;
@@ -15,7 +17,12 @@
   transform: translateY(-0.25rem);
 }
 
+.pokemon-card .pokemon-title {
+  grid-area: title;
+}
+
 .pokemon-card .pokemon-image-background {
+  grid-area: image;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -55,10 +62,6 @@
   flex-wrap: nowrap;
 }
 
-.pokemon-card .generation {
-  position: absolute;
-}
-
 @media (max-width: 70rem) {
   .pokemon-card {
     min-height: auto;
@@ -66,10 +69,10 @@
   .evolution-card .pokemon-card,
   .pokemon-list .pokemon-card {
     font-size: 1.5rem;
-    max-height: 8.75rem;
+    max-height: 12rem;
     width: calc(100vw - 2rem);
-    display: flex;
-    flex-direction: row-reverse;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "generation title image";
     justify-content: space-between;
   }
   .evolution-card .pokemon-card:hover,
@@ -78,6 +81,7 @@
   }
   .evolution-card .pokemon-card .pokemon-title,
   .pokemon-list .pokemon-card .pokemon-title {
+    grid-area: title;
     display: flex;
     flex-grow: 1;
     flex-direction: column-reverse;
@@ -115,8 +119,8 @@
   .pokemon-list .pokemon-card .generation {
     left: 0.5rem;
   }  
-  .evolution-card .pokemon-card .generation {
-    display: none;
+  .evolution-card .pokemon-card .generation-container {
+    width: 3rem;
   }
   .evolution-card .pokemon-card .pokemon-type {
     font-size: 1rem;

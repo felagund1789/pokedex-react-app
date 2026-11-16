@@ -218,6 +218,7 @@ body {
   .pokemon-details > .pokemon-info-header-card,
   .pokemon-details > .evolution-chain {
     grid-column: span 1;
+    padding: 0;
   }
 }
 

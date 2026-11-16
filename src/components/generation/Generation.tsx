@@ -6,7 +6,11 @@ interface Props {
 }
 
 const Generation = ({ children }: Props) => {
-  return <h3 className="generation">{children}</h3>;
+  return (
+    <div className="generation-container">
+      <h3 className="generation">{children}</h3>
+    </div>
+  );
 };
 
 export default Generation;
