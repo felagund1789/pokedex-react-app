@@ -1,9 +1,10 @@
+import { NamedAPIResource } from "pokeapi-js-wrapper";
+import useDefaultPokemonForm from "../../hooks/useDefaultPokemonForm";
 import useEvolutionChain from "../../hooks/useEvolutionChain";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
 import EvolutionCard from "../evolution/EvolutionCard";
 import type { EvolutionMethod } from "./evolutionModel";
 import "./EvolutionChain.css";
-import useDefaultPokemonForm from "../../hooks/useDefaultPokemonForm";
 
 interface Props {
   slug: string;
@@ -26,7 +27,10 @@ const findPath = (node: EvolutionNode, species: string): EvolutionNode[] | undef
 const EvolutionChain = ({ slug }: Props) => {
   const { data, error } = useEvolutionChain({ slug });
   const { pokemonForm, pokemon, pokemonSpecies } = usePokemonInfo(slug);
-  const { data: defaultForm } = useDefaultPokemonForm(pokemon!.species, true);
+  const { data: defaultForm } = useDefaultPokemonForm(
+    pokemon?.species || {} as NamedAPIResource,
+    Boolean(pokemon?.species)
+  );
 
   if (error) {
     return <div>Error: {error.message}</div>;
