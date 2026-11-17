@@ -71,7 +71,7 @@
     font-size: 1.5rem;
     max-height: 12rem;
     width: calc(100vw - 2rem);
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
     grid-template-areas: "generation title image";
     justify-content: space-between;
   }
@@ -84,6 +84,7 @@
     grid-area: title;
     display: flex;
     flex-grow: 1;
+    min-width: 0;
     flex-direction: column-reverse;
     justify-content: center;
     align-items: center;
