@@ -19,7 +19,7 @@ const knownFields = new Set([
 
 const label = (name: string) => name.replace(/[-_]/g, " ");
 const gameVersion = (name: string) =>
-      gameVersionGroups[name]?.map((gameVersion) => gameVersions[gameVersion]).join(" / ");
+      gameVersionGroups[name]?.map((gameVersion) => gameVersions[gameVersion]).join("  ");
 
 const EvolutionDetailsCard = ({ details }: Props) => {
   const location = useResourceName(details.location);
@@ -102,7 +102,12 @@ const EvolutionDetailsCard = ({ details }: Props) => {
       {details.min_damage_taken != null && <div>after taking at least {details.min_damage_taken} damage</div>}
       {chance != null && <div>{chance}% chance</div>}
       {details.condition_expression && chance == null && <div>Additional condition: {details.condition_expression.expression}</div>}
-      {details.version_group && <span className={`version-group ${details.version_group.name}`}>{gameVersion(details.version_group.name)}</span>}
+      {/* {details.version_group && <span className={`version-group ${details.version_group.name}`}>{gameVersion(details.version_group.name)}</span>} */}
+      {details.version_group && (<div className="version-group-container">
+        {gameVersionGroups[details.version_group.name].map((version) => (
+          <span key={version} className={`game-version ${version}`} title={gameVersion(details.version_group!.name)}>&nbsp;</span>
+        ))}
+      </div>)}
       {extra.map(([key]) => <div key={key}>Additional condition: {label(key)}</div>)}
       {errors.map((query, index) => <div role="alert" key={index}>Unable to load condition name: {query.error?.message}</div>)}
     </div>
