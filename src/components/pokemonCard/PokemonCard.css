@@ -69,10 +69,10 @@
   .evolution-card .pokemon-card,
   .pokemon-list .pokemon-card {
     font-size: 1.5rem;
-    max-height: 12rem;
+    max-height: 16rem;
     width: calc(100vw - 2rem);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    grid-template-areas: "generation title image";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "generation image" "title image";
     justify-content: space-between;
   }
   .evolution-card .pokemon-card:hover,
@@ -83,8 +83,8 @@
   .pokemon-list .pokemon-card .pokemon-title {
     grid-area: title;
     display: flex;
-    flex-grow: 1;
     min-width: 0;
+    padding-bottom: 0.5rem;
     flex-direction: column-reverse;
     justify-content: center;
     align-items: center;
