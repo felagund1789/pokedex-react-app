@@ -8,8 +8,12 @@ const PokemonCardSkeleton = () => {
         <PokemonNumber>{undefined}</PokemonNumber>
         <div style={{ width: 150, height: 150 }}></div>
       </div>
-      <div></div>
-      <h2></h2>
+      <div className="pokemon-card-info">
+        <div className="pokemon-title">
+          <div></div>
+          <h2></h2>
+        </div>
+      </div>
     </div>
   );
 };
