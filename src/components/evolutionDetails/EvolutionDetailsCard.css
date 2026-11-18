@@ -8,6 +8,22 @@
   justify-content: center;
 }
 
+.evolution-details .evolution-info {
+  display: block;
+  margin-right: 0.25rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--version-group-background-color);
+  color: var(--version-group-text-color);
+  fill: var(--version-group-text-color);
+  border-radius: 0.25rem;
+  margin: 0.25rem;
+}
+
 .arrow {
   fill: var(--arrow-color);
 }
@@ -20,6 +36,7 @@
   color: var(--version-group-text-color);
   border-radius: 0.25rem;
   font-size: 0.875rem;
+  margin: 0.25rem;
 }
 
 .game-version {

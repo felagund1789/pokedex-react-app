@@ -1,4 +1,6 @@
 import { gameVersionGroups, gameVersions } from "../../assets/gameVersions";
+import icons from "../../assets/types";
+import useItem from "../../hooks/useItem";
 import useResourceName from "../../hooks/useResourceName";
 import type { EvolutionMethod } from "../evolutionChain/evolutionModel";
 import "./EvolutionDetailsCard.css";
@@ -23,8 +25,8 @@ const gameVersion = (name: string) =>
 
 const EvolutionDetailsCard = ({ details }: Props) => {
   const location = useResourceName(details.location);
-  const heldItem = useResourceName(details.held_item);
-  const item = useResourceName(details.item);
+  const heldItem = useItem({ slug: details.held_item?.name ?? "" });
+  const item = useItem({ slug: details.item?.name ?? "" });
   const knownMove = useResourceName(details.known_move);
   const knownMoveType = useResourceName(details.known_move_type);
   const partySpecies = useResourceName(details.party_species);
@@ -49,7 +51,8 @@ const EvolutionDetailsCard = ({ details }: Props) => {
     "level-up": "Level up",
     "in-battle-level-up": "Level up in battle",
     "trade": "Trade",
-    "use-item": `Use ${item.data ?? label(details.item?.name ?? "item")}`,
+    "use-item": `Use ${item.data?.names?.find((name) => name.language.name === "en")?.name 
+      ?? label(details.item?.name ?? "item")}`,
     "shed": "Empty slot in party and Pokéball in bag",
     "spin": "Use Sweet Item and spin",
     "three-critical-hits": "Land three critical hits in a battle",
@@ -65,50 +68,66 @@ const EvolutionDetailsCard = ({ details }: Props) => {
     !(Array.isArray(value) && value.length === 0),
   );
   const chance = details.condition_expression?.percentage_chance;
+  const text = []; 
+  triggers[details.trigger.name] && text.push(triggers[details.trigger.name] ?? label(details.trigger.name));
+  details.held_item && text.push(`holding ${heldItem.data?.names?.find((name) => name.language.name === "en")?.name
+    ?? label(details.held_item.name)}`);
+  details.known_move && text.push(`knowing ${knownMove.data ?? label(details.known_move.name)}`);
+  details.known_move_type && text.push(`knowing a move of type ${knownMoveType.data ?? label(details.known_move_type.name)}`);
+  details.location && text.push(`at ${location.data ?? label(details.location.name)}`);
+  details.gender != null && text.push(`gender: ${details.gender === 1 ? "female" : details.gender === 2 ? "male" : details.gender}`);
+  details.min_affection != null && text.push(`having affection ${details.min_affection}`);
+  details.min_beauty != null && text.push(`having beauty ${details.min_beauty}`);
+  details.min_happiness != null && text.push(`having happiness ${details.min_happiness}`);
+  details.min_level != null && text.push(`to Lv ${details.min_level}`);
+  details.party_species && <div>having {partySpecies.data ?? label(details.party_species.name)} in party</div>
+  details.party_species && text.push(`having ${partySpecies.data ?? label(details.party_species.name)} in party`);
+  details.party_type && text.push(`having Pokémon of type ${partyType.data ?? label(details.party_type.name)} in party`);
+  details.trade_species && text.push(`traded for ${tradeSpecies.data ?? label(details.trade_species.name)}`);
+  details.relative_physical_stats === 0 && text.push(`having Attack = Defense`);
+  details.relative_physical_stats === 1 && text.push(`having Attack &gt; Defense`);
+  details.relative_physical_stats === -1 && text.push(`having Attack &lt; Defense`);
+  details.relative_physical_stats != null && ![-1, 0, 1].includes(details.relative_physical_stats) &&
+    text.push(`Additional physical-stat condition: ${details.relative_physical_stats}`);
+  details.time_of_day && text.push(`during ${details.time_of_day}`);
+  details.needs_overworld_rain && text.push(`while raining in the overworld`);
+  details.needs_multiplayer && text.push(`in multiplayer`);
+  details.near_special_rock && text.push(`near a special rock`);
+  details.turn_upside_down && text.push(`turn the device upside down`);
+  details.region && text.push(`in ${region.data ?? label(details.region.name)}`);
+  details.used_move && !["agile-style-move", "strong-style-move", "use-move"].includes(details.trigger.name) &&
+    text.push(`using ${usedMove.data ?? label(details.used_move.name)}`);
+  details.min_move_count != null && text.push(`at least ${details.min_move_count} times`);
+  details.min_steps != null && text.push(`at least ${details.min_steps} steps`);
+  details.min_damage_taken != null && text.push(`after taking at least ${details.min_damage_taken} damage`);
+  chance != null && text.push(`${chance}% chance`);
+  details.condition_expression && chance == null && text.push(`Additional condition: ${details.condition_expression.expression}`);
+  extra.map(([key]) => text.push(`Additional condition: ${label(key)}`));
 
   return (
     <div className="evolution-details">
-      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" className="arrow">
-        <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z" />
-      </svg>
-      <div>{triggers[details.trigger.name] ?? label(details.trigger.name)}</div>
-      {details.held_item && <div>holding {heldItem.data ?? label(details.held_item.name)}</div>}
-      {details.known_move && <div>knowing {knownMove.data ?? label(details.known_move.name)}</div>}
-      {details.known_move_type && <div>knowing a move of type {knownMoveType.data ?? label(details.known_move_type.name)}</div>}
-      {details.location && <div>at {location.data ?? label(details.location.name)}</div>}
-      {details.gender != null && <div>gender: {details.gender === 1 ? "female" : details.gender === 2 ? "male" : details.gender}</div>}
-      {details.min_affection != null && <div>having affection {details.min_affection}</div>}
-      {details.min_beauty != null && <div>having beauty {details.min_beauty}</div>}
-      {details.min_happiness != null && <div>having happiness {details.min_happiness}</div>}
-      {details.min_level != null && <div>to {details.min_level}</div>}
-      {details.party_species && <div>having {partySpecies.data ?? label(details.party_species.name)} in party</div>}
-      {details.party_type && <div>having Pokémon of type {partyType.data ?? label(details.party_type.name)} in party</div>}
-      {details.trade_species && <div>traded for {tradeSpecies.data ?? label(details.trade_species.name)}</div>}
-      {details.relative_physical_stats === 0 && <div>having Attack = Defense</div>}
-      {details.relative_physical_stats === 1 && <div>having Attack &gt; Defense</div>}
-      {details.relative_physical_stats === -1 && <div>having Attack &lt; Defense</div>}
-      {details.relative_physical_stats != null && ![-1, 0, 1].includes(details.relative_physical_stats) &&
-        <div>Additional physical-stat condition: {details.relative_physical_stats}</div>}
-      {details.time_of_day && <div>during {details.time_of_day}</div>}
-      {details.needs_overworld_rain && <div>while raining in the overworld</div>}
-      {details.needs_multiplayer && <div>in multiplayer</div>}
-      {details.near_special_rock && <div>near a special rock</div>}
-      {details.turn_upside_down && <div>turn the device upside down</div>}
-      {details.region && <div>in {region.data ?? label(details.region.name)}</div>}
-      {details.used_move && !["agile-style-move", "strong-style-move", "use-move"].includes(details.trigger.name) &&
-        <div>using {usedMove.data ?? label(details.used_move.name)}</div>}
-      {details.min_move_count != null && <div>at least {details.min_move_count} times</div>}
-      {details.min_steps != null && <div>at least {details.min_steps} steps</div>}
-      {details.min_damage_taken != null && <div>after taking at least {details.min_damage_taken} damage</div>}
-      {chance != null && <div>{chance}% chance</div>}
-      {details.condition_expression && chance == null && <div>Additional condition: {details.condition_expression.expression}</div>}
-      {/* {details.version_group && <span className={`version-group ${details.version_group.name}`}>{gameVersion(details.version_group.name)}</span>} */}
+      {(item.data || heldItem.data) && (
+        <img className="evolution-info" src={item.data?.sprites?.default ?? heldItem.data?.sprites?.default ?? ""} 
+          alt={text.join(" ")}
+          title={text.join(" ")} />
+      ) || details.party_type && (
+        <span className={`evolution-info party-type ${details.party_type?.name}`}>
+          <img src={icons[details.party_type?.name as keyof typeof icons]} alt={text.join(" ")} title={text.join(" ")} />
+        </span>
+      ) || details.min_level != null && (
+        <div className="evolution-info" title={text.join(" ")}>Lv {details.min_level}</div>
+      ) || details.trigger.name && (
+        <div className="evolution-info" title={text.join(" ")}>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" className="arrow">
+            <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z" />
+          </svg>
+        </div>
+      )}
       {details.version_group && (<div className="version-group-container">
         {gameVersionGroups[details.version_group.name].map((version) => (
           <span key={version} className={`game-version ${version}`} title={gameVersion(details.version_group!.name)}>&nbsp;</span>
         ))}
       </div>)}
-      {extra.map(([key]) => <div key={key}>Additional condition: {label(key)}</div>)}
       {errors.map((query, index) => <div role="alert" key={index}>Unable to load condition name: {query.error?.message}</div>)}
     </div>
   );
