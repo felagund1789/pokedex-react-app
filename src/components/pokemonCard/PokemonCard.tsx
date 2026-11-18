@@ -34,25 +34,27 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       style={color ? { backgroundColor: color } : undefined}
       onClick={onClick}
     >
-      {generation && <Generation>{generation}</Generation>}
+      <div className="pokemon-card-info">
+        {generation && <Generation>{generation}</Generation>}
+        <div className="pokemon-title">
+          <div className="types">
+            {types?.map((pokemonType, index) => {
+              return <PokemonType key={index}>{pokemonType}</PokemonType>;
+            })}
+          </div>
+          <h2>
+            {pokemonFormName && pokemonFormName?.trim().length > 0
+              ? pokemonFormName
+              : pokemonName}
+          </h2>
+        </div>
+      </div>
       <div className="pokemon-image-background">
         <PokemonNumber>{pokedexNumber}</PokemonNumber>
         {loading && <div className="image"></div>}
         {!loading && (
           <img className="image" src={artworkURL} alt={pokemonName} />
         )}
-      </div>
-      <div className="pokemon-title">
-        <div className="types">
-          {types?.map((pokemonType, index) => {
-            return <PokemonType key={index}>{pokemonType}</PokemonType>;
-          })}
-        </div>
-        <h2>
-          {pokemonFormName && pokemonFormName?.trim().length > 0
-            ? pokemonFormName
-            : pokemonName}
-        </h2>
       </div>
     </div>
   );
