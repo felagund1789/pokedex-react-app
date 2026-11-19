@@ -96,7 +96,8 @@ describe("form-specific evolution selection", () => {
     ]));
     expect(screen.getByText("evolved form")).toBeTruthy();
     expect(screen.getByText("growlithe")).toBeTruthy();
-    expect(screen.queryByText("default method")).toBeNull();
+    expect(screen.getByText("default method")).toBeTruthy();
+    expect(screen.getByText("arcanine")).toBeTruthy();
   });
 
   it("falls back to the species method when no form matches", () => {
@@ -143,7 +144,7 @@ describe("form-specific evolution selection", () => {
     expect(screen.getByTestId("location").textContent).toBe("/pokemon/lycanroc-midnight");
   });
 
-  it("keeps the selected destination form instead of displaying its siblings", () => {
+  it("shows all destination forms compatible with the selected form's source", () => {
     renderChain("lycanroc-midnight", "lycanroc", node("rockruff", [], [
       node("lycanroc", [
         method("midday", "rockruff", "lycanroc-midday"),
@@ -154,8 +155,26 @@ describe("form-specific evolution selection", () => {
     expect(screen.getByText("rockruff")).toBeTruthy();
     expect(screen.getByText("midnight")).toBeTruthy();
     expect(screen.getByText("lycanroc-midnight")).toBeTruthy();
-    expect(screen.queryByText("midday")).toBeNull();
+    expect(screen.getByText("midday")).toBeTruthy();
+    expect(screen.getByText("lycanroc-midday")).toBeTruthy();
     expect(screen.queryByText("dusk")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "lycanroc-midday" }));
+    expect(screen.getByTestId("location").textContent).toBe("/pokemon/lycanroc-midday");
+  });
+
+  it("infers an alternate source form from a selected evolved form", () => {
+    renderChain("lycanroc-dusk", "lycanroc", node("rockruff", [], [
+      node("lycanroc", [
+        method("midday", "rockruff", "lycanroc-midday"),
+        method("midnight", "rockruff", "lycanroc-midnight"),
+        method("dusk", "rockruff-own-tempo", "lycanroc-dusk"),
+      ]),
+    ]));
+    expect(screen.getByText("rockruff-own-tempo")).toBeTruthy();
+    expect(screen.getByText("lycanroc-dusk")).toBeTruthy();
+    expect(screen.getByText("dusk")).toBeTruthy();
+    expect(screen.queryByText("midday")).toBeNull();
+    expect(screen.queryByText("midnight")).toBeNull();
   });
 
   it("uses only the destination compatible with an alternate source form", () => {
@@ -206,6 +225,31 @@ describe("form-specific evolution selection", () => {
     expect(screen.getByText("target-first")).toBeTruthy();
     expect(screen.getByText("second ending")).toBeTruthy();
     expect(screen.getByText("target-second")).toBeTruthy();
+  });
+
+  it("preserves compatible branches across stages when viewing an evolved form", () => {
+    renderChain("target-first", "target", node("source", [], [
+      node("middle", [
+        method("first path", "source", "middle-first"),
+        method("second path", "source", "middle-second"),
+        method("third path", "source", "middle-third"),
+      ], [
+        node("target", [
+          method("first ending", "middle-first", "target-first"),
+          method("second ending", "middle-second", "target-second"),
+        ]),
+      ]),
+    ]));
+    const first = screen.getByText("middle-first").closest<HTMLElement>(".evolution-transition");
+    const second = screen.getByText("middle-second").closest<HTMLElement>(".evolution-transition");
+    const third = screen.getByText("middle-third").closest<HTMLElement>(".evolution-transition");
+    if (!first || !second || !third) throw new Error("Missing middle-form transition");
+    expect(within(first).getByText("target-first")).toBeTruthy();
+    expect(within(first).queryByText("target-second")).toBeNull();
+    expect(within(second).getByText("target-second")).toBeTruthy();
+    expect(within(second).queryByText("target-first")).toBeNull();
+    expect(within(third).queryByText("target-first")).toBeNull();
+    expect(within(third).queryByText("target-second")).toBeNull();
   });
 
   it("still renders a transition when no evolution details are provided", () => {

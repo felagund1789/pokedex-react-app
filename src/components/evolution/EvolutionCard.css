@@ -39,7 +39,7 @@
 .evolution-card .evolves-to {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: start;
   justify-content: center;
   gap: 2rem;
   margin: 0;

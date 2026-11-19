@@ -34,20 +34,21 @@ const EvolutionCard = ({ species, evolvesTo, form: selectedForm, forms }: Props)
             const methods: EvolutionMethod[] = evolution.evolution_details;
             const matching = methods.filter((details) =>
               (!details.required_pokemon_form || details.required_pokemon_form.name === form) &&
-              (!targetForm || !details.evolved_pokemon_form || details.evolved_pokemon_form.name === targetForm) &&
-              (details.required_pokemon_form?.name === form ||
-                (details.evolved_pokemon_form && (!targetForm || details.evolved_pokemon_form.name === targetForm))),
+              (details.required_pokemon_form?.name === form || details.evolved_pokemon_form),
             );
             const defaults = methods.filter(
               (details) => !details.required_pokemon_form && !details.evolved_pokemon_form,
             );
             const hasSourceMatch = matching.some((details) => details.required_pokemon_form?.name === form);
             const candidates = matching.length
-              ? [...matching, ...(!targetForm && !hasSourceMatch ? defaults : [])]
-              : defaults.length ? defaults : methods;
+              ? [...matching, ...(!hasSourceMatch ? defaults : [])]
+              : defaults;
+            if (methods.length > 0 && candidates.length === 0) return null;
+
+            const hasExplicitDestination = matching.some((details) => details.evolved_pokemon_form);
             const groups = new Map<string | undefined, EvolutionMethod[]>();
             for (const method of candidates) {
-              const nextForm = targetForm ?? (matching.includes(method) ? method.evolved_pokemon_form?.name : undefined);
+              const nextForm = method.evolved_pokemon_form?.name ?? (hasExplicitDestination ? undefined : targetForm);
               const group = groups.get(nextForm) ?? [];
               group.push(method);
               groups.set(nextForm, group);
