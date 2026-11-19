@@ -37,10 +37,10 @@ const AbilitiesCard = ({ slug }: Props) => {
         pokemon.abilities.map(({ ability, is_hidden }, index) => {
           const details = abilityDetails[index];
           const effect =
-            details.effect_entries.find(
+            details.effect_entries?.find(
               (entry) => entry.language.name === language,
             ) ??
-            details.effect_entries.find(
+            details.effect_entries?.find(
               (entry) => entry.language.name === "en",
             );
 

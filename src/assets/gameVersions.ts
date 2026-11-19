@@ -36,6 +36,10 @@ export const gameVersions: Record<string, string> = {
   "legends-arceus": "Legends: Arceus",
   "scarlet": "Scarlet",
   "violet": "Violet",
+  "the-teal-mask-scarlet": "Scarlet: The Teal Mask",
+  "the-teal-mask-violet": "Violet: The Teal Mask",
+  "the-indigo-disk-scarlet": "Scarlet: The Indigo Disk",
+  "the-indigo-disk-violet": "Violet: The Indigo Disk",
 };
 
 export const gameVersionGroups: Record<string, string[]> = {
@@ -60,4 +64,6 @@ export const gameVersionGroups: Record<string, string[]> = {
   "brilliant-diamond-shining-pearl": ["brilliant-diamond", "shining-pearl"],
   "legends-arceus": ["legends-arceus"],
   "scarlet-violet": ["scarlet", "violet"],
+  "the-teal-mask": ["the-teal-mask-scarlet", "the-teal-mask-violet"],
+  "the-indigo-disk": ["the-indigo-disk-scarlet", "the-indigo-disk-violet"],
 };

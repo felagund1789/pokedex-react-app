@@ -2,6 +2,26 @@
   margin: 0;
   padding: 0;
   width: 6em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.evolution-details .evolution-info {
+  display: block;
+  margin-right: 0.25rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--version-group-background-color);
+  color: var(--version-group-text-color);
+  fill: var(--version-group-text-color);
+  border-radius: 0.25rem;
+  margin: 0.25rem;
 }
 
 .arrow {
@@ -16,4 +36,137 @@
   color: var(--version-group-text-color);
   border-radius: 0.25rem;
   font-size: 0.875rem;
+  margin: 0.25rem;
+}
+
+.game-version {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+  border-radius: 0.125rem;
+}
+
+.game-version.red {
+  background-color: #ff0000;
+}
+.game-version.blue {
+  background-color: #0000ff;
+}
+.game-version.yellow {
+  background-color: #ffff00;
+}
+.game-version.gold {
+  background-color: #ffd700;
+}
+.game-version.silver {
+  background-color: #c0c0c0;
+}
+.game-version.crystal {
+  background-color: #00ffff;
+}
+.game-version.ruby {
+  background-color: #ff0000;
+}
+.game-version.sapphire {
+  background-color: #0000ff;
+}
+.game-version.emerald {
+  background-color: #00ff00;
+}
+.game-version.firered {
+  background-color: #ff0000;
+}
+.game-version.leafgreen {
+  background-color: #00ff00;
+}
+.game-version.diamond {
+  background-color: #b9f2ff;
+}
+.game-version.pearl {
+  background-color: #e7e4d6;
+}
+.game-version.platinum {
+  background-color: #e5e4e2;
+}
+.game-version.heartgold {
+  background-color: #ffd700;
+}
+.game-version.soulsilver {
+  background-color: #c0c0c0;
+}
+.game-version.black {
+  background-color: #000000;
+}
+.game-version.white {
+  background-color: #ffffff;
+}
+.game-version.black-2 {
+  background-color: #000000;
+}
+.game-version.white-2 {
+  background-color: #ffffff;
+}
+.game-version.x {
+  background-color: #0000ff;
+}
+.game-version.y {
+  background-color: #ff0000;
+}
+.game-version.omega-ruby {
+  background-color: #ff0000;
+}
+.game-version.alpha-sapphire {
+  background-color: #0000ff;
+}
+.game-version.sun {
+  background-color: #ffcc00;
+}
+.game-version.moon {
+  background-color: #0000ff;
+}
+.game-version.ultra-sun {
+  background-color: #ffcc00;
+}
+.game-version.ultra-moon {
+  background-color: #0000ff;
+}
+.game-version.lets-go-pikachu {
+  background-color: #ffde00;
+}
+.game-version.lets-go-eevee {
+  background-color: #ff6f61;
+}
+.game-version.sword {
+  background-color: #1e90ff;
+}
+.game-version.shield {
+  background-color: #32cd32;
+}
+.game-version.brilliant-diamond {
+  background-color: #b9f2ff;
+}
+.game-version.shining-pearl {
+  background-color: #e7e4d6;
+}
+.game-version.legends-arceus {
+  background-color: #e2b12b;
+}
+.game-version.scarlet {
+  background-color: #a70000;
+}
+.game-version.violet {
+  background-color: #cd32b8;
+}
+.game-version.the-teal-mask-violet {
+  background-color: #cd32b8;
+}
+.game-version.the-teal-mask-scarlet {
+  background-color: #a70000;
+}
+.game-version.the-indigo-disk-scarlet {
+  background-color: #a70000;
+}
+.game-version.the-indigo-disk-violet {
+  background-color: #cd32b8;
 }

@@ -8,12 +8,15 @@
   position: relative;
   box-sizing: border-box;
   margin: 1rem 0 0 1rem;
-  padding: 0.2rem 0 0 0.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: Georgia, 'Times New Roman', Times, serif;
   color: var(--generation-text-color);
+  background-color: var(--generation-background-color);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 2rem;
   font-weight: 700;
-  width: 2rem;
-  height: 2rem;
   z-index: 20;
 }
 @media (max-width: 36rem) {
@@ -28,18 +31,4 @@
     padding: 0 0 0 0.125rem;
     font-size: 1.5rem;
   }
-}
-.generation::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2rem;
-  height: 2rem;
-  /* background-color: rgba(216, 196, 17, 0.8); */
-  background-color: var(--generation-background-color);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 0.5rem;
-  z-index: -10;
-  transform: rotate(45deg);
 }
