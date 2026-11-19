@@ -3,6 +3,7 @@ import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
 import PokemonImageModal from "../pokemonImageModal/PokemonImageModal";
 import PokemonNumber from "../PokemonNumber";
+import PokemonSpeciesDesignation from "../pokemonSpeciesDesignation/PokemonSpeciesDesignation";
 import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonInfoHeaderCard.css";
 
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const PokemonInfoHeaderCard = ({ slug }: Props) => {
-  const { pokedexNumber, pokemonName, pokemonFormName, pokemonGenera, types, artworkURL } = usePokemonInfo(slug);
+  const { pokedexNumber, pokemonName, pokemonFormName, pokemonGenera, pokemonSpecies, types, artworkURL } = usePokemonInfo(slug);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -31,6 +32,7 @@ const PokemonInfoHeaderCard = ({ slug }: Props) => {
           <div className="pokemon-info-header-card__genera">
             <h3>{pokemonGenera}</h3>
           </div>
+          <PokemonSpeciesDesignation species={pokemonSpecies} />
           <div className="pokemon-info-header-card__types">
             {types?.map((type) => (
               <PokemonType key={type}>

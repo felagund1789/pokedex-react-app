@@ -1,9 +1,10 @@
 import usePokemonColor from "../../hooks/usePokemonColor";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
+import Generation from "../generation/Generation";
 import PokemonNumber from "../PokemonNumber";
+import PokemonSpeciesDesignation from "../pokemonSpeciesDesignation/PokemonSpeciesDesignation";
 import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonCard.css";
-import Generation from "../generation/Generation";
 
 interface PokemonCardProps {
   slug: string;
@@ -15,6 +16,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     pokedexNumber,
     pokemonName,
     pokemonFormName,
+    pokemonSpecies,
     generation,
     types,
     artworkURL,
@@ -35,7 +37,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       onClick={onClick}
     >
       <div className="pokemon-card-info">
-        {generation && <Generation>{generation}</Generation>}
+        <Generation>{generation}</Generation>
         <div className="pokemon-title">
           <div className="types">
             {types?.map((pokemonType, index) => {
@@ -46,6 +48,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
             {pokemonFormName && pokemonFormName?.trim().length > 0
               ? pokemonFormName
               : pokemonName}
+            <PokemonSpeciesDesignation species={pokemonSpecies} />
           </h2>
         </div>
       </div>
