@@ -30,21 +30,26 @@ The Pokedex React App is a modern web application designed to provide comprehens
 
 ## Screenshots
 
-![Pokedex App](screens/1-pokedex-app.png)
+### Pokémon list
 
-![Pokemon details (stats)](screens/2-pokedex-details-stats.png)
+![Pokémon list showing the first generation](<screens/Screenshot 2026-11-19 at 16-14-25 Pokédex.png>)
 
-![Pokemon details (evolution)](screens/3-pokedex-details-evolution.png)
+![Pokémon list showing Generation IX](<screens/Screenshot 2026-11-19 at 16-15-04 Pokédex.png>)
 
-![Pokemon details (alternate forms)](screens/4-pokedex-details-forms.png)
+![Pokémon list showing Generation IV in dark mode](<screens/Screenshot 2026-11-19 at 16-16-47 Pokédex.png>)
 
-![Pokemon Search](screens/5-pokedex-search.png)
+### Pokémon details and evolution
 
-| ![Pokedex App (narrow screen)](screens/6-pokedex-app-narrow.png) | ![Pokemon details (narrow screen)](screens/7-pokedex-details-narrow.png) |
-|------------------------------------------------------------------|--------------------------------------------------------------------------|
+![Charizard details and evolution chain](<screens/Screenshot 2026-11-19 at 16-15-53 Pokédex Charizard.png>)
 
-| ![Pokedex App (mobile)](screens/8-pokedex-app-mobile.png) | ![Pokemon details (mobile)](screens/9-pokedex-details-mobile.png) |
-|-----------------------------------------------------------|-------------------------------------------------------------------|
+![Charizard alternate forms and moves](<screens/Screenshot 2026-11-19 at 16-16-19 Pokédex Charizard.png>)
+
+![Hisuian Growlithe details and evolution in dark mode](<screens/Screenshot 2026-11-19 at 16-17-22 Pokédex Hisuian Growlithe.png>)
+
+### Mobile
+
+| ![Pokémon list showing Generation VII](<screens/Screenshot 2026-11-19 at 16-19-46 Pokédex.png>) | ![Mr. Mime details and evolution](<screens/Screenshot 2026-11-19 at 16-20-16 Pokédex Mr. Mime.png>) | ![Plant Burmy evolution](<screens/Screenshot 2026-11-19 at 16-18-28 Pokédex Plant Burmy.png>) |
+|--------------------|--------------------|--------------------|
 
 ### Key Technologies
 
