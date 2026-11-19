@@ -142,12 +142,6 @@
   .pokemon-list .pokemon-card:hover {
     transform: none;
   }
-  .pokemon-list .pokemon-card .generation {
-    left: 0.5rem;
-  }  
-  .evolution-card .pokemon-card .generation-container {
-    width: 3rem;
-  }
   .evolution-card .pokemon-card .pokemon-type {
     font-size: 1rem;
   }
