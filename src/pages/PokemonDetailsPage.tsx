@@ -6,6 +6,7 @@ import AbilitiesCard from "../components/abilitiesCard/AbilitiesCard";
 import EvolutionChain from "../components/evolutionChain/EvolutionChain";
 import PageHeader from "../components/header/PageHeader";
 import OtherForms from "../components/otherForms/OtherForms";
+import PokemonBreedingCard from "../components/pokemonBreeding/PokemonBreedingCard";
 import PokemonDescriptionCard from "../components/pokemonDescriptionCard/PokemonDescriptionCard";
 import PokemonInfoDetailsCard from "../components/pokemonInfoDetailsCard/PokemonInfoDetailsCard";
 import PokemonInfoHeaderCard from "../components/pokemonInfoHeaderCard/PokemonInfoHeaderCard";
@@ -57,6 +58,7 @@ function PokemonDetailsPage() {
         <EvolutionChain slug={name} />
         <PokemonDescriptionCard slug={name} />
         <PokemonInfoDetailsCard  slug={name} />
+        <PokemonBreedingCard slug={name} />
         <PokemonStatsCard slug={name} />
         <TypeCard slug={name} />
         <AbilitiesCard slug={name} />

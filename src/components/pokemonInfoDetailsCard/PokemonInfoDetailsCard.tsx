@@ -28,10 +28,7 @@ const PokemonInfoDetailsCard = ({ slug }: Props) => {
         {Boolean(pokemonSpecies?.capture_rate) && (
           <StatPanel title="Capture Rate">{pokemonSpecies?.capture_rate}</StatPanel>
         )}
-        {Boolean(pokemonSpecies?.hatch_counter) && (
-          <StatPanel title="Hatch Counter">{pokemonSpecies?.hatch_counter}</StatPanel>
-        )}
-        {habitat && <StatPanel title="Habitat">{habitat}</StatPanel>}
+        {habitat && <StatPanel title="Habitat">{habitat?.replace(/-/g, " ")}</StatPanel>}
         {generation && <StatPanel title="Generation">Generation {generation}</StatPanel>}
       </div>
     </div>

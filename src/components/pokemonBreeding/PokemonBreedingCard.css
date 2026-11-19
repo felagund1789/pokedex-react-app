@@ -1,0 +1,38 @@
+.pokemon-breeding-card__info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-radius: 0.25rem;
+  background-color: var(--subtle-background-color);
+  font-size: 1.5rem;
+}
+
+.pokemon-breeding-card__gender h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1rem;
+}
+
+.pokemon-breeding-card__gender p {
+  margin: 0.5rem 0 0;
+}
+
+.pokemon-breeding-card__ratio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.pokemon-breeding-card__bar {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  height: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: #ed6ec7;
+}
+
+.pokemon-breeding-card__male {
+  height: 100%;
+  background-color: #4a90da;
+}
