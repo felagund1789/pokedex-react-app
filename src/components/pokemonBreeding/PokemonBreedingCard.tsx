@@ -25,7 +25,7 @@ const PokemonBreedingCard = ({ slug }: Props) => {
           <div className="pokemon-breeding-card__info">
             <StatPanel title="Hatch Counter">{pokemonSpecies.hatch_counter}</StatPanel>
             <StatPanel title="Egg Groups">
-              {eggGroups.data?.map((group) => group?.names.find((n) => n.language.name === language)?.name)}
+              {eggGroups.data?.map((group) => group?.names.find((n) => n.language.name === language)?.name).join(", ")}
             </StatPanel>
           </div>
           <div className="pokemon-breeding-card__gender">
