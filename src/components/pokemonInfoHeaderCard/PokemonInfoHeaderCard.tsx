@@ -12,7 +12,16 @@ interface Props {
 }
 
 const PokemonInfoHeaderCard = ({ slug }: Props) => {
-  const { pokedexNumber, pokemonName, pokemonFormName, pokemonGenera, pokemonSpecies, types, artworkURL } = usePokemonInfo(slug);
+  const {
+    pokedexNumber,
+    pokemonName,
+    pokemonFormName,
+    pokemonGenera,
+    pokemonSpecies,
+    pokemonForm,
+    types,
+    artworkURL
+  } = usePokemonInfo(slug);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -32,7 +41,7 @@ const PokemonInfoHeaderCard = ({ slug }: Props) => {
           <div className="pokemon-info-header-card__genera">
             <h3>{pokemonGenera}</h3>
           </div>
-          <PokemonSpeciesDesignation species={pokemonSpecies} />
+          <PokemonSpeciesDesignation species={pokemonSpecies} form={pokemonForm} />
           <div className="pokemon-info-header-card__types">
             {types?.map((type) => (
               <PokemonType key={type}>

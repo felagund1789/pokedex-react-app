@@ -16,6 +16,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     pokedexNumber,
     pokemonName,
     pokemonFormName,
+    pokemonForm,
     pokemonSpecies,
     types,
     artworkURL,
@@ -47,7 +48,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
             {pokemonFormName && pokemonFormName?.trim().length > 0
               ? pokemonFormName
               : pokemonName}
-            <PokemonSpeciesDesignation species={pokemonSpecies} />
+            <PokemonSpeciesDesignation species={pokemonSpecies} form={pokemonForm} />
           </h2>
         </div>
       </div>
