@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Pokemon, PokemonSpecies } from "pokeapi-js-wrapper";
+import type { Generation, Pokemon, PokemonHabitat, PokemonSpecies } from "pokeapi-js-wrapper";
 import { useMemo } from "react";
 import pokedex from "../services/pokedexService";
 import usePokemonStore, { type PokemonInfo } from "../store";
@@ -32,18 +32,20 @@ const usePokemonInfo = (slug: string) => {
         retry: false,
       });
       const habitat = await queryClient.query<PokemonHabitat>({
-        queryKey: ["pokemon-habitat", pokemonSpecies.habitat.name],
-        queryFn: () => pokedex.getPokemonHabitatByName(pokemonSpecies.habitat.name),
+        queryKey: ["pokemon-habitat", pokemonSpecies.habitat?.name],
+        queryFn: () => pokedex.getPokemonHabitatByName(pokemonSpecies.habitat?.name || ""),
         staleTime: Infinity,
         retry: false,
       });
       const generation = await queryClient.query<Generation>({
-        queryKey: ["generation", pokemonSpecies.generation.name],
-        queryFn: () => pokedex.getGenerationByName(pokemonSpecies.generation.name),
+        queryKey: ["generation", pokemonSpecies.generation?.name],
+        queryFn: () => pokedex.getGenerationByName(pokemonSpecies.generation?.name || ""),
         staleTime: Infinity,
         retry: false,
       });
-      const info = { pokemonForm, pokemon, pokemonSpecies, habitat, generation };
+      const habitatName = habitat?.names.find((n) => n.language.name === language)?.name;
+      const generationName = generation?.names.find((n) => n.language.name === language)?.name;
+      const info = { pokemonForm, pokemon, pokemonSpecies, habitat: habitatName, generation: generationName };
       usePokemonStore.getState().addPokemonInfo(slug, info);
       return info;
     },
@@ -67,8 +69,8 @@ const usePokemonInfo = (slug: string) => {
     pokemonName: pokemonSpecies?.names.find((n) => n.language.name === language)?.name,
     pokemonFormName: pokemonForm?.names.find((n) => n.language.name === language)?.name,
     pokemonGenera: pokemonSpecies?.genera.find((g) => g.language.name === language)?.genus,
-    habitat: habitat?.names.find((n) => n.language.name === language)?.name,
-    generation: generation?.names.find((n) => n.language.name === language)?.name,
+    habitat: habitat,
+    generation: generation,
     types,
     artworkURL: pokemonForm?.sprites.other["official-artwork"].front_default ||
       pokemon?.sprites.other["official-artwork"].front_default,
