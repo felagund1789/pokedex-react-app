@@ -20,18 +20,30 @@ const usePokemonInfo = (slug: string) => {
 
       const pokemonForm = await pokedex.getPokemonFormByName(slug);
       const pokemon = await queryClient.query<Pokemon>({
-        queryKey: ["pokemon-resource", pokemonForm.pokemon.url],
-        queryFn: () => pokedex.resource(pokemonForm.pokemon.url),
+        queryKey: ["pokemon", pokemonForm.pokemon.name],
+        queryFn: () => pokedex.getPokemonByName(pokemonForm.pokemon.name),
         staleTime: Infinity,
         retry: false,
       });
       const pokemonSpecies = await queryClient.query<PokemonSpecies>({
-        queryKey: ["pokemon-species-resource", pokemon.species.url],
-        queryFn: () => pokedex.resource(pokemon.species.url),
+        queryKey: ["pokemon-species", pokemon.species.name],
+        queryFn: () => pokedex.getPokemonSpeciesByName(pokemon.species.name),
         staleTime: Infinity,
         retry: false,
       });
-      const info = { pokemonForm, pokemon, pokemonSpecies };
+      const habitat = await queryClient.query<PokemonHabitat>({
+        queryKey: ["pokemon-habitat", pokemonSpecies.habitat.name],
+        queryFn: () => pokedex.getPokemonHabitatByName(pokemonSpecies.habitat.name),
+        staleTime: Infinity,
+        retry: false,
+      });
+      const generation = await queryClient.query<Generation>({
+        queryKey: ["generation", pokemonSpecies.generation.name],
+        queryFn: () => pokedex.getGenerationByName(pokemonSpecies.generation.name),
+        staleTime: Infinity,
+        retry: false,
+      });
+      const info = { pokemonForm, pokemon, pokemonSpecies, habitat, generation };
       usePokemonStore.getState().addPokemonInfo(slug, info);
       return info;
     },
@@ -40,6 +52,8 @@ const usePokemonInfo = (slug: string) => {
   const pokemonForm = data?.pokemonForm;
   const pokemon = data?.pokemon;
   const pokemonSpecies = data?.pokemonSpecies;
+  const habitat = data?.habitat;
+  const generation = data?.generation;
   const types = useMemo(
     () => pokemonForm?.types.map((type) => type.type.name) ?? [],
     [pokemonForm],
@@ -53,8 +67,8 @@ const usePokemonInfo = (slug: string) => {
     pokemonName: pokemonSpecies?.names.find((n) => n.language.name === language)?.name,
     pokemonFormName: pokemonForm?.names.find((n) => n.language.name === language)?.name,
     pokemonGenera: pokemonSpecies?.genera.find((g) => g.language.name === language)?.genus,
-    habitat: pokemonSpecies?.habitat?.name ?? "",
-    generation: pokemonSpecies?.generation.name.replace("generation-", "").toUpperCase(),
+    habitat: habitat?.names.find((n) => n.language.name === language)?.name,
+    generation: generation?.names.find((n) => n.language.name === language)?.name,
     types,
     artworkURL: pokemonForm?.sprites.other["official-artwork"].front_default ||
       pokemon?.sprites.other["official-artwork"].front_default,
