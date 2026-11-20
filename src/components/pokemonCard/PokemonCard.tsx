@@ -36,7 +36,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       onClick={onClick}
     >
       <div className="pokemon-card-info">
-        <Generation>{pokemonSpecies?.generation?.name.replace("generation-", "") || ""}</Generation>
+        <Generation>{pokemonSpecies?.generation?.name.replace("generation-", "").toUpperCase() || ""}</Generation>
         <div className="pokemon-title">
           <div className="types">
             {types?.map((pokemonType, index) => {

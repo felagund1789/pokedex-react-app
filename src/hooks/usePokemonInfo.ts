@@ -31,12 +31,12 @@ const usePokemonInfo = (slug: string) => {
         staleTime: Infinity,
         retry: false,
       });
-      const habitat = await queryClient.query<PokemonHabitat>({
+      const habitat = pokemonSpecies.habitat && await queryClient.query<PokemonHabitat>({
         queryKey: ["pokemon-habitat", pokemonSpecies.habitat?.name],
         queryFn: () => pokedex.getPokemonHabitatByName(pokemonSpecies.habitat?.name || ""),
         staleTime: Infinity,
         retry: false,
-      });
+      }) || undefined;
       const generation = await queryClient.query<Generation>({
         queryKey: ["generation", pokemonSpecies.generation?.name],
         queryFn: () => pokedex.getGenerationByName(pokemonSpecies.generation?.name || ""),
