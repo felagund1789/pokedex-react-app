@@ -17,7 +17,6 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     pokemonName,
     pokemonFormName,
     pokemonSpecies,
-    generation,
     types,
     artworkURL,
     loading,
@@ -37,7 +36,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       onClick={onClick}
     >
       <div className="pokemon-card-info">
-        <Generation>{generation}</Generation>
+        <Generation>{pokemonSpecies?.generation?.name.replace("generation-", "") || ""}</Generation>
         <div className="pokemon-title">
           <div className="types">
             {types?.map((pokemonType, index) => {
