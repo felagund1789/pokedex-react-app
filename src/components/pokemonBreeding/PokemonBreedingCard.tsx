@@ -1,4 +1,6 @@
+import useEggGroups from "../../hooks/useEggGroups";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
+import usePokemonStore from "../../store";
 import StatPanel from "../statPanel/StatPanel";
 import "./PokemonBreedingCard.css";
 
@@ -7,7 +9,9 @@ interface Props {
 }
 
 const PokemonBreedingCard = ({ slug }: Props) => {
+  const language = usePokemonStore((state) => state.language);
   const { pokemonSpecies } = usePokemonInfo(slug);
+  const eggGroups = useEggGroups(pokemonSpecies || null);
   const genderRate = pokemonSpecies?.gender_rate;
   const malePercentage = genderRate != null && genderRate >= 0
     ? (1 - genderRate / 8) * 100
@@ -21,7 +25,7 @@ const PokemonBreedingCard = ({ slug }: Props) => {
           <div className="pokemon-breeding-card__info">
             <StatPanel title="Hatch Counter">{pokemonSpecies.hatch_counter}</StatPanel>
             <StatPanel title="Egg Groups">
-              {pokemonSpecies.egg_groups.map((group) => group.name.replace(/-/g, " ")).join(", ")}
+              {eggGroups.data?.map((group) => group?.names.find((n) => n.language.name === language)?.name).join(", ")}
             </StatPanel>
           </div>
           <div className="pokemon-breeding-card__gender">

@@ -12,6 +12,8 @@ export type PokemonInfo = {
   pokemonForm: PokemonForm;
   pokemon: Pokemon;
   pokemonSpecies: PokemonSpecies;
+  habitat?: string;
+  generation?: string;
 };
 
 type State = {

@@ -16,8 +16,8 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
     pokedexNumber,
     pokemonName,
     pokemonFormName,
+    pokemonForm,
     pokemonSpecies,
-    generation,
     types,
     artworkURL,
     loading,
@@ -37,7 +37,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
       onClick={onClick}
     >
       <div className="pokemon-card-info">
-        <Generation>{generation}</Generation>
+        <Generation>{pokemonSpecies?.generation?.name.replace("generation-", "").toUpperCase() || ""}</Generation>
         <div className="pokemon-title">
           <div className="types">
             {types?.map((pokemonType, index) => {
@@ -48,7 +48,7 @@ const PokemonCard = ({ slug, onClick }: PokemonCardProps) => {
             {pokemonFormName && pokemonFormName?.trim().length > 0
               ? pokemonFormName
               : pokemonName}
-            <PokemonSpeciesDesignation species={pokemonSpecies} />
+            <PokemonSpeciesDesignation species={pokemonSpecies} form={pokemonForm} />
           </h2>
         </div>
       </div>
