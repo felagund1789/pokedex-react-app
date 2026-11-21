@@ -12,12 +12,13 @@ import SearchInput from "../searchInput/SearchInput";
 import "./PokemonList.css";
 
 const PAGE_SIZE = 20;
+const MAX_TYPES = 2;
 const LIST_STATE_STORAGE_KEY = "pokemon-list-state";
 const typeNames = new Set(Object.keys(types) as PokemonTypeName[]);
 
 type FilterUpdates = {
   search?: string | null;
-  type?: PokemonTypeName | null;
+  types?: PokemonTypeName[];
   generation?: Generation | null;
 };
 
@@ -30,8 +31,8 @@ type SavedListState = {
 const isValidGeneration = (value: string | null): value is Generation =>
   Boolean(value && generations.includes(value as Generation));
 
-const isValidType = (value: string | null): value is PokemonTypeName =>
-  Boolean(value && typeNames.has(value as PokemonTypeName));
+const isValidType = (value: string): value is PokemonTypeName =>
+  typeNames.has(value as PokemonTypeName);
 
 const readSavedListState = (): SavedListState | null => {
   if (typeof window === "undefined") {
@@ -49,11 +50,13 @@ const PokemonList = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchText = searchParams.get("search") ?? "";
-  const typeParam = searchParams.get("type");
   const generationParam = searchParams.get("generation");
-  const selectedType = isValidType(typeParam) ? typeParam : undefined;
+  const selectedTypes = Array.from(new Set(searchParams.getAll("type").filter(isValidType))).slice(
+    0,
+    MAX_TYPES
+  );
   const selectedGeneration = isValidGeneration(generationParam) ? generationParam : undefined;
-  const filterKey = `${searchText}|${selectedType ?? ""}|${selectedGeneration ?? ""}`;
+  const filterKey = `${searchText}|${selectedTypes.join(",")}|${selectedGeneration ?? ""}`;
   const savedListStateRef = useRef<SavedListState | null>(readSavedListState());
   const previousFilterKeyRef = useRef(filterKey);
   const hasRestoredScrollRef = useRef(false);
@@ -101,12 +104,9 @@ const PokemonList = () => {
       }
     }
 
-    if ("type" in updates) {
-      if (updates.type) {
-        nextParams.set("type", updates.type);
-      } else {
-        nextParams.delete("type");
-      }
+    if ("types" in updates) {
+      nextParams.delete("type");
+      updates.types?.slice(0, MAX_TYPES).forEach((type) => nextParams.append("type", type));
     }
 
     if ("generation" in updates) {
@@ -127,7 +127,7 @@ const PokemonList = () => {
 
   const { data, isLoading, isFetching, error } = usePokemonList({
     search: searchText,
-    type: selectedType,
+    types: selectedTypes,
     generation: selectedGeneration,
   });
 
@@ -206,12 +206,12 @@ const PokemonList = () => {
       <Loading isLoading={isLoading || isFetching} />
       <SearchInput
         searchText={searchText}
-        selectedType={selectedType}
+        selectedTypes={selectedTypes}
         selectedGeneration={selectedGeneration}
         onSearch={(text) => updateRouteFilters({ search: text }, { replace: true })}
-        onTypeChange={(type) => updateRouteFilters({ type: type ?? null })}
+        onTypeChange={(types) => updateRouteFilters({ types })}
         onGenerationChange={(generation) => updateRouteFilters({ generation: generation ?? null })}
-        onClear={() => updateRouteFilters({ search: null, type: null, generation: null })}
+        onClear={() => updateRouteFilters({ search: null, types: [], generation: null })}
       />
       <InfiniteScroll
         className="pokemon-list"

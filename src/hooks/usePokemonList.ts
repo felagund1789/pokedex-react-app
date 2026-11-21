@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { NamedAPIResourceList } from "pokeapi-js-wrapper";
 import pokedex from "../services/pokedexService";
+import types from "../assets/types";
 import { Generation, PokemonTypeName } from "../store";
 
 const ALL_POKEMON_LIMIT = 10000;
@@ -19,7 +20,7 @@ const generationLookup: Record<Generation, string> = {
 
 type FilterQuery = {
   search?: string;
-  type?: PokemonTypeName;
+  types?: PokemonTypeName[];
   generation?: Generation;
 };
 
@@ -39,26 +40,45 @@ const matchesGeneration = (slug: string, speciesSet: Set<string>) => {
   return false;
 };
 
-const usePokemonList = ({ search = "", type, generation }: FilterQuery) => {
+const allTypeNames = Object.keys(types) as PokemonTypeName[];
+
+const usePokemonList = ({ search = "", types: selectedTypes = [], generation }: FilterQuery) => {
   const normalizedSearch = search.toLowerCase().trim();
+  const typeKey = [...selectedTypes].sort().join("+") || "all";
 
   return useQuery<NamedAPIResourceList, Error>({
-    queryKey: ["pokemon-list", normalizedSearch, type ?? "all", generation ?? "all"],
+    queryKey: ["pokemon-list", normalizedSearch, typeKey, generation ?? "all"],
     queryFn: async () => {
-      const [pokemonList, typeData, generationData] = await Promise.all([
+      // A single selected type needs every type list to exclude dual types.
+      const typesToFetch = selectedTypes.length === 1 ? allTypeNames : selectedTypes;
+      const [pokemonList, typeResults, generationData] = await Promise.all([
         pokedex.getPokemonFormsList({
           offset: 0,
           limit: ALL_POKEMON_LIMIT,
         }),
-        type ? pokedex.getTypeByName(type) : Promise.resolve(undefined),
+        Promise.all(typesToFetch.map((name) => pokedex.getTypeByName(name))),
         generation
           ? pokedex.getGenerationByName(generationLookup[generation])
           : Promise.resolve(undefined),
       ]);
 
-      const typedPokemon = new Set(
-        typeData?.pokemon.map(({ pokemon }) => pokemon.name) ?? []
-      );
+      const typeCounts = new Map<string, number>();
+      const typeMembers = new Map<string, Set<string>>();
+      typeResults.forEach((typeData, index) => {
+        const members = new Set(typeData.pokemon.map(({ pokemon }) => pokemon.name));
+        typeMembers.set(typesToFetch[index], members);
+        members.forEach((name) => typeCounts.set(name, (typeCounts.get(name) ?? 0) + 1));
+      });
+
+      const matchesTypes = (name: string) => {
+        if (selectedTypes.length === 0) {
+          return true;
+        }
+        if (selectedTypes.length === 1) {
+          return Boolean(typeMembers.get(selectedTypes[0])?.has(name)) && typeCounts.get(name) === 1;
+        }
+        return selectedTypes.every((t) => typeMembers.get(t)?.has(name));
+      };
       const generationSpecies = new Set(
         generationData?.pokemon_species.map(({ name }) => name) ?? []
       );
@@ -68,7 +88,7 @@ const usePokemonList = ({ search = "", type, generation }: FilterQuery) => {
           return false;
         }
 
-        if (type && !typedPokemon.has(pokemon.name)) {
+        if (!matchesTypes(pokemon.name)) {
           return false;
         }
 
