@@ -84,6 +84,22 @@ const SearchInput = ({
             debounceSearch(value);
           }}
         />
+        {inputValue && (
+          <button
+            type="button"
+            className="clear-search"
+            aria-label="Clear search"
+            onClick={() => {
+              window.clearTimeout(timerRef.current);
+              setInputValue("");
+              onSearch("");
+            }}
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+              <path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          </button>
+        )}
       </div>
 
       <div className="filter-row">

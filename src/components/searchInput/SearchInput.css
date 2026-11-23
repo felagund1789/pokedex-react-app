@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .search-row label {
@@ -45,6 +46,26 @@
 .search-row input:focus {
   border: 2px solid var(--dark-text-color);
   outline: none;
+}
+
+.clear-search {
+  position: absolute;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--dark-text-color);
+  cursor: pointer;
+}
+
+.clear-search:focus-visible {
+  outline: 2px solid var(--dark-text-color);
+  outline-offset: -4px;
 }
 
 .filter-row {
