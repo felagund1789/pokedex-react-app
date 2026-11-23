@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import types from "../../assets/types";
@@ -67,7 +67,7 @@ const PokemonList = () => {
     return PAGE_SIZE;
   });
 
-  const persistListState = (nextVisibleCount: number, nextScrollY: number) => {
+  const persistListState = useCallback((nextVisibleCount: number, nextScrollY: number) => {
     if (typeof window === "undefined") {
       return;
     }
@@ -84,7 +84,7 @@ const PokemonList = () => {
     } catch {
       // Ignore storage write failures.
     }
-  };
+  }, [filterKey]);
 
   const updateRouteFilters = (
     updates: FilterUpdates,
@@ -155,7 +155,7 @@ const PokemonList = () => {
     setVisibleCount(PAGE_SIZE);
     persistListState(PAGE_SIZE, 0);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [filterKey]);
+  }, [filterKey, persistListState]);
 
   const filteredPokemon = data?.results ?? [];
   const visiblePokemon = filteredPokemon.slice(0, visibleCount);
@@ -172,7 +172,7 @@ const PokemonList = () => {
       handleScroll();
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [filterKey, visibleCount]);
+  }, [filterKey, visibleCount, persistListState]);
 
   useEffect(() => {
     if (hasRestoredScrollRef.current || isLoading || isFetching) {
