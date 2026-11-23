@@ -17,6 +17,13 @@
   font-size: 1.25rem;
 }
 
+@media (max-width: 70rem) {
+  .types-grid .pokemon-type {
+    font-size: 2rem;
+    height: 4rem;
+  }
+}
+
 .type-page-title {
   text-transform: capitalize;
 }

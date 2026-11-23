@@ -15,7 +15,7 @@ const TypesPage = () => {
       <main className="types-page">
         <h1>Types</h1>
         <div className="types-grid">
-          {Object.keys(types).map((type) => (
+          {Object.keys(types).filter((type) => type !== "unknown").map((type) => (
             <PokemonType key={type}>{type}</PokemonType>
           ))}
         </div>

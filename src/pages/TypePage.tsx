@@ -50,7 +50,7 @@ const TypeDetails = ({ type, type2 }: { type: PokemonTypeName; type2?: PokemonTy
               }}
             >
               <option value="">Select a type</option>
-              {typeNames.filter((name) => name !== type).map((name) => (
+              {typeNames.filter((name) => name !== type && name !== "unknown").map((name) => (
                 <option key={name} value={name}>
                   {name.charAt(0).toUpperCase() + name.slice(1)}
                 </option>
