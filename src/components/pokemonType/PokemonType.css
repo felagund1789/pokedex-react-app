@@ -11,6 +11,11 @@
   border-radius: var(--card-border-radius);
   color: var(--text-color);
   text-transform: capitalize;
+  text-decoration: none;
+}
+.pokemon-type:focus-visible {
+  outline: 3px solid var(--heading-color);
+  outline-offset: 2px;
 }
 .pokemon-type img {
   width: 1.5rem;
