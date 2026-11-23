@@ -56,7 +56,7 @@ describe("type pages", () => {
 
     renderPages("/types");
     const grid = screen.getByRole("main");
-    expect(within(grid).getAllByRole("link")).toHaveLength(19);
+    expect(within(grid).getAllByRole("link")).toHaveLength(18);
     fireEvent.click(within(grid).getByRole("link", { name: "fire" }));
     expect(screen.getByTestId("location").textContent).toBe("/types/fire");
     expect(screen.getByRole("heading", { name: "fire type" })).toBeTruthy();
@@ -123,6 +123,7 @@ describe("type pages", () => {
     renderPages("/types/fire");
     const select = screen.getByRole("combobox", { name: "Add a second type" });
     expect(within(select).queryByRole("option", { name: "Fire" })).toBeNull();
+    expect(within(select).queryByRole("option", { name: "Unknown" })).toBeNull();
     fireEvent.change(select, { target: { value: "flying" } });
     expect(screen.getByTestId("location").textContent).toBe("/type/fire/flying");
     expect(screen.getByRole("heading", { name: "fire / flying type" })).toBeTruthy();
