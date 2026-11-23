@@ -3,11 +3,6 @@
   color: var(--dark-text-color);
 }
 
-.types-page h1,
-.types-page h2 {
-  color: var(--heading-color);
-}
-
 .types-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -44,6 +39,16 @@
   color: var(--dark-text-color);
   font: inherit;
   cursor: pointer;
+}
+
+@media (max-width: 70rem) {
+  .type-page-filter {
+    font-size: 1.5rem;
+  }
+  .type-page-filter select {
+    height: 3.5rem;
+    font-size: 1.5rem;
+  }
 }
 
 .types-page > .type-card {
