@@ -19,7 +19,7 @@ const generationLookup: Record<Generation, string> = {
 
 type FilterQuery = {
   search?: string;
-  type?: PokemonTypeName;
+  types?: PokemonTypeName[];
   generation?: Generation;
 };
 
@@ -39,26 +39,28 @@ const matchesGeneration = (slug: string, speciesSet: Set<string>) => {
   return false;
 };
 
-const usePokemonList = ({ search = "", type, generation }: FilterQuery) => {
+const usePokemonList = ({ search = "", types: selectedTypes = [], generation }: FilterQuery) => {
   const normalizedSearch = search.toLowerCase().trim();
+  const typeKey = [...selectedTypes].sort().join("+") || "all";
 
   return useQuery<NamedAPIResourceList, Error>({
-    queryKey: ["pokemon-list", normalizedSearch, type ?? "all", generation ?? "all"],
+    queryKey: ["pokemon-list", normalizedSearch, typeKey, generation ?? "all"],
     queryFn: async () => {
-      const [pokemonList, typeData, generationData] = await Promise.all([
+      const [pokemonList, typeResults, generationData] = await Promise.all([
         pokedex.getPokemonFormsList({
           offset: 0,
           limit: ALL_POKEMON_LIMIT,
         }),
-        type ? pokedex.getTypeByName(type) : Promise.resolve(undefined),
+        Promise.all(selectedTypes.map((name) => pokedex.getTypeByName(name))),
         generation
           ? pokedex.getGenerationByName(generationLookup[generation])
           : Promise.resolve(undefined),
       ]);
 
-      const typedPokemon = new Set(
-        typeData?.pokemon.map(({ pokemon }) => pokemon.name) ?? []
+      const typeMembers = typeResults.map(
+        (typeData) => new Set(typeData.pokemon.map(({ pokemon }) => pokemon.name))
       );
+
       const generationSpecies = new Set(
         generationData?.pokemon_species.map(({ name }) => name) ?? []
       );
@@ -68,7 +70,7 @@ const usePokemonList = ({ search = "", type, generation }: FilterQuery) => {
           return false;
         }
 
-        if (type && !typedPokemon.has(pokemon.name)) {
+        if (!typeMembers.every((members) => members.has(pokemon.name))) {
           return false;
         }
 

@@ -1,5 +1,5 @@
 import { Type } from "pokeapi-js-wrapper";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import typeIcons from "../../assets/types";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
 import pokedex from "../../services/pokedexService";
@@ -8,11 +8,6 @@ import "./TypeCard.css";
 
 interface Props {
   slug: string;
-}
-
-interface TypeMatchup {
-  name: string;
-  multiplier: number;
 }
 
 const allTypes = Object.keys(typeIcons);
@@ -42,52 +37,43 @@ const getDamageMultiplier = (attackType: string, defenseTypes: Type[]) =>
 
 const TypeCard = ({ slug }: Props) => {
   const { types } = usePokemonInfo(slug);
-  const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
-  const [matchups, setMatchups] = useState<TypeMatchup[]>([]);
+  return <TypeMatchups types={types} />;
+};
 
-  useEffect(() => {
-    let isCurrent = true;
-    setPokemonTypes([]);
-    setMatchups([]);
-
-    const loadMatchups = async () => {
-      const defenseTypes: Type[] = types ? await Promise.all(
-        types.map((type) => pokedex.resource(`https://pokeapi.co/api/v2/type/${type}`)),
-      ) : [];
-      const damageMatchups = allTypes
-        .map((name) => ({
-          name,
-          multiplier: getDamageMultiplier(name, defenseTypes),
-        }))
-        .filter(
-          ({ name, multiplier }) =>
-            multiplier !== 1 || !types.includes(name),
-        );
-
-      if (!isCurrent) {
-        return;
-      }
-
-      setPokemonTypes(types);
-      setMatchups(damageMatchups);
-    };
-
-    void loadMatchups();
-    return () => {
-      isCurrent = false;
-    };
-  }, [types]);
+export const TypeMatchups = ({
+  types,
+  includeNeutralSelf = false,
+}: {
+  types: string[];
+  includeNeutralSelf?: boolean;
+}) => {
+  const { data: defenseTypes, isLoading, error } = useQuery<Type[], Error>({
+    queryKey: ["type-matchups", [...types].sort()],
+    queryFn: () => Promise.all(types.map((type) => pokedex.getTypeByName(type))),
+    enabled: types.length > 0,
+    staleTime: 24 * 60 * 60 * 1000,
+  });
+  const matchups = defenseTypes
+    ? allTypes.map((name) => ({
+        name,
+        multiplier: getDamageMultiplier(name, defenseTypes),
+      })).filter(({ name, multiplier }) =>
+        includeNeutralSelf || multiplier !== 1 || !types.includes(name),
+      )
+    : [];
 
   return (
     <div className="type-card">
       <h2 className="type-card__title">
         <span>Type</span>
         <span className="type-card__pokemon-types">
-          {pokemonTypes.map((type) => (
+          {types.map((type) => (
             <PokemonType key={type}>{type}</PokemonType>
           ))}
         </span>
       </h2>
+      {isLoading && <p>Loading type matchups...</p>}
+      {error && <p>Error loading type matchups: {error.message}</p>}
       <div className="type-card__matchups">
         {matchupGroups.map((group) => {
           const types = matchups.filter(

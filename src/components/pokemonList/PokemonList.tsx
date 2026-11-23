@@ -127,7 +127,7 @@ const PokemonList = () => {
 
   const { data, isLoading, isFetching, error } = usePokemonList({
     search: searchText,
-    type: selectedType,
+    types: selectedType ? [selectedType] : [],
     generation: selectedGeneration,
   });
 
