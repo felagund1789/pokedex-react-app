@@ -37,6 +37,7 @@ const renderPages = (path: string) => {
         <Routes>
           <Route path="/types" element={<TypesPage />} />
           <Route path="/types/:type" element={<TypePage />} />
+          <Route path="/type/:type/:type2" element={<TypePage />} />
           <Route path="/pokemon/:name" element={<div>Pokémon details</div>} />
         </Routes>
       </MemoryRouter>
@@ -107,6 +108,54 @@ describe("type pages", () => {
       expect(within(group).getByRole("link", { name: "electric" })).toBeTruthy();
     });
   });
+
+  it("selects a second type and combines both filters and matchups", async () => {
+    mocks.usePokemonList.mockReturnValue({
+      data: { results: [], count: 0, next: null, previous: null },
+    });
+    mocks.getTypeByName.mockImplementation(async () => ({
+      damage_relations: {
+        double_damage_from: [{ name: "rock" }],
+        half_damage_from: [],
+        no_damage_from: [],
+      },
+    }));
+    renderPages("/types/fire");
+    const select = screen.getByRole("combobox", { name: "Add a second type" });
+    expect(within(select).queryByRole("option", { name: "Fire" })).toBeNull();
+    fireEvent.change(select, { target: { value: "flying" } });
+    expect(screen.getByTestId("location").textContent).toBe("/type/fire/flying");
+    expect(screen.getByRole("heading", { name: "fire / flying type" })).toBeTruthy();
+    expect(screen.queryByRole("combobox")).toBeNull();
+    expect(mocks.usePokemonList).toHaveBeenLastCalledWith({ types: ["fire", "flying"] });
+    const weakness = await screen.findByText("Takes 4x damage from");
+    expect(within(weakness.parentElement as HTMLElement).getByRole("link", { name: "rock" })).toBeTruthy();
+    expect(mocks.getTypeByName).toHaveBeenCalledWith("fire");
+    expect(mocks.getTypeByName).toHaveBeenCalledWith("flying");
+  });
+
+  it("opens a two-type URL directly without showing the selector", () => {
+    mocks.usePokemonList.mockReturnValue({
+      data: { results: [], count: 0, next: null, previous: null },
+    });
+    mocks.getTypeByName.mockResolvedValue({
+      damage_relations: { double_damage_from: [], half_damage_from: [], no_damage_from: [] },
+    });
+    renderPages("/type/water/ground");
+    expect(screen.getByRole("heading", { name: "water / ground type" })).toBeTruthy();
+    expect(screen.queryByRole("combobox")).toBeNull();
+    expect(mocks.usePokemonList).toHaveBeenLastCalledWith({ types: ["water", "ground"] });
+  });
+
+  it.each(["/type/fire/not-a-type", "/type/not-a-type/fire", "/type/fire/fire"])(
+    "rejects invalid pair %s without requesting Pokémon",
+    (path) => {
+      renderPages(path);
+      expect(screen.getByRole("heading", { name: "Type not found" })).toBeTruthy();
+      expect(mocks.usePokemonList).not.toHaveBeenCalled();
+      expect(mocks.getTypeByName).not.toHaveBeenCalled();
+    },
+  );
 
   it("rejects unknown route parameters without requesting Pokémon", () => {
     renderPages("/types/not-a-type");

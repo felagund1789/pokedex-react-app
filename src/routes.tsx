@@ -15,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <PokemonList /> },
       { path: "types", element: <TypesPage /> },
       { path: "types/:type", element: <TypePage /> },
+      { path: "type/:type/:type2", element: <TypePage /> },
       {
         path: "pokemon/:name",
         element: <PokemonDetailsPage />,

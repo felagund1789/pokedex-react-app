@@ -26,6 +26,26 @@
   text-transform: capitalize;
 }
 
+.type-page-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.type-page-filter select {
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 2px solid var(--dark-text-color);
+  border-radius: 100px;
+  background-color: var(--bg-color);
+  color: var(--dark-text-color);
+  font: inherit;
+  cursor: pointer;
+}
+
 .types-page > .type-card {
   max-width: 60rem;
   margin: 0 auto;
