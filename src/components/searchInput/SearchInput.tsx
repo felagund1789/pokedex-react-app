@@ -6,10 +6,10 @@ import "./SearchInput.css";
 
 interface Props {
   searchText: string;
-  selectedTypes: PokemonTypeName[];
+  selectedType?: PokemonTypeName;
   selectedGeneration?: Generation;
   onSearch: (searchText: string) => void;
-  onTypeChange: (types: PokemonTypeName[]) => void;
+  onTypeChange: (type?: PokemonTypeName) => void;
   onGenerationChange: (generation?: Generation) => void;
   onClear: () => void;
 }
@@ -22,13 +22,11 @@ const handleKeyPress = (event: KeyboardEvent) => {
   }
 };
 
-const MAX_TYPES = 2;
-const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 const typeOptions = Object.keys(types) as PokemonTypeName[];
 
 const SearchInput = ({
   searchText,
-  selectedTypes,
+  selectedType,
   selectedGeneration,
   onSearch,
   onTypeChange,
@@ -38,7 +36,7 @@ const SearchInput = ({
   const searchInputId = useId();
   const [inputValue, setInputValue] = useState(searchText);
   const timerRef = useRef<number>();
-  const hasActiveFilters = Boolean(searchText.trim() || selectedTypes.length > 0 || selectedGeneration);
+  const hasActiveFilters = Boolean(searchText.trim() || selectedType || selectedGeneration);
   const isMobile = useMobile();
 
   const debounceSearch = (searchTerm: string) => {
@@ -89,35 +87,20 @@ const SearchInput = ({
       </div>
 
       <div className="filter-row">
-        <details className="type-multiselect">
-          <summary className="filter-select">
-            {selectedTypes.length
-              ? selectedTypes.map((type) => capitalize(type)).join(" / ")
-              : "All types"}
-          </summary>
-          <div className="type-options">
-            {typeOptions.map((type) => {
-              const checked = selectedTypes.includes(type);
-              return (
-                <label key={type} className="type-option">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    disabled={!checked && selectedTypes.length >= MAX_TYPES}
-                    onChange={() =>
-                      onTypeChange(
-                        checked
-                          ? selectedTypes.filter((selected) => selected !== type)
-                          : [...selectedTypes, type]
-                      )
-                    }
-                  />
-                  {capitalize(type)}
-                </label>
-              );
-            })}
-          </div>
-        </details>
+        <select
+          className="filter-select"
+          value={selectedType ?? ""}
+          onChange={(event) => {
+            onTypeChange((event.currentTarget.value || undefined) as PokemonTypeName | undefined);
+          }}
+        >
+          <option value="">All types</option>
+          {typeOptions.map((type) => (
+            <option key={type} value={type}>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </option>
+          ))}
+        </select>
 
         <select
           className="filter-select"
