@@ -44,20 +44,24 @@ const MovesPage = () => {
       <main className="types-page moves-page">
         <h1>Moves</h1>
         <div className="type-page-filter">
-          <label htmlFor="move-type">Type</label>
-          <select id="move-type" value={type ?? ""} onChange={(event) => updateFilter("type", event.currentTarget.value)}>
-            <option value="">All types</option>
-            {types?.results.map(({ name }) => (
-              <option key={name} value={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</option>
-            ))}
-          </select>
-          <label htmlFor="move-class">Damage class</label>
-          <select id="move-class" value={damageClass ?? ""} onChange={(event) => updateFilter("damageClass", event.currentTarget.value)}>
-            <option value="">All damage classes</option>
-            {damageClasses.map((name) => (
-              <option key={name} value={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</option>
-            ))}
-          </select>
+          <div className="move-types">
+            <label htmlFor="move-type">Type</label>
+            <select id="move-type" value={type ?? ""} onChange={(event) => updateFilter("type", event.currentTarget.value)}>
+              <option value="">All types</option>
+              {types?.results.map(({ name }) => (
+                <option key={name} value={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</option>
+              ))}
+            </select>
+          </div>
+          <div className="move-damage-classes">
+            <label htmlFor="move-class">Damage class</label>
+            <select id="move-class" value={damageClass ?? ""} onChange={(event) => updateFilter("damageClass", event.currentTarget.value)}>
+              <option value="">All damage classes</option>
+              {damageClasses.map((name) => (
+                <option key={name} value={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</option>
+              ))}
+            </select>
+          </div>
         </div>
         {(typesError || error) && <p>Error loading moves: {(typesError || error)?.message}</p>}
         {!typesLoading && !isLoading && !typesError && !error && moves.length === 0 && <p>No moves match the current filters.</p>}
@@ -69,7 +73,6 @@ const MovesPage = () => {
             Load more
           </button>
         )}
-        <Link to="/">Pokémon list</Link>
       </main>
     </>
   );
