@@ -1,3 +1,8 @@
+.move-types label,
+.move-damage-classes label {
+  margin-right: 1rem;
+}
+
 .moves-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
@@ -28,4 +33,11 @@
   color: var(--dark-text-color);
   font: inherit;
   cursor: pointer;
+}
+
+@media (max-width: 36rem) {
+  .moves-page__more {
+    height: 3.5rem;
+    font-size: 1.5rem;
+  }
 }
