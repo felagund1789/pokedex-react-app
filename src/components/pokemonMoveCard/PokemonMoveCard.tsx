@@ -27,15 +27,17 @@ const PokemonMoveCard = ({ slug }: { slug: string }) => {
 
   return (
     <article className="pokemon-move-card" style={{ "--move-color": `var(--type-${type}, var(--type-unknown))` } as CSSProperties}>
-      <h2><img src={icons[type as keyof typeof icons] ?? icons.unknown} alt="" />{name}</h2>
-      <p className="pokemon-move-card__type">{type} · {move.damage_class.name}</p>
-      {description && <p>{description}</p>}
-      <dl>
+      <div className="pokemon-move-card__header">
+        <h2><img src={icons[type as keyof typeof icons] ?? icons.unknown} alt="" />{name}</h2>
+        <p className="pokemon-move-card__type">{type} · {move.damage_class.name}</p>
+      </div>
+      <dl className="pokemon-move-card__stats">
         <div><dt>Power</dt><dd>{move.power ?? "—"}</dd></div>
         <div><dt>PP</dt><dd>{move.pp ?? "—"}</dd></div>
         <div><dt>Accuracy</dt><dd>{move.accuracy == null ? "—" : `${move.accuracy}%`}</dd></div>
       </dl>
-      {effect && <p><strong>Effect:</strong> {effect}</p>}
+      {description && <p className="pokemon-move-card__description">{description}</p>}
+      {effect && <p className="pokemon-move-card__effect"><strong>Effect:</strong> {effect}</p>}
     </article>
   );
 };
