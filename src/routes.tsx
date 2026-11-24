@@ -5,6 +5,7 @@ import PokemonDetailsPage from "./pages/PokemonDetailsPage";
 import ErrorPage from "./pages/ErrorPage";
 import TypesPage from "./pages/TypesPage";
 import TypePage from "./pages/TypePage";
+import MovesPage from "./pages/MovesPage";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <PokemonList /> },
+      { path: "moves", element: <MovesPage /> },
       { path: "types", element: <TypesPage /> },
       { path: "types/:type", element: <TypePage /> },
       { path: "type/:type/:type2", element: <TypePage /> },

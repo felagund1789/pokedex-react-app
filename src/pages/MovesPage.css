@@ -1,0 +1,20 @@
+.moves-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  align-items: start;
+  gap: 1rem;
+  max-width: 80rem;
+  margin: 0 auto 1rem;
+}
+
+.moves-page__more {
+  display: block;
+  margin: 0 auto 1rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--dark-text-color);
+  border-radius: 100px;
+  background-color: var(--bg-color);
+  color: var(--dark-text-color);
+  font: inherit;
+  cursor: pointer;
+}
