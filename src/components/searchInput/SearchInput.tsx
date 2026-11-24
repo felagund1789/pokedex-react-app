@@ -95,7 +95,7 @@ const SearchInput = ({
           }}
         >
           <option value="">All types</option>
-          {typeOptions.map((type) => (
+          {typeOptions.filter((type) => type !== "unknown").map((type) => (
             <option key={type} value={type}>
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </option>
