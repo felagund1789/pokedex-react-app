@@ -19,22 +19,46 @@
 }
 
 .pokemon-move-card h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   margin: 0;
   color: var(--heading-color);
   font-size: 1.5rem;
 }
 
-.pokemon-move-card h2 img {
-  width: 1.5rem;
-  height: 1.5rem;
+.pokemon-move-card__badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
-.pokemon-move-card__type {
+.pokemon-move-card__badges .pokemon-type,
+.pokemon-move-card__damage-class {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
   margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: var(--card-border-radius);
+  color: var(--text-color);
   text-transform: capitalize;
+}
+
+.pokemon-move-card__damage-class {
+  font-weight: bold;
+}
+
+.pokemon-move-card__damage-class.physical {
+  background-color: #c2410c;
+}
+
+.pokemon-move-card__damage-class.special {
+  background-color: #4f6fd8;
+}
+
+.pokemon-move-card__damage-class.status {
+  background-color: #6b7280;
 }
 
 .pokemon-move-card__stats {

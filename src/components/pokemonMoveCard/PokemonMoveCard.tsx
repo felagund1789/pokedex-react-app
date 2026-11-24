@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
-import icons from "../../assets/types";
 import useMove from "../../hooks/useMove";
 import usePokemonStore from "../../store";
+import PokemonType from "../pokemonType/PokemonType";
 import "./PokemonMoveCard.css";
 
 const PokemonMoveCard = ({ slug }: { slug: string }) => {
@@ -28,8 +28,11 @@ const PokemonMoveCard = ({ slug }: { slug: string }) => {
   return (
     <article className="pokemon-move-card" style={{ "--move-color": `var(--type-${type}, var(--type-unknown))` } as CSSProperties}>
       <div className="pokemon-move-card__header">
-        <h2><img src={icons[type as keyof typeof icons] ?? icons.unknown} alt="" />{name}</h2>
-        <p className="pokemon-move-card__type">{type} · {move.damage_class.name}</p>
+        <h2>{name}</h2>
+        <div className="pokemon-move-card__badges">
+          <PokemonType>{type}</PokemonType>
+          <span className={`pokemon-move-card__damage-class ${move.damage_class.name}`}>{move.damage_class.name}</span>
+        </div>
       </div>
       <dl className="pokemon-move-card__stats">
         <div><dt>Power</dt><dd>{move.power ?? "—"}</dd></div>
