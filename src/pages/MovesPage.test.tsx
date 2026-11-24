@@ -42,6 +42,70 @@ afterEach(() => {
 });
 
 describe("moves page", () => {
+  it("restores and searches move names alongside filters, preserving unrelated parameters", async () => {
+    mocks.getTypesList.mockResolvedValue({ results: [{ name: "fire" }] });
+    mocks.getMovesList.mockResolvedValue({ results: [{ name: "flame-charge" }, { name: "ember" }, { name: "water-gun" }] });
+    mocks.getTypeByName.mockResolvedValue({ moves: [{ name: "flame-charge" }, { name: "ember" }] });
+    mocks.getMoveDamageClassByName.mockResolvedValue({ moves: [{ name: "flame-charge" }, { name: "ember" }, { name: "water-gun" }] });
+    mocks.getMoveByName.mockImplementation(async (name: string) => ({
+      type: { name: "fire" }, damage_class: { name: "special" },
+      names: [{ name, language: { name: "en" } }], flavor_text_entries: [], effect_entries: [],
+      power: 40, pp: 20, accuracy: 100,
+    }));
+
+    renderPage("/moves?type=fire&damageClass=special&search=FLAME+CHARGE&other=keep");
+    const input = screen.getByRole("textbox", { name: "Search for moves" }) as HTMLInputElement;
+    expect(input.value).toBe("FLAME CHARGE");
+    await screen.findByRole("heading", { name: "flame-charge" });
+    expect(screen.queryByRole("heading", { name: "ember" })).toBeNull();
+    fireEvent.change(input, { target: { value: "ember" } });
+    await screen.findByRole("heading", { name: "ember" });
+    expect(screen.queryByRole("heading", { name: "flame-charge" })).toBeNull();
+    expect(screen.getByTestId("location").textContent).toBe("?type=fire&damageClass=special&search=ember&other=keep");
+    fireEvent.change(input, { target: { value: "no match" } });
+    expect(await screen.findByText("No moves match the current filters.")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+    await screen.findByRole("heading", { name: "flame-charge" });
+    expect(screen.getByTestId("location").textContent).toBe("?type=fire&damageClass=special&other=keep");
+  });
+
+  it("keeps a filter changed while a search is pending", async () => {
+    mocks.getTypesList.mockResolvedValue({ results: [{ name: "fire" }, { name: "water" }] });
+    mocks.getMovesList.mockResolvedValue({ results: [{ name: "water-gun" }] });
+    mocks.getTypeByName.mockResolvedValue({ moves: [{ name: "water-gun" }] });
+    mocks.getMoveByName.mockResolvedValue({
+      type: { name: "water" }, damage_class: { name: "special" },
+      names: [{ name: "water-gun", language: { name: "en" } }], flavor_text_entries: [], effect_entries: [],
+      power: 40, pp: 20, accuracy: 100,
+    });
+    renderPage("/moves?other=keep");
+    await screen.findByRole("heading", { name: "water-gun" });
+    fireEvent.change(screen.getByRole("textbox", { name: "Search for moves" }), { target: { value: "water" } });
+    fireEvent.change(screen.getByLabelText("Type"), { target: { value: "water" } });
+    await waitFor(() => expect(screen.getByTestId("location").textContent).toBe("?other=keep&type=water&search=water"));
+  });
+
+  it("restores search from browser history", async () => {
+    mocks.getTypesList.mockResolvedValue({ results: [{ name: "fire" }] });
+    mocks.getMovesList.mockResolvedValue({ results: [{ name: "ember" }, { name: "flame-charge" }] });
+    mocks.getTypeByName.mockResolvedValue({ moves: [{ name: "ember" }, { name: "flame-charge" }] });
+    mocks.getMoveByName.mockImplementation(async (name: string) => ({
+      type: { name: "fire" }, damage_class: { name: "special" },
+      names: [{ name, language: { name: "en" } }], flavor_text_entries: [], effect_entries: [],
+      power: 40, pp: 20, accuracy: 100,
+    }));
+    renderPage("/moves?search=ember");
+    const input = screen.getByRole("textbox", { name: "Search for moves" }) as HTMLInputElement;
+    await screen.findByRole("heading", { name: "ember" });
+    fireEvent.change(screen.getByLabelText("Type"), { target: { value: "fire" } });
+    fireEvent.change(input, { target: { value: "flame" } });
+    await screen.findByRole("heading", { name: "flame-charge" });
+    fireEvent.click(screen.getByText("Back"));
+    await waitFor(() => expect(input.value).toBe("ember"));
+    await screen.findByRole("heading", { name: "ember" });
+    expect(screen.queryByRole("heading", { name: "flame-charge" })).toBeNull();
+  });
+
   it("restores and combines URL filters, updates the URL, and responds to history", async () => {
     mocks.getTypesList.mockResolvedValue({ results: [{ name: "fire" }, { name: "water" }] });
     mocks.getMovesList.mockResolvedValue({ results: [{ name: "ember" }, { name: "flame-charge" }, { name: "water-gun" }] });

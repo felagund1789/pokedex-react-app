@@ -17,7 +17,7 @@ The Pokedex React App is a modern web application designed to provide comprehens
 - **Responsive Design**: The app is designed to be fully responsive, ensuring it works seamlessly on both desktop and mobile devices. The layout adjusts dynamically to provide an optimal viewing experience regardless of screen size.
 - **Pokemon List**: Users can view a comprehensive list of all Pokemon. The list employs infinite scrolling, allowing users to continuously load more Pokemon as they scroll down the page. This feature ensures a smooth and uninterrupted browsing experience without the need for pagination.
 - **Search**: A powerful search feature allows users to quickly find specific Pokemon by name. The search functionality is designed to be fast and accurate, providing instant results as the user types.
-- **Moves**: Browse Pokémon moves at `/moves`, with type and damage-class filters saved in the URL.
+- **Moves**: Search Pokémon moves by name at `/moves` and filter by type and damage class. Search and filters are saved in the URL.
 - **Pokemon Details**: Detailed information about each Pokemon is available, including:
   - **Types**: Displays the Pokemon's types (e.g., grass, fire, water, normal).
   - **Base Experience**: Shows the base experience points gained when a Pokemon is defeated.
