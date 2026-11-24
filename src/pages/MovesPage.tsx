@@ -12,6 +12,7 @@ import "./TypesPage.css";
 import "./MovesPage.css";
 
 const PAGE_SIZE = 20;
+const excludedTypes = new Set(["stellar", "unknown", "shadow"]);
 const MovesPage = () => {
   const [params, setParams] = useSearchParams();
   const typeParam = params.get("type");
@@ -22,7 +23,8 @@ const MovesPage = () => {
     queryFn: () => pokedex.getTypesList({ offset: 0, limit: 10000 }),
     staleTime: 24 * 60 * 60 * 1000,
   });
-  const type = types?.results.find((item) => item.name === typeParam)?.name;
+  const typeOptions = types?.results.filter(({ name }) => !excludedTypes.has(name));
+  const type = typeOptions?.find((item) => item.name === typeParam)?.name;
   const damageClass = damageClasses.find((name) => name === classParam);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const { data: moves = [], isLoading, isFetching, error } = useMoveList(type, damageClass, !!types);
@@ -54,7 +56,7 @@ const MovesPage = () => {
           <div className="filter-row">
             <select aria-label="Type" className="filter-select" value={type ?? ""} onChange={(event) => updateFilter("type", event.currentTarget.value)}>
               <option value="">All types</option>
-              {types?.results.map(({ name }) => (
+              {typeOptions?.map(({ name }) => (
                 <option key={name} value={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</option>
               ))}
             </select>

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import usePokemonStore from "../store";
@@ -42,6 +42,21 @@ afterEach(() => {
 });
 
 describe("moves page", () => {
+  it.each(["stellar", "unknown", "shadow"])("excludes %s from the type filter", async (excludedType) => {
+    mocks.getTypesList.mockResolvedValue({
+      results: ["fire", "water", "stellar", "unknown", "shadow"].map((name) => ({ name })),
+    });
+    mocks.getMovesList.mockResolvedValue({ results: [] });
+    renderPage(`/moves?type=${excludedType}`);
+    const select = screen.getByRole("combobox", { name: "Type" }) as HTMLSelectElement;
+    await within(select).findByRole("option", { name: "Fire" });
+    expect(within(select).getByRole("option", { name: "Water" })).toBeTruthy();
+    expect(within(select).getAllByRole("option")).toHaveLength(3);
+    expect(select.value).toBe("");
+    await screen.findByText("No moves match the current filters.");
+    expect(mocks.getTypeByName).not.toHaveBeenCalled();
+  });
+
   it("restores and searches move names alongside filters, preserving unrelated parameters", async () => {
     mocks.getTypesList.mockResolvedValue({ results: [{ name: "fire" }] });
     mocks.getMovesList.mockResolvedValue({ results: [{ name: "flame-charge" }, { name: "ember" }, { name: "water-gun" }] });
