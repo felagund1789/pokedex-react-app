@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/header/PageHeader";
 import Loading from "../components/loading/Loading";
 import PokemonMoveCard from "../components/pokemonMoveCard/PokemonMoveCard";
