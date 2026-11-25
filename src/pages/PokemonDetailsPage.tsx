@@ -35,7 +35,12 @@ function PokemonDetailsPage() {
   }
 
   if (error) {
-    return <div>Error loading Pokémon: {error.message}</div>;
+    return (
+      <>
+        <PageHeader />
+        <div>Error loading Pokémon: {error.message}</div>
+      </>
+    );
   }
   const _name = pokemonSpecies?.names.find((n) => n.language.name === language)?.name;
   const _formName = pokemonForm?.names.find((f) => f.language.name === language)?.name;

@@ -4,7 +4,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import types from "../../assets/types";
 import usePokemonList from "../../hooks/usePokemonList";
 import { generations, Generation, PokemonTypeName } from "../../store";
-import MainHeader from "../header/MainHeader";
 import Loading from "../loading/Loading";
 import PokemonCard from "../pokemonCard/PokemonCard";
 import PokemonCardSkeleton from "../pokemonCard/PokemonCardSkeleton";
@@ -202,7 +201,6 @@ const PokemonList = () => {
 
   return (
     <>
-      <MainHeader />
       <Loading isLoading={isLoading || isFetching} />
       <SearchInput
         searchText={searchText}

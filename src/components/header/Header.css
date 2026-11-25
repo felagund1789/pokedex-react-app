@@ -28,12 +28,97 @@ header.collapsed img {
   height: 4rem;
 }
 
-header.collapsed .widget {
-  box-sizing: border-box;
-  padding-left: 1rem;
-  height: 24px;
-  width: 3rem;
+.navigation-toggle,
+.header-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: none;
+  color: white;
   cursor: pointer;
+  flex-shrink: 0;
+}
+
+.navigation-toggle:hover,
+.header-back:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navigation-toggle svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.navigation-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.navigation-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 2;
+  width: min(20rem, 85vw);
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: var(--surface-background-color);
+  color: var(--heading-color);
+  text-align: left;
+  box-shadow: 0.25rem 0 1rem rgba(0, 0, 0, 0.25);
+}
+
+.navigation-sidebar[hidden] {
+  display: none;
+}
+
+.navigation-sidebar__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.navigation-sidebar__heading button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.navigation-sidebar a {
+  display: block;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.navigation-sidebar a:hover,
+.navigation-sidebar a.active {
+  background: var(--subtle-background-color);
+}
+
+@media (max-width: 36rem) {
+  .navigation-toggle,
+  .header-back {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .navigation-toggle svg {
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 header .spacer {

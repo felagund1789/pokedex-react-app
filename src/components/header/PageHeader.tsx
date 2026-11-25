@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import pokemonLogo from "../../assets/pokedex.png";
 import "./Header.css";
+import NavigationMenu from "./NavigationMenu";
 import ThemeToggle from "./ThemeToggle";
 
 const PageHeader = () => {
@@ -8,7 +9,8 @@ const PageHeader = () => {
 
   return (
     <header className="collapsed">
-      <div className="widget" onClick={() => navigate(-1)}>
+      <NavigationMenu />
+      <button className="header-back" type="button" aria-label="Go back" onClick={() => navigate(-1)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
@@ -18,7 +20,7 @@ const PageHeader = () => {
         >
           <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
         </svg>
-      </div>
+      </button>
       <img src={pokemonLogo} alt="Pokedex" />
       <div className="spacer"></div>
       <ThemeToggle />
