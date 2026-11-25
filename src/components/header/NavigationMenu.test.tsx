@@ -34,6 +34,8 @@ describe("header navigation", () => {
     "offers all destinations from %s",
     (path) => {
       renderPage(path);
+      expect(screen.queryByRole("button", { name: "Go back" })).toBeNull();
+      expect(screen.getByRole("button", { name: "Toggle dark/light theme" })).toBeTruthy();
       const toggle = screen.getByRole("button", { name: "Open navigation menu" });
       expect(toggle.getAttribute("aria-expanded")).toBe("false");
       fireEvent.click(toggle);
@@ -68,9 +70,4 @@ describe("header navigation", () => {
     expect(document.activeElement).toBe(toggle);
   });
 
-  it("retains the back button and theme toggle on secondary pages", () => {
-    renderPage("/moves");
-    expect(screen.getByRole("button", { name: "Go back" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Toggle dark/light theme" })).toBeTruthy();
-  });
 });

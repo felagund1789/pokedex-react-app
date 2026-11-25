@@ -28,8 +28,7 @@ header.collapsed img {
   height: 4rem;
 }
 
-.navigation-toggle,
-.header-back {
+.navigation-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,8 +43,7 @@ header.collapsed img {
   flex-shrink: 0;
 }
 
-.navigation-toggle:hover,
-.header-back:hover {
+.navigation-toggle:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -109,8 +107,7 @@ header.collapsed img {
 }
 
 @media (max-width: 36rem) {
-  .navigation-toggle,
-  .header-back {
+  .navigation-toggle {
     width: 5rem;
     height: 5rem;
   }
