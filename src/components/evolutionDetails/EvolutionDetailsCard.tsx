@@ -68,41 +68,96 @@ const EvolutionDetailsCard = ({ details }: Props) => {
     !(Array.isArray(value) && value.length === 0),
   );
   const chance = details.condition_expression?.percentage_chance;
-  const text = []; 
-  triggers[details.trigger.name] && text.push(triggers[details.trigger.name] ?? label(details.trigger.name));
-  details.held_item && text.push(`holding ${heldItem.data?.names?.find((name) => name.language.name === "en")?.name
-    ?? label(details.held_item.name)}`);
-  details.known_move && text.push(`knowing ${knownMove.data ?? label(details.known_move.name)}`);
-  details.known_move_type && text.push(`knowing a move of type ${knownMoveType.data ?? label(details.known_move_type.name)}`);
-  details.location && text.push(`at ${location.data ?? label(details.location.name)}`);
-  details.gender != null && text.push(`gender: ${details.gender === 1 ? "female" : details.gender === 2 ? "male" : details.gender}`);
-  details.min_affection != null && text.push(`having affection ${details.min_affection}`);
-  details.min_beauty != null && text.push(`having beauty ${details.min_beauty}`);
-  details.min_happiness != null && text.push(`having happiness ${details.min_happiness}`);
-  details.min_level != null && text.push(`to Lv ${details.min_level}`);
-  details.party_species && <div>having {partySpecies.data ?? label(details.party_species.name)} in party</div>
-  details.party_species && text.push(`having ${partySpecies.data ?? label(details.party_species.name)} in party`);
-  details.party_type && text.push(`having Pokémon of type ${partyType.data ?? label(details.party_type.name)} in party`);
-  details.trade_species && text.push(`traded for ${tradeSpecies.data ?? label(details.trade_species.name)}`);
-  details.relative_physical_stats === 0 && text.push(`having Attack = Defense`);
-  details.relative_physical_stats === 1 && text.push(`having Attack &gt; Defense`);
-  details.relative_physical_stats === -1 && text.push(`having Attack &lt; Defense`);
-  details.relative_physical_stats != null && ![-1, 0, 1].includes(details.relative_physical_stats) &&
+  const text: string[] = [];
+  if (triggers[details.trigger.name]) {
+    text.push(triggers[details.trigger.name] ?? label(details.trigger.name));
+  }
+  if (details.held_item) {
+    text.push(`holding ${heldItem.data?.names?.find((name) => name.language.name === "en")?.name
+      ?? label(details.held_item.name)}`);
+  }
+  if (details.known_move) {
+    text.push(`knowing ${knownMove.data ?? label(details.known_move.name)}`);
+  }
+  if (details.known_move_type) {
+    text.push(`knowing a move of type ${knownMoveType.data ?? label(details.known_move_type.name)}`);
+  }
+  if (details.location) {
+    text.push(`at ${location.data ?? label(details.location.name)}`);
+  }
+  if (details.gender != null) {
+    text.push(`gender: ${details.gender === 1 ? "female" : details.gender === 2 ? "male" : details.gender}`);
+  }
+  if (details.min_affection != null) {
+    text.push(`having affection ${details.min_affection}`);
+  }
+  if (details.min_beauty != null) {
+    text.push(`having beauty ${details.min_beauty}`);
+  }
+  if (details.min_happiness != null) {
+    text.push(`having happiness ${details.min_happiness}`);
+  }
+  if (details.min_level != null) {
+    text.push(`to Lv ${details.min_level}`);
+  }
+  if (details.party_species) {
+    text.push(`having ${partySpecies.data ?? label(details.party_species.name)} in party`);
+  }
+  if (details.party_type) {
+    text.push(`having Pokémon of type ${partyType.data ?? label(details.party_type.name)} in party`);
+  }
+  if (details.trade_species) {
+    text.push(`traded for ${tradeSpecies.data ?? label(details.trade_species.name)}`);
+  }
+  if (details.relative_physical_stats === 0) {
+    text.push(`having Attack = Defense`);
+  }
+  if (details.relative_physical_stats === 1) {
+    text.push(`having Attack &gt; Defense`);
+  }
+  if (details.relative_physical_stats === -1) {
+    text.push(`having Attack &lt; Defense`);
+  }
+  if (details.relative_physical_stats != null && ![-1, 0, 1].includes(details.relative_physical_stats)) {
     text.push(`Additional physical-stat condition: ${details.relative_physical_stats}`);
-  details.time_of_day && text.push(`during ${details.time_of_day}`);
-  details.needs_overworld_rain && text.push(`while raining in the overworld`);
-  details.needs_multiplayer && text.push(`in multiplayer`);
-  details.near_special_rock && text.push(`near a special rock`);
-  details.turn_upside_down && text.push(`turn the device upside down`);
-  details.region && text.push(`in ${region.data ?? label(details.region.name)}`);
-  details.used_move && !["agile-style-move", "strong-style-move", "use-move"].includes(details.trigger.name) &&
+  }
+  if (details.time_of_day) {
+    text.push(`during ${details.time_of_day}`);
+  }
+  if (details.needs_overworld_rain) {
+    text.push(`while raining in the overworld`);
+  }
+  if (details.needs_multiplayer) {
+    text.push(`in multiplayer`);
+  }
+  if (details.near_special_rock) {
+    text.push(`near a special rock`);
+  }
+  if (details.turn_upside_down) {
+    text.push(`turn the device upside down`);
+  }
+  if (details.region) {
+    text.push(`in ${region.data ?? label(details.region.name)}`);
+  }
+  if (details.used_move && !["agile-style-move", "strong-style-move", "use-move"].includes(details.trigger.name)) {
     text.push(`using ${usedMove.data ?? label(details.used_move.name)}`);
-  details.min_move_count != null && text.push(`at least ${details.min_move_count} times`);
-  details.min_steps != null && text.push(`at least ${details.min_steps} steps`);
-  details.min_damage_taken != null && text.push(`after taking at least ${details.min_damage_taken} damage`);
-  chance != null && text.push(`${chance}% chance`);
-  details.condition_expression && chance == null && text.push(`Additional condition: ${details.condition_expression.expression}`);
-  extra.map(([key]) => text.push(`Additional condition: ${label(key)}`));
+  }
+  if (details.min_move_count != null) {
+    text.push(`at least ${details.min_move_count} times`);
+  }
+  if (details.min_steps != null) {
+    text.push(`at least ${details.min_steps} steps`);
+  }
+  if (details.min_damage_taken != null) {
+    text.push(`after taking at least ${details.min_damage_taken} damage`);
+  }
+  if (chance != null) {
+    text.push(`${chance}% chance`);
+  }
+  if (details.condition_expression && chance == null) {
+    text.push(`Additional condition: ${details.condition_expression.expression}`);
+  }
+  extra.forEach(([key]) => text.push(`Additional condition: ${label(key)}`));
 
   return (
     <div className="evolution-details">
