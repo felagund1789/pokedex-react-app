@@ -55,19 +55,19 @@ header.collapsed img {
 .navigation-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 1100;
   background: rgba(0, 0, 0, 0.5);
 }
 
 .navigation-sidebar {
   position: fixed;
   inset: 0 auto 0 0;
-  z-index: 2;
+  z-index: 1101;
   width: min(20rem, 85vw);
   padding: 1rem;
   box-sizing: border-box;
   overflow-y: auto;
-  background: var(--surface-background-color);
+  background: var(--bg-color);
   color: var(--heading-color);
   text-align: left;
   box-shadow: 0.25rem 0 1rem rgba(0, 0, 0, 0.25);
@@ -107,6 +107,15 @@ header.collapsed img {
 }
 
 @media (max-width: 36rem) {
+  .navigation-sidebar {
+    width: 100%;
+    font-size: 2rem;
+  }
+
+  .navigation-sidebar__heading button {
+    font-size: 3rem;
+  }
+
   .navigation-toggle {
     width: 5rem;
     height: 5rem;

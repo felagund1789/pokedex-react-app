@@ -70,4 +70,18 @@ describe("header navigation", () => {
     expect(document.activeElement).toBe(toggle);
   });
 
+  it("renders the overlay outside the header and closes it from the backdrop", () => {
+    renderPage("/");
+    const toggle = screen.getByRole("button", { name: "Open navigation menu" });
+    fireEvent.click(toggle);
+    const navigation = screen.getByRole("navigation", { name: "Main navigation" });
+    expect(navigation.parentElement).toBe(document.body);
+    const backdrop = document.querySelector(".navigation-backdrop");
+    expect(backdrop?.parentElement).toBe(document.body);
+    if (!backdrop) throw new Error("Navigation backdrop was not rendered");
+    fireEvent.click(backdrop);
+    expect(screen.queryByRole("navigation", { name: "Main navigation" })).toBeNull();
+    expect(document.activeElement).toBe(toggle);
+  });
+
 });

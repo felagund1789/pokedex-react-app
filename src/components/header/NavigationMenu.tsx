@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 
 const links = [
@@ -45,37 +46,39 @@ const NavigationMenu = () => {
           <path d="M3 6h18M3 12h18M3 18h18" />
         </svg>
       </button>
-      {open && <div className="navigation-backdrop" aria-hidden="true" onClick={() => {
-        setOpen(false);
-        buttonRef.current?.focus();
-      }} />}
-      <nav id="main-navigation" className="navigation-sidebar" aria-label="Main navigation" hidden={!open}>
-        <div className="navigation-sidebar__heading">
-          <span>Navigation</span>
-          <button type="button" aria-label="Close navigation menu" onClick={() => {
-            setOpen(false);
-            buttonRef.current?.focus();
-          }}>
-            &times;
-          </button>
-        </div>
-        {links.map(({ to, label }) => {
-          const active = location.pathname === to || location.pathname.startsWith(`${to}/`) ||
-            (to === "/pokemon" && location.pathname === "/") ||
-            (to === "/types" && location.pathname.startsWith("/type/"));
-          return (
-            <Link
-              key={to}
-              to={to}
-              aria-current={active ? "page" : undefined}
-              className={active ? "active" : undefined}
-              onClick={() => setOpen(false)}
-            >
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
+      {createPortal(<>
+        {open && <div className="navigation-backdrop" aria-hidden="true" onClick={() => {
+          setOpen(false);
+          buttonRef.current?.focus();
+        }} />}
+        <nav id="main-navigation" className="navigation-sidebar" aria-label="Main navigation" hidden={!open}>
+          <div className="navigation-sidebar__heading">
+            <span>Navigation</span>
+            <button type="button" aria-label="Close navigation menu" onClick={() => {
+              setOpen(false);
+              buttonRef.current?.focus();
+            }}>
+              &times;
+            </button>
+          </div>
+          {links.map(({ to, label }) => {
+            const active = location.pathname === to || location.pathname.startsWith(`${to}/`) ||
+              (to === "/pokemon" && location.pathname === "/") ||
+              (to === "/types" && location.pathname.startsWith("/type/"));
+            return (
+              <Link
+                key={to}
+                to={to}
+                aria-current={active ? "page" : undefined}
+                className={active ? "active" : undefined}
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+      </>, document.body)}
     </>
   );
 };
