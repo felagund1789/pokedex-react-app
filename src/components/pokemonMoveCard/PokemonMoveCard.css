@@ -1,0 +1,106 @@
+.pokemon-move-card {
+  display: grid;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  border: 1px solid rgba(37, 61, 91, 0.16);
+  border-top: 0.35rem solid var(--move-color, var(--type-unknown));
+  border-radius: var(--card-border-radius);
+  background-color: var(--surface-background-color);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
+  color: var(--dark-text-color);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.pokemon-move-card__header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pokemon-move-card h2 {
+  margin: 0;
+  color: var(--heading-color);
+  font-size: 1.5rem;
+}
+
+.pokemon-move-card__badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.pokemon-move-card__badges .pokemon-type,
+.pokemon-move-card__damage-class {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: var(--card-border-radius);
+  color: var(--text-color);
+  text-transform: capitalize;
+}
+
+.pokemon-move-card__damage-class {
+  font-weight: bold;
+}
+
+.pokemon-move-card__damage-class.physical {
+  background-color: #c2410c;
+}
+
+.pokemon-move-card__damage-class.special {
+  background-color: #4f6fd8;
+}
+
+.pokemon-move-card__damage-class.status {
+  background-color: #6b7280;
+}
+
+.pokemon-move-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  text-align: center;
+}
+
+.pokemon-move-card__stats > div {
+  padding: 0.5rem 0.25rem;
+  border-radius: var(--card-border-radius);
+  background-color: color-mix(in srgb, var(--move-color, var(--type-unknown)) 20%, var(--surface-background-color));
+}
+
+.pokemon-move-card dt {
+  font-size: 0.875em;
+}
+
+.pokemon-move-card dd {
+  margin: 0;
+  color: var(--heading-color);
+  font-weight: bold;
+}
+
+.pokemon-move-card__description,
+.pokemon-move-card__effect {
+  margin: 0;
+}
+
+.pokemon-move-card__effect {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(37, 61, 91, 0.16);
+}
+
+@media (max-width: 70rem) {
+  .pokemon-move-card {
+    font-size: 1.5rem;
+  }
+
+  .pokemon-move-card h2 {
+    font-size: 1.75rem;
+  }
+}
