@@ -8,7 +8,6 @@ import SearchField from "../components/searchInput/SearchField";
 import "../components/searchInput/SearchInput.css";
 import useMoveList, { damageClasses } from "../hooks/useMoveList";
 import pokedex from "../services/pokedexService";
-import "./TypesPage.css";
 import "./MovesPage.css";
 
 const PAGE_SIZE = 20;

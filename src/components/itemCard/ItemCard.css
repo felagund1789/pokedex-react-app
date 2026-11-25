@@ -61,6 +61,17 @@
   margin: 0;
 }
 
+.item-card .item-description {
+  font-style: italic;
+}
+
+.item-card .item-effect {
+  font-weight: bold;
+  border: 1px solid var(--highlight-color);
+  padding: 0.5rem;
+  border-radius: var(--card-border-radius);
+}
+
 @media (max-width: 70rem) {
   .item-card {
     font-size: 1.5rem;

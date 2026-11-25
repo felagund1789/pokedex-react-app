@@ -9,7 +9,6 @@ import "../components/searchInput/SearchInput.css";
 import { itemCategoryQuery, itemPocketQuery, localizedItemResourceName } from "../hooks/itemCategoryQuery";
 import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
-import "./TypesPage.css";
 import "./MovesPage.css";
 
 const PAGE_SIZE = 20;

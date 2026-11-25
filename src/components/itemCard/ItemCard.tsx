@@ -30,6 +30,8 @@ const ItemCard = ({ slug }: { slug: string }) => {
     item.names.find((entry) => entry.language.name === "en")?.name ?? readable(slug);
   const description = (item.flavor_text_entries.find((entry) => entry.language.name === language) ??
     item.flavor_text_entries.find((entry) => entry.language.name === "en"))?.text.replace(/[\n\f\r]+/g, " ");
+  const effect = (item.effect_entries.find((entry) => entry.language.name === language) ??
+    item.effect_entries.find((entry) => entry.language.name === "en"))?.effect.replace(/[\n\f\r]+/g, " ");
 
   return (
     <article className="item-card">
@@ -57,7 +59,8 @@ const ItemCard = ({ slug }: { slug: string }) => {
           </dd>
         </div>
       </dl>
-      {description && <p>{description}</p>}
+      {description && <p className="item-description">{description}</p>}
+      {effect && <p className="item-effect">{effect}</p>}
     </article>
   );
 };
