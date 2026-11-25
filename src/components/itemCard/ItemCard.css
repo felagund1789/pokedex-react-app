@@ -55,7 +55,6 @@
   margin: 0;
   color: var(--heading-color);
   font-weight: bold;
-  text-transform: capitalize;
 }
 
 .item-card p {

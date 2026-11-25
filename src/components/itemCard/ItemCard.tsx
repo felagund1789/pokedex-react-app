@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useItem from "../../hooks/useItem";
-import { itemCategoryQuery } from "../../hooks/itemCategoryQuery";
+import { itemCategoryQuery, itemPocketQuery, localizedItemResourceName } from "../../hooks/itemCategoryQuery";
 import usePokemonStore from "../../store";
 import "./ItemCard.css";
 
@@ -12,6 +12,10 @@ const ItemCard = ({ slug }: { slug: string }) => {
   const category = useQuery({
     ...itemCategoryQuery(item?.category.name ?? ""),
     enabled: !!item,
+  });
+  const pocket = useQuery({
+    ...itemPocketQuery(category.data?.pocket.name ?? ""),
+    enabled: !!category.data,
   });
 
   if (isLoading) return <article className="item-card">Loading {readable(slug)}...</article>;
@@ -34,12 +38,21 @@ const ItemCard = ({ slug }: { slug: string }) => {
         {item.sprites.default && <img src={item.sprites.default} alt="" />}
       </div>
       <dl className="item-card__details">
-        <div><dt>Category</dt><dd>{readable(item.category.name)}</dd></div>
+        <div>
+          <dt>Category</dt>
+          <dd>
+            {category.data ? localizedItemResourceName(category.data, language) : category.isError ? (
+              <>Could not load category. <button type="button" onClick={() => void category.refetch()}>Retry</button></>
+            ) : "Loading..."}
+          </dd>
+        </div>
         <div>
           <dt>Pocket</dt>
           <dd>
-            {category.data ? readable(category.data.pocket.name) : category.isError ? (
-              <>Could not load pocket. <button type="button" onClick={() => void category.refetch()}>Retry</button></>
+            {pocket.data ? localizedItemResourceName(pocket.data, language) : pocket.isError ? (
+              <>Could not load pocket. <button type="button" onClick={() => void pocket.refetch()}>Retry</button></>
+            ) : category.isError ? (
+              "Could not load pocket."
             ) : "Loading..."}
           </dd>
         </div>

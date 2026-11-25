@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import usePokemonStore from "../store";
@@ -37,9 +37,20 @@ const setup = () => {
   mocks.getItemPocketsList.mockResolvedValue({ results: [{ name: "medicine" }, { name: "poke-balls" }] });
   mocks.getItemsList.mockResolvedValue({ results: [{ name: "super-potion" }, { name: "potion" }, { name: "poke-ball" }] });
   mocks.getItemPocketByName.mockImplementation(async (name: string) => ({
+    id: name === "medicine" ? 2 : 1,
+    name,
+    names: [
+      { name: name === "medicine" ? "Medicine" : "Balls", language: { name: "en" } },
+      { name: name === "medicine" ? "Médicaments" : "Poké Balls", language: { name: "fr" } },
+    ],
     categories: [{ name: name === "medicine" ? "healing" : "poke-balls" }],
   }));
   mocks.getItemCategoryByName.mockImplementation(async (name: string) => ({
+    name,
+    names: [
+      { name: name === "healing" ? "Healing" : "Poké Balls", language: { name: "en" } },
+      { name: name === "healing" ? "Soins" : "Balls", language: { name: "fr" } },
+    ],
     pocket: { name: name === "healing" ? "medicine" : "poke-balls" },
     items: (name === "healing" ? ["super-potion", "potion"] : ["poke-ball"]).map((item) => ({ name: item })),
   }));
@@ -63,8 +74,8 @@ describe("items page", () => {
     usePokemonStore.setState({ language: "fr" });
     renderPage("/items?category=healing&pocket=medicine&search=SUPER+POTION&other=keep");
     const card = (await screen.findByRole("heading", { name: "Super Potion" })).closest("article")!;
-    expect(within(card).getByText("healing")).toBeTruthy();
-    expect(await within(card).findByText("medicine")).toBeTruthy();
+    expect(await within(card).findByText("Soins")).toBeTruthy();
+    expect(await within(card).findByText("Médicaments")).toBeTruthy();
     expect(within(card).getByText("A useful item.")).toBeTruthy();
     expect(within(card).getByRole("presentation").getAttribute("src")).toBe("https://example.com/super-potion.png");
     expect(screen.queryByRole("heading", { name: "potion" })).toBeNull();
@@ -83,11 +94,53 @@ describe("items page", () => {
     setup();
     renderPage("/items?other=keep");
     await screen.findByRole("heading", { name: "potion" });
+    await screen.findByRole("option", { name: "Healing" });
     fireEvent.change(screen.getByRole("textbox", { name: "Search for items" }), { target: { value: "super potion" } });
     fireEvent.change(screen.getByLabelText("Category"), { target: { value: "healing" } });
     await waitFor(() => expect(screen.getByTestId("location").textContent).toBe("?other=keep&category=healing&search=super+potion"));
     await screen.findByRole("heading", { name: "Super Potion" });
     expect(screen.queryByRole("heading", { name: "potion" })).toBeNull();
+  });
+
+  it("uses localized names, sorts categories by translation and pockets by id, and reuses cached resources", async () => {
+    setup();
+    renderPage("/items?category=healing&pocket=medicine");
+    const categorySelect = screen.getByLabelText("Category");
+    const pocketSelect = screen.getByLabelText("Pocket");
+    await within(categorySelect).findByRole("option", { name: "Poké Balls" });
+    await within(pocketSelect).findByRole("option", { name: "Medicine" });
+    await screen.findByRole("heading", { name: "potion" });
+    expect(within(categorySelect).getAllByRole("option").map((option) => option.textContent)).toEqual(["All categories", "Healing", "Poké Balls"]);
+    expect(within(pocketSelect).getAllByRole("option").map((option) => option.textContent)).toEqual(["All pockets", "Balls", "Medicine"]);
+    expect(mocks.getItemCategoryByName).toHaveBeenCalledTimes(2);
+    expect(mocks.getItemPocketByName).toHaveBeenCalledTimes(2);
+
+    act(() => usePokemonStore.setState({ language: "fr" }));
+    expect(within(categorySelect).getAllByRole("option").map((option) => option.textContent)).toEqual(["All categories", "Balls", "Soins"]);
+    expect(within(pocketSelect).getAllByRole("option").map((option) => option.textContent)).toEqual(["All pockets", "Poké Balls", "Médicaments"]);
+    const card = screen.getByRole("heading", { name: "potion" }).closest("article")!;
+    expect(within(card).getByText("Soins")).toBeTruthy();
+    expect(within(card).getByText("Médicaments")).toBeTruthy();
+    expect((categorySelect as HTMLSelectElement).value).toBe("healing");
+    expect((pocketSelect as HTMLSelectElement).value).toBe("medicine");
+    expect(mocks.getItemCategoryByName).toHaveBeenCalledTimes(2);
+    expect(mocks.getItemPocketByName).toHaveBeenCalledTimes(2);
+  });
+
+  it("falls back to English and then resource names when translations are unavailable", async () => {
+    setup();
+    mocks.getItemCategoryByName.mockImplementation(async (name: string) => ({
+      name, names: [{ name: name === "healing" ? "Healing" : "Balls", language: { name: "en" } }],
+      pocket: { name: "medicine" }, items: [{ name: "potion" }],
+    }));
+    mocks.getItemPocketByName.mockImplementation(async (name: string) => ({
+      id: name === "medicine" ? 1 : 2, name, names: [], categories: [{ name: "healing" }],
+    }));
+    usePokemonStore.setState({ language: "fr" });
+    renderPage("/items?category=healing");
+    const card = (await screen.findByRole("heading", { name: "potion" })).closest("article")!;
+    expect(await within(card).findByText("Healing")).toBeTruthy();
+    expect(await within(card).findByText("medicine")).toBeTruthy();
   });
 
   it("reports category lookup failures instead of showing an empty list", async () => {
@@ -96,6 +149,16 @@ describe("items page", () => {
     renderPage("/items?category=healing");
     expect(await screen.findByText("Error loading items: network error")).toBeTruthy();
     expect(screen.queryByText("No items match the current filters.")).toBeNull();
+  });
+
+  it("reports pocket lookup failures on the page and card", async () => {
+    setup();
+    mocks.getItemPocketByName.mockRejectedValue(new Error("pocket unavailable"));
+    renderPage("/items");
+    expect(await screen.findByText("Error loading items: pocket unavailable")).toBeTruthy();
+    const card = (await screen.findByRole("heading", { name: "potion" })).closest("article")!;
+    expect(await within(card).findByText(/Could not load pocket/)).toBeTruthy();
+    expect(within(card).getByRole("button", { name: "Retry" })).toBeTruthy();
   });
 
   it("loads additional cards on demand", async () => {
