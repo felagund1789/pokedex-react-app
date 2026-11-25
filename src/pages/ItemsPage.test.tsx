@@ -59,6 +59,7 @@ const setup = () => {
     sprites: { default: `https://example.com/${name}.png` },
     names: [{ name: name === "super-potion" ? "Super Potion" : name, language: { name: "en" } }],
     flavor_text_entries: [{ text: "A useful\nitem.", language: { name: "en" } }],
+    effect_entries: [{ effect: "Restores HP.", language: { name: "en" } }],
   }));
 };
 
