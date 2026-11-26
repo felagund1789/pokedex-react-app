@@ -19,6 +19,10 @@ const EggGroupsPage = () => {
   const details = useQueries({
     queries: (groups.data?.results ?? []).map(({ name }) => eggGroupQuery(name)),
   });
+  const sortedGroups = details.flatMap(({ data }) => data ? [{
+    name: data.name,
+    label: eggGroupName(data, language),
+  }] : []).sort((a, b) => a.label.localeCompare(b.label, language));
   const error = groups.error ?? details.find((query) => query.error)?.error;
   const loading = groups.isLoading || details.some((query) => query.isLoading);
 
@@ -35,9 +39,9 @@ const EggGroupsPage = () => {
         {error && <p role="alert">Error loading egg groups: {error.message}</p>}
         {!loading && !error && details.length === 0 && <p>No egg groups found.</p>}
         <div className="types-grid egg-groups-grid">
-          {details.map(({ data }) => data && (
-            <Link key={data.name} to={`/egg-groups/${encodeURIComponent(data.name)}`}>
-              {eggGroupName(data, language)}
+          {sortedGroups.map(({ name, label }) => (
+            <Link key={name} to={`/egg-groups/${encodeURIComponent(name)}`}>
+              {label}
             </Link>
           ))}
         </div>

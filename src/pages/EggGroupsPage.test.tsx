@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { Link, MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -124,6 +124,24 @@ describe("egg group pages", () => {
     renderPages("/egg-groups");
     fireEvent.click(await screen.findByRole("link", { name: "Terrain" }));
     expect(await screen.findByRole("heading", { name: "Terrain Egg Group" })).toBeTruthy();
+  });
+
+  it("sorts by the displayed names and updates the order when the language changes", async () => {
+    api.getEggGroupsList.mockResolvedValue({
+      results: [{ name: "water-1" }, { name: "field" }],
+    });
+    api.getEggGroupByName.mockImplementation(async (name: string) => {
+      const result = group(name, name === "field" ? "Field" : "Water 1", []);
+      result.names.push({ language: { name: "fr" }, name: name === "field" ? "Terrain" : "Aquatique 1" });
+      return result;
+    });
+    renderPages("/egg-groups");
+    const main = screen.getByRole("main");
+    await screen.findByRole("link", { name: "Water 1" });
+    await screen.findByRole("link", { name: "Field" });
+    expect(within(main).getAllByRole("link").map((link) => link.textContent)).toEqual(["Field", "Water 1"]);
+    act(() => usePokemonStore.getState().setLanguage("fr"));
+    expect(within(main).getAllByRole("link").map((link) => link.textContent)).toEqual(["Aquatique 1", "Terrain"]);
   });
 
   it("loads species incrementally and resets the count when changing groups", async () => {
