@@ -6,6 +6,7 @@ const links = [
   { to: "/pokemon", label: "Pokémon" },
   { to: "/types", label: "Types" },
   { to: "/egg-groups", label: "Egg Groups" },
+  { to: "/evolution-chains", label: "Evolution Chains" },
   { to: "/moves", label: "Moves" },
   { to: "/items", label: "Items" },
 ];
