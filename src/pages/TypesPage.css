@@ -1,5 +1,6 @@
 .types-page {
   padding: 1rem;
+  display: inline-grid;
   color: var(--dark-text-color);
 }
 
@@ -14,13 +15,15 @@
 .types-grid .pokemon-type {
   justify-content: center;
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  width: 18rem;
+  height: 4rem;
 }
 
 @media (max-width: 70rem) {
   .types-grid .pokemon-type {
     font-size: 2rem;
-    height: 4rem;
+    width: calc(100vw - 2rem);
   }
 }
 
