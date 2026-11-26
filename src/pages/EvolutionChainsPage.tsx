@@ -30,30 +30,54 @@ const getForm = (detail: object, field: string) => {
   return isNamedAPIResource(value) ? value : undefined;
 };
 
-const getAlternateForms = (root: EvolutionChain["chain"]) => {
-  const variants = new Map<string, Record<string, string>>();
+const getApplicableDetails = (details: object[], form: string) => {
+  const matching = details.filter((detail) => {
+    const requiredForm = getForm(detail, "required_pokemon_form")?.name;
+    return (!requiredForm || requiredForm === form) &&
+      (requiredForm === form || getForm(detail, "evolved_pokemon_form"));
+  });
+  const defaults = details.filter((detail) =>
+    !getForm(detail, "required_pokemon_form") && !getForm(detail, "evolved_pokemon_form"),
+  );
+  const hasSourceMatch = matching.some((detail) =>
+    getForm(detail, "required_pokemon_form")?.name === form,
+  );
+  return matching.length ? [...matching, ...(!hasSourceMatch ? defaults : [])] : defaults;
+};
 
-  const visit = (node: EvolutionNode) => {
-    for (const evolution of node.evolves_to) {
-      for (const detail of evolution.evolution_details) {
-        const sourceForm = getForm(detail, "required_pokemon_form")?.name;
-        if (sourceForm && sourceForm !== node.species.name) {
-          const forms: Record<string, string> = { [node.species.name]: sourceForm };
-          const evolvedForm = getForm(detail, "evolved_pokemon_form");
-          if (evolvedForm) {
-            forms[evolution.species.name] = evolvedForm.name;
-          }
-          const key = Object.entries(forms).sort(([a], [b]) => a.localeCompare(b))
-            .map(([species, form]) => `${species}:${form}`).join("|");
-          variants.set(key, forms);
+const getAlternateForms = (root: EvolutionNode) => {
+  const rootForms = new Set(
+    root.evolves_to.flatMap((evolution) => evolution.evolution_details.flatMap((detail) => {
+      const form = getForm(detail, "required_pokemon_form")?.name;
+      return form && form !== root.species.name ? [form] : [];
+    })),
+  );
+
+  return Array.from(rootForms, (rootForm) => {
+    const forms: Record<string, string> = { [root.species.name]: rootForm };
+
+    const visit = (node: EvolutionNode, currentForms: Record<string, string>) => {
+      const currentForm = currentForms[node.species.name] ?? node.species.name;
+      for (const evolution of node.evolves_to) {
+        const details = getApplicableDetails(evolution.evolution_details, currentForm);
+        const destinations = new Set(
+          details.map((detail) => getForm(detail, "evolved_pokemon_form")?.name),
+        );
+        if (destinations.size === 0) destinations.add(undefined);
+
+        for (const destination of destinations) {
+          const branchForms = { ...currentForms };
+          if (destination) branchForms[evolution.species.name] = destination;
+          else delete branchForms[evolution.species.name];
+          visit(evolution, branchForms);
+          Object.assign(currentForms, branchForms);
         }
       }
-      visit(evolution);
-    }
-  };
+    };
 
-  visit(root);
-  return Array.from(variants.entries());
+    visit(root, forms);
+    return [rootForm, forms] as const;
+  });
 };
 
 const EvolutionChainsPage = () => {
