@@ -45,6 +45,7 @@
   height: 1rem;
   margin-right: 0.25rem;
   border-radius: 0.125rem;
+  background-color: var(--version-group-background-color);
 }
 
 .game-version.red {
