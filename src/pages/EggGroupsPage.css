@@ -10,5 +10,6 @@
   color: var(--dark-text-color);
   font-size: 1.25rem;
   text-align: center;
+  text-decoration: none;
   text-transform: capitalize;
 }
