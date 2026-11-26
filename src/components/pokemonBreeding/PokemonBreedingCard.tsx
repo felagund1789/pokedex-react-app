@@ -1,3 +1,6 @@
+import { Fragment } from "react";
+import { Link } from "react-router-dom";
+import { eggGroupName } from "../../hooks/eggGroupQuery";
 import useEggGroups from "../../hooks/useEggGroups";
 import usePokemonInfo from "../../hooks/usePokemonInfo";
 import usePokemonStore from "../../store";
@@ -25,7 +28,13 @@ const PokemonBreedingCard = ({ slug }: Props) => {
           <div className="pokemon-breeding-card__info">
             <StatPanel title="Hatch Counter">{pokemonSpecies.hatch_counter}</StatPanel>
             <StatPanel title="Egg Groups">
-              {eggGroups.data?.map((group) => group?.names.find((n) => n.language.name === language)?.name).join(", ")}
+              {eggGroups.error && <span role="alert">Error loading egg groups: {eggGroups.error.message}</span>}
+              {eggGroups.data?.map((group, index) => (
+                <Fragment key={group.name}>
+                  {index > 0 && ", "}
+                  <Link to={`/egg-groups/${encodeURIComponent(group.name)}`}>{eggGroupName(group, language)}</Link>
+                </Fragment>
+              ))}
             </StatPanel>
           </div>
           <div className="pokemon-breeding-card__gender">

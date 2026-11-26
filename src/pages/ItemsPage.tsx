@@ -52,13 +52,13 @@ const ItemsPage = () => {
     queryFn: async () => {
       const [list, pocketData] = await Promise.all([
         pokedex.getItemsList({ offset: 0, limit: 10000 }),
-        pocket ? queryClient.fetchQuery(itemPocketQuery(pocket)) : Promise.resolve(undefined),
+        pocket ? queryClient.query(itemPocketQuery(pocket)) : Promise.resolve(undefined),
       ]);
       const categoryNames = pocketData?.categories.map(({ name }) => name);
       if (category && categoryNames && !categoryNames.includes(category)) return [];
       const names = category ? [category] : categoryNames;
       if (!names) return list.results;
-      const categoryData = await Promise.all(names.map((name) => queryClient.fetchQuery(itemCategoryQuery(name))));
+      const categoryData = await Promise.all(names.map((name) => queryClient.query(itemCategoryQuery(name))));
       const matchingItems = new Set(categoryData.flatMap((data) => data.items.map(({ name }) => name)));
       return list.results.filter(({ name }) => matchingItems.has(name));
     },

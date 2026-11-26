@@ -7,6 +7,8 @@ import TypesPage from "./pages/TypesPage";
 import TypePage from "./pages/TypePage";
 import MovesPage from "./pages/MovesPage";
 import ItemsPage from "./pages/ItemsPage";
+import EggGroupsPage from "./pages/EggGroupsPage";
+import EggGroupPage from "./pages/EggGroupPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
       { path: "items", element: <ItemsPage /> },
       { path: "types", element: <TypesPage /> },
       { path: "types/:type", element: <TypePage /> },
+      { path: "egg-groups", element: <EggGroupsPage /> },
+      { path: "egg-groups/:eggGroup", element: <EggGroupPage /> },
       { path: "type/:type/:type2", element: <TypePage /> },
       {
         path: "pokemon/:name",

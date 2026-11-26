@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 const links = [
   { to: "/pokemon", label: "Pokémon" },
   { to: "/types", label: "Types" },
+  { to: "/egg-groups", label: "Egg Groups" },
   { to: "/moves", label: "Moves" },
   { to: "/items", label: "Items" },
 ];

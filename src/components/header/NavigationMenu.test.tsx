@@ -30,7 +30,7 @@ const renderPage = (path: string) => render(
 );
 
 describe("header navigation", () => {
-  it.each(["/", "/pokemon", "/types", "/types/fire", "/type/fire/water", "/moves", "/items", "/pokemon/pikachu"])(
+  it.each(["/", "/pokemon", "/types", "/types/fire", "/type/fire/water", "/egg-groups", "/egg-groups/field", "/moves", "/items", "/pokemon/pikachu"])(
     "offers all destinations from %s",
     (path) => {
       renderPage(path);
@@ -40,17 +40,17 @@ describe("header navigation", () => {
       expect(toggle.getAttribute("aria-expanded")).toBe("false");
       fireEvent.click(toggle);
       const navigation = screen.getByRole("navigation", { name: "Main navigation" });
-      for (const [label, href] of [["Pokémon", "/pokemon"], ["Types", "/types"], ["Moves", "/moves"], ["Items", "/items"]]) {
+      for (const [label, href] of [["Pokémon", "/pokemon"], ["Types", "/types"], ["Egg Groups", "/egg-groups"], ["Moves", "/moves"], ["Items", "/items"]]) {
         expect(within(navigation).getByRole("link", { name: label }).getAttribute("href")).toBe(href);
       }
       const current = path === "/" || path.startsWith("/pokemon") ? "Pokémon"
-        : path.startsWith("/type") ? "Types" : path === "/moves" ? "Moves" : "Items";
+        : path.startsWith("/type") ? "Types" : path.startsWith("/egg-groups") ? "Egg Groups" : path === "/moves" ? "Moves" : "Items";
       expect(within(navigation).getByRole("link", { name: current }).getAttribute("aria-current")).toBe("page");
       expect(toggle.getAttribute("aria-expanded")).toBe("true");
     },
   );
 
-  it.each([["Pokémon", "/pokemon"], ["Types", "/types"], ["Moves", "/moves"], ["Items", "/items"]])(
+  it.each([["Pokémon", "/pokemon"], ["Types", "/types"], ["Egg Groups", "/egg-groups"], ["Moves", "/moves"], ["Items", "/items"]])(
     "navigates to %s and closes the menu",
     (label, destination) => {
       renderPage("/types");
