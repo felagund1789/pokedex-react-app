@@ -37,7 +37,7 @@ const getAlternateForms = (root: EvolutionChain["chain"]) => {
     for (const evolution of node.evolves_to) {
       for (const detail of evolution.evolution_details) {
         const sourceForm = getForm(detail, "required_pokemon_form")?.name;
-        if (sourceForm) {
+        if (sourceForm && sourceForm !== node.species.name) {
           const forms: Record<string, string> = { [node.species.name]: sourceForm };
           const evolvedForm = getForm(detail, "evolved_pokemon_form");
           if (evolvedForm) {
