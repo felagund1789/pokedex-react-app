@@ -6,8 +6,9 @@ import Loading from "../components/loading/Loading";
 import { eggGroupName, eggGroupQuery } from "../hooks/eggGroupQuery";
 import pokedex from "../services/pokedexService";
 import usePokemonStore from "../store";
-import "./TypesPage.css";
 import "./EggGroupsPage.css";
+
+const baseImageUrl = import.meta.env.VITE_POKEMON_ARTWORK_BASE_URL;
 
 const EggGroupsPage = () => {
   const language = usePokemonStore((state) => state.language);
@@ -30,6 +31,27 @@ const EggGroupsPage = () => {
     document.title = "Pokédex | Egg Groups";
   }, []);
 
+  function getEggGroupImageId(name: string) {
+    switch (name) {
+      case "indeterminate": return "88";
+      case "bug": return "123";
+      case "ditto": return "132";
+      case "dragon": return "148";
+      case "fairy": return "39";
+      case "flying": return "17";
+      case "ground": return "19";
+      case "plant": return "1";
+      case "water1": return "7";
+      case "water2": return "119";
+      case "water3": return "120";
+      case "monster": return "143";
+      case "mineral": return "81";
+      case "no-eggs": return "151";
+      case "humanshape": return "122";
+      default: return "0";
+    }
+  }
+
   return (
     <>
       <PageHeader />
@@ -41,7 +63,10 @@ const EggGroupsPage = () => {
         <div className="types-grid egg-groups-grid">
           {sortedGroups.map(({ name, label }) => (
             <Link key={name} to={`/egg-groups/${encodeURIComponent(name)}`}>
-              <div className={`egg-group-icon ${name}`}></div>
+              <div
+                className={`egg-group-icon ${name}`}
+                style={{ backgroundImage: `url('${baseImageUrl}/${getEggGroupImageId(name)}.png')` }}
+              ></div>
               {label}
             </Link>
           ))}

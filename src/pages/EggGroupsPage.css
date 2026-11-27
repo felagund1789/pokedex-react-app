@@ -9,13 +9,12 @@
   background-color: var(--surface-background-color);
   color: var(--dark-text-color);
   font-size: 1.5rem;
-  width: 18rem;
   text-align: center;
   text-decoration: none;
   text-transform: capitalize;
 }
 
-@media (max-width: 70rem) {
+@media (max-width: 36rem) {
   .egg-groups-grid a {
     font-size: 2rem;
     width: calc(100vw - 4rem);
@@ -28,50 +27,4 @@
   margin-right: 0.5rem;
   background-color: transparent;
   background-size: cover;
-}
-
-.egg-group-icon.indeterminate {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/88.png');
-}
-.egg-group-icon.bug {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png');
-}
-.egg-group-icon.ditto {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png');
-}
-.egg-group-icon.dragon {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/148.png');
-}
-.egg-group-icon.fairy {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png');
-}
-.egg-group-icon.flying {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png');
-}
-.egg-group-icon.ground {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png');
-}
-.egg-group-icon.plant {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png');
-}
-.egg-group-icon.water1 {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png');
-}
-.egg-group-icon.water2 {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/119.png');
-}
-.egg-group-icon.water3 {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png');
-}
-.egg-group-icon.monster {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png');
-}
-.egg-group-icon.mineral {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png');
-}
-.egg-group-icon.no-eggs {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png');
-}
-.egg-group-icon.humanshape {
-  background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/122.png');
 }
