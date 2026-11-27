@@ -41,6 +41,7 @@ const EggGroupsPage = () => {
         <div className="types-grid egg-groups-grid">
           {sortedGroups.map(({ name, label }) => (
             <Link key={name} to={`/egg-groups/${encodeURIComponent(name)}`}>
+              <div className={`egg-group-icon ${name}`}></div>
               {label}
             </Link>
           ))}
