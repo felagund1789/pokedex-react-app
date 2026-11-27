@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/header/PageHeader";
 import ItemCard from "../components/itemCard/ItemCard";
@@ -105,14 +106,15 @@ const ItemsPage = () => {
         </div>
         {error && <p>Error loading items: {error.message}</p>}
         {!categories.isLoading && !pockets.isLoading && !detailsLoading && !items.isLoading && !error && filteredItems.length === 0 && <p>No items match the current filters.</p>}
-        <div className="moves-grid">
+        <InfiniteScroll
+          className="moves-grid"
+          hasMore={visibleItems.length < filteredItems.length}
+          dataLength={visibleItems.length}
+          next={() => setVisibleCount((count) => count + PAGE_SIZE)}
+          loader={<div>Loading more items...</div>}
+        >
           {visibleItems.map((item) => <ItemCard key={item.name} slug={item.name} />)}
-        </div>
-        {visibleItems.length < filteredItems.length && (
-          <button className="moves-page__more" type="button" onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}>
-            Load more
-          </button>
-        )}
+        </InfiniteScroll>
       </main>
     </>
   );

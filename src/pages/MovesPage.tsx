@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
 import PageHeader from "../components/header/PageHeader";
 import Loading from "../components/loading/Loading";
@@ -22,7 +23,9 @@ const MovesPage = () => {
     queryFn: () => pokedex.getTypesList({ offset: 0, limit: 10000 }),
     staleTime: 24 * 60 * 60 * 1000,
   });
-  const typeOptions = types?.results.filter(({ name }) => !excludedTypes.has(name));
+  const typeOptions = types?.results
+    .filter(({ name }) => !excludedTypes.has(name))
+    .sort((a, b) => a.name.localeCompare(b.name));
   const type = typeOptions?.find((item) => item.name === typeParam)?.name;
   const damageClass = damageClasses.find((name) => name === classParam);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -69,14 +72,15 @@ const MovesPage = () => {
         </div>
         {(typesError || error) && <p>Error loading moves: {(typesError || error)?.message}</p>}
         {!typesLoading && !isLoading && !typesError && !error && filteredMoves.length === 0 && <p>No moves match the current filters.</p>}
-        <div className="moves-grid">
+        <InfiniteScroll
+          className="moves-grid"
+          dataLength={visibleMoves.length}
+          hasMore={visibleMoves.length < filteredMoves.length}
+          next={() => setVisibleCount((count) => count + PAGE_SIZE)}
+          loader={<p>Loading more moves...</p>}
+        >
           {visibleMoves.map((move) => <PokemonMoveCard key={move.name} slug={move.name} />)}
-        </div>
-        {visibleMoves.length < filteredMoves.length && (
-          <button className="moves-page__more" type="button" onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}>
-            Load more
-          </button>
-        )}
+        </InfiniteScroll>
       </main>
     </>
   );
