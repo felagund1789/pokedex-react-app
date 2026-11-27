@@ -66,6 +66,8 @@ const setup = () => {
 afterEach(() => {
   cleanup();
   vi.resetAllMocks();
+  vi.restoreAllMocks();
+  document.documentElement.scrollTop = 0;
   usePokemonStore.setState({ language: "en" });
 });
 
@@ -162,13 +164,16 @@ describe("items page", () => {
     expect(within(card).getByRole("button", { name: "Retry" })).toBeTruthy();
   });
 
-  it("loads additional cards on demand", async () => {
+  it("loads additional cards on scroll", async () => {
+    vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(2000);
+    vi.spyOn(window.screen, "availHeight", "get").mockReturnValue(800);
     setup();
     mocks.getItemsList.mockResolvedValue({ results: Array.from({ length: 21 }, (_, index) => ({ name: `item-${index}` })) });
     renderPage("/items");
     await screen.findByRole("heading", { name: "item-19" });
     expect(screen.queryByRole("heading", { name: "item-20" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Load more" }));
+    document.documentElement.scrollTop = 1200;
+    fireEvent.scroll(window);
     await screen.findByRole("heading", { name: "item-20" });
     expect(screen.queryByRole("button", { name: "Load more" })).toBeNull();
   });

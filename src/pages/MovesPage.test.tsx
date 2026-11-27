@@ -38,6 +38,8 @@ const renderPage = (url: string) => {
 afterEach(() => {
   cleanup();
   vi.resetAllMocks();
+  vi.restoreAllMocks();
+  document.documentElement.scrollTop = 0;
   usePokemonStore.setState({ language: "en" });
 });
 
@@ -176,7 +178,9 @@ describe("moves page", () => {
     expect(screen.queryByText("No moves match the current filters.")).toBeNull();
   });
 
-  it("allows all moves to be reached and resets the visible count when filtering", async () => {
+  it("loads moves on scroll and resets the visible count when filtering", async () => {
+    vi.spyOn(document.documentElement, "scrollHeight", "get").mockReturnValue(2000);
+    vi.spyOn(window.screen, "availHeight", "get").mockReturnValue(800);
     const moves = Array.from({ length: 25 }, (_, index) => ({ name: `move-${index}` }));
     mocks.getTypesList.mockResolvedValue({ results: [{ name: "fire" }] });
     mocks.getMovesList.mockResolvedValue({ results: moves });
@@ -189,11 +193,14 @@ describe("moves page", () => {
     renderPage("/moves");
     await screen.findByRole("heading", { name: "move-19" });
     expect(screen.queryByRole("heading", { name: "move-20" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Load more" }));
+    document.documentElement.scrollTop = 1200;
+    fireEvent.scroll(window);
     await screen.findByRole("heading", { name: "move-24" });
     expect(screen.queryByRole("button", { name: "Load more" })).toBeNull();
     fireEvent.change(screen.getByLabelText("Type"), { target: { value: "fire" } });
     await waitFor(() => expect(screen.queryByRole("heading", { name: "move-24" })).toBeNull());
-    expect(await screen.findByRole("button", { name: "Load more" })).toBeTruthy();
+    await screen.findByRole("heading", { name: "move-19" });
+    fireEvent.scroll(window);
+    await screen.findByRole("heading", { name: "move-24" });
   });
 });
