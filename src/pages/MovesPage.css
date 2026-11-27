@@ -22,6 +22,7 @@
 
 .moves-grid {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 22rem));
   align-items: start;
   justify-content: center;
