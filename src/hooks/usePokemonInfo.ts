@@ -4,6 +4,10 @@ import { useMemo } from "react";
 import pokedex from "../services/pokedexService";
 import usePokemonStore, { type PokemonInfo } from "../store";
 
+type PokemonWithCries = Pokemon & {
+  cries?: { latest: string | null; legacy: string | null };
+};
+
 const usePokemonInfo = (slug: string) => {
   const queryClient = useQueryClient();
   const language = usePokemonStore((state) => state.language);
@@ -19,7 +23,7 @@ const usePokemonInfo = (slug: string) => {
       if (cached) return cached;
 
       const pokemonForm = await pokedex.getPokemonFormByName(slug);
-      const pokemon = await queryClient.query<Pokemon>({
+      const pokemon = await queryClient.query<PokemonWithCries>({
         queryKey: ["pokemon", pokemonForm.pokemon.name],
         queryFn: () => pokedex.getPokemonByName(pokemonForm.pokemon.name),
         staleTime: Infinity,
@@ -52,7 +56,7 @@ const usePokemonInfo = (slug: string) => {
   });
 
   const pokemonForm = data?.pokemonForm;
-  const pokemon = data?.pokemon;
+  const pokemon: PokemonWithCries | undefined = data?.pokemon;
   const pokemonSpecies = data?.pokemonSpecies;
   const habitat = data?.habitat;
   const generation = data?.generation;

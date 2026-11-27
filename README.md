@@ -23,6 +23,7 @@ The Pokedex React App is a modern web application designed to provide comprehens
 - **Moves**: Search Pokémon moves by name at `/moves` and filter by type and damage class. Search and filters are saved in the URL.
 - **Items**: Browse items at `/items`, search by name, and filter by category and pocket. Search and filters are saved in the URL.
 - **Pokemon Details**: Detailed information about each Pokemon is available, including:
+  - **Cries**: Play the current Pokémon's cry when available.
   - **Types**: Displays the Pokemon's types (e.g., grass, fire, water, normal).
   - **Base Experience**: Shows the base experience points gained when a Pokemon is defeated.
   - **Base Happiness**: Indicates the base happiness level of the Pokemon.

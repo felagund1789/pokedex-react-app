@@ -36,6 +36,7 @@ const pokemon = (name: string) => ({
   name,
   species: { name: "bulbasaur" },
   sprites: { other: { "official-artwork": { front_default: "pokemon-artwork" } } },
+  cries: { latest: `${name}-cry`, legacy: null },
 });
 const generation = { names: localized("Generation I", "Génération I") };
 const form = (slug: string) => ({
@@ -97,6 +98,7 @@ describe("usePokemonInfo", () => {
     await act(async () => { resolveForm(form("bulbasaur")); });
     await waitFor(() => expect(evolution.result.current.data).toBeDefined());
     expect(first.result.current.pokemonName).toBe("Bulbasaur");
+    expect(first.result.current.pokemon?.cries?.latest).toBe("bulbasaur-cry");
     expect(second.result.current.pokemonName).toBe("Bulbasaur");
     expect(api.getPokemonByName).toHaveBeenCalledTimes(1);
     expect(api.getPokemonSpeciesByName).toHaveBeenCalledTimes(1);
