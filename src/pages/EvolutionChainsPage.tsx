@@ -108,7 +108,7 @@ const EvolutionChainsPage = () => {
     <>
       <PageHeader />
       <Loading isLoading={chains.isLoading || loadingDetails || chains.isFetchingNextPage} />
-      <main className="types-page evolution-chains-page">
+      <main className="evolution-chains-page">
         <h1>Evolution Chains</h1>
         {chains.error && <p role="alert">Error loading evolution chains: {chains.error.message}</p>}
         {detailError && <p role="alert">Error loading an evolution chain: {detailError.message}</p>}
